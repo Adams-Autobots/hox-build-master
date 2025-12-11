@@ -2,6 +2,7 @@ import { Layout } from '@/components/layout/Layout';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
 import { FeaturedCaseStudies } from '@/components/divisions/FeaturedCaseStudies';
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
+import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { Calendar, Users, Sparkles, Settings } from 'lucide-react';
 
 const caseStudies = [
@@ -64,6 +65,8 @@ export default function EventsPage() {
         division="events"
         capabilities={capabilities}
       />
+
+      <ProcessTimeline division="events" />
       
       <FeaturedCaseStudies
         division="events"

@@ -2,6 +2,7 @@ import { Layout } from '@/components/layout/Layout';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
 import { FeaturedCaseStudies } from '@/components/divisions/FeaturedCaseStudies';
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
+import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { Store, Palette, Package, Wrench } from 'lucide-react';
 
 const caseStudies = [
@@ -64,6 +65,8 @@ export default function RetailPage() {
         division="retail"
         capabilities={capabilities}
       />
+
+      <ProcessTimeline division="retail" />
       
       <FeaturedCaseStudies
         division="retail"

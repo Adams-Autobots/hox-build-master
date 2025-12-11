@@ -1,12 +1,6 @@
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-
-const stats = [
-  { value: '3000+', label: 'projects delivered' },
-  { value: '15', label: 'years in dubai' },
-  { value: '100%', label: 'in-house production' },
-  { value: '5', label: 'divisions' },
-];
+import { AnimatedStatsCounter } from './AnimatedStatsCounter';
 
 export function AboutSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
@@ -59,33 +53,8 @@ export function AboutSection() {
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div
-            className={cn(
-              'grid grid-cols-2 gap-8 transition-all duration-700 delay-500',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            )}
-          >
-            {stats.map((stat, index) => (
-              <div
-                key={stat.label}
-                className="group relative p-8 rounded-lg bg-background border border-border hover:border-primary/30 transition-all duration-500"
-                style={{ transitionDelay: `${600 + index * 100}ms` }}
-              >
-                {/* Glow Effect */}
-                <div className="absolute inset-0 rounded-lg bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                <div className="relative">
-                  <span className="block text-4xl md:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-500">
-                    {stat.value}
-                  </span>
-                  <span className="text-sm text-muted-foreground uppercase tracking-wider">
-                    {stat.label}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Animated Stats Grid */}
+          <AnimatedStatsCounter />
         </div>
       </div>
     </section>
