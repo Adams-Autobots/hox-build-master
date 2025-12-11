@@ -5,7 +5,13 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import heroImage from '@/assets/hero-exhibition.jpg';
 
-const heroWords = ['exhibitions', 'events', 'retail', 'interiors', 'creative'];
+const heroWords = [
+  { word: 'exhibitions', color: 'hsl(var(--hox-red))' },
+  { word: 'events', color: 'hsl(var(--hox-blue))' },
+  { word: 'retail', color: 'hsl(var(--hox-orange))' },
+  { word: 'interiors', color: 'hsl(var(--hox-green))' },
+  { word: 'creative', color: 'hsl(var(--foreground))' },
+];
 
 export function HeroSection() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -95,17 +101,18 @@ export function HeroSection() {
             )}
           >
             <div className="flex items-center gap-3 text-lg md:text-xl text-muted-foreground">
-              {heroWords.map((word, index) => (
+              {heroWords.map((item, index) => (
                 <span
-                  key={word}
+                  key={item.word}
                   className={cn(
                     'transition-all duration-500 hox-brand',
                     index === currentWordIndex
-                      ? 'text-primary scale-110'
+                      ? 'scale-110'
                       : 'opacity-40'
                   )}
+                  style={index === currentWordIndex ? { color: item.color } : undefined}
                 >
-                  {word}
+                  {item.word}
                 </span>
               ))}
             </div>
