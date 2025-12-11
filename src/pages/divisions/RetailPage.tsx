@@ -3,6 +3,7 @@ import { DivisionHero } from '@/components/divisions/DivisionHero';
 import { FeaturedCaseStudies } from '@/components/divisions/FeaturedCaseStudies';
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
+import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { Store, Palette, Package, Wrench } from 'lucide-react';
 
 const caseStudies = [
@@ -49,6 +50,17 @@ const capabilities = [
   },
 ];
 
+const galleryImages = [
+  { src: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&auto=format&fit=crop', alt: 'Luxury store', caption: 'Flagship store entrance', project: 'Luxury Brand' },
+  { src: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=1200&auto=format&fit=crop', alt: 'Fashion retail', caption: 'Premium display fixtures', project: 'Fashion Store' },
+  { src: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1200&auto=format&fit=crop', alt: 'Retail kiosk', caption: 'Custom brand kiosk', project: 'Brand Activation' },
+  { src: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1200&auto=format&fit=crop', alt: 'Shopping display', caption: 'Visual merchandising', project: 'Department Store' },
+  { src: 'https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?w=1200&auto=format&fit=crop', alt: 'Boutique interior', caption: 'Boutique fit-out', project: 'Boutique' },
+  { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&auto=format&fit=crop', alt: 'Showroom', caption: 'Product showroom', project: 'Auto Showroom' },
+  { src: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1200&auto=format&fit=crop', alt: 'Pop-up store', caption: 'Seasonal pop-up', project: 'Pop-Up' },
+  { src: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&auto=format&fit=crop', alt: 'Retail space', caption: 'Custom retail fixtures', project: 'Electronics' },
+];
+
 export default function RetailPage() {
   return (
     <Layout>
@@ -67,6 +79,8 @@ export default function RetailPage() {
       />
 
       <ProcessTimeline division="retail" />
+
+      <FullPageGallery division="retail" images={galleryImages} />
       
       <FeaturedCaseStudies
         division="retail"

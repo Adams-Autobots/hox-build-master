@@ -3,6 +3,7 @@ import { DivisionHero } from '@/components/divisions/DivisionHero';
 import { FeaturedCaseStudies } from '@/components/divisions/FeaturedCaseStudies';
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
+import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { Calendar, Users, Sparkles, Settings } from 'lucide-react';
 
 const caseStudies = [
@@ -49,6 +50,17 @@ const capabilities = [
   },
 ];
 
+const galleryImages = [
+  { src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop', alt: 'Corporate gala', caption: 'Grand ballroom setup', project: 'Annual Gala' },
+  { src: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=1200&auto=format&fit=crop', alt: 'Product launch', caption: 'Luxury unveiling moment', project: 'Product Launch' },
+  { src: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1200&auto=format&fit=crop', alt: 'Conference hall', caption: 'Main stage lighting', project: 'Tech Conference' },
+  { src: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&auto=format&fit=crop', alt: 'Concert setup', caption: 'Festival stage build', project: 'Music Festival' },
+  { src: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1200&auto=format&fit=crop', alt: 'Award ceremony', caption: 'Award show production', project: 'Awards Night' },
+  { src: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1200&auto=format&fit=crop', alt: 'Outdoor event', caption: 'Beach event installation', project: 'Beach Party' },
+  { src: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&auto=format&fit=crop', alt: 'Concert lights', caption: 'Dynamic lighting design', project: 'Live Concert' },
+  { src: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&auto=format&fit=crop', alt: 'Stage setup', caption: 'Immersive stage experience', project: 'Brand Event' },
+];
+
 export default function EventsPage() {
   return (
     <Layout>
@@ -67,6 +79,8 @@ export default function EventsPage() {
       />
 
       <ProcessTimeline division="events" />
+
+      <FullPageGallery division="events" images={galleryImages} />
       
       <FeaturedCaseStudies
         division="events"
