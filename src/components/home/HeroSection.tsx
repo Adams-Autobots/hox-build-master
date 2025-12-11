@@ -21,12 +21,25 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Video Background */}
       <div className="absolute inset-0">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={heroImage}
+          className="w-full h-full object-cover opacity-50"
+        >
+          {/* Replace this src with your actual video URL */}
+          <source src="/hero-video.mp4" type="video/mp4" />
+          {/* Fallback to image if video doesn't load */}
+        </video>
+        {/* Fallback image for browsers that don't support video */}
         <img 
           src={heroImage} 
           alt="HOX Exhibition Build"
-          className="w-full h-full object-cover opacity-40"
+          className="absolute inset-0 w-full h-full object-cover opacity-40 -z-10"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/60" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/80" />
