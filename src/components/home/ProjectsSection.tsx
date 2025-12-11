@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { TiltCard } from '@/components/ui/TiltCard';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 
@@ -100,57 +101,63 @@ export function ProjectsSection() {
           </Button>
         </div>
 
-        {/* Projects Grid */}
+        {/* Projects Grid with 3D Tilt */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {projects.map((project, index) => (
-            <Link
+            <TiltCard
               key={project.id}
-              to={`/case-studies/${project.id}`}
               className={cn(
-                'group relative overflow-hidden rounded-lg bg-background transition-all duration-500',
+                'transition-all duration-500',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
-              style={{ transitionDelay: `${300 + index * 100}ms` }}
+              style={{ transitionDelay: `${300 + index * 100}ms` } as React.CSSProperties}
+              tiltAmount={8}
             >
-              {/* Image */}
-              <div className="aspect-[4/3] overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-              </div>
-
-              {/* Content */}
-              <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
-                {/* Category Badge */}
-                <span className="inline-flex self-start px-3 py-1 mb-4 text-xs font-medium uppercase tracking-wider text-primary bg-primary/10 rounded-full border border-primary/20">
-                  {project.category}
-                </span>
-
-                {/* Title */}
-                <h3 className="text-xl lg:text-2xl font-bold text-foreground mb-2 hox-brand group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-
-                {/* Location */}
-                <p className="text-sm text-muted-foreground mb-4">
-                  {project.location}
-                </p>
-
-                {/* Description - Hidden by default, shown on hover */}
-                <p className="text-sm text-muted-foreground line-clamp-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                  {project.description}
-                </p>
-
-                {/* Arrow Indicator */}
-                <div className="absolute top-6 right-6 w-10 h-10 rounded-full border border-foreground/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:border-primary group-hover:bg-primary/10">
-                  <ArrowUpRight className="w-4 h-4 text-primary" />
+              <Link
+                to={`/case-studies/${project.id}`}
+                className="group relative overflow-hidden rounded-lg bg-background block"
+                data-cursor="view"
+              >
+                {/* Image */}
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                 </div>
-              </div>
-            </Link>
+
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
+                  {/* Category Badge */}
+                  <span className="inline-flex self-start px-3 py-1 mb-4 text-xs font-medium uppercase tracking-wider text-primary bg-primary/10 rounded-full border border-primary/20">
+                    {project.category}
+                  </span>
+
+                  {/* Title */}
+                  <h3 className="text-xl lg:text-2xl font-bold text-foreground mb-2 hox-brand group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+
+                  {/* Location */}
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {project.location}
+                  </p>
+
+                  {/* Description - Hidden by default, shown on hover */}
+                  <p className="text-sm text-muted-foreground line-clamp-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                    {project.description}
+                  </p>
+
+                  {/* Arrow Indicator */}
+                  <div className="absolute top-6 right-6 w-10 h-10 rounded-full border border-foreground/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:border-primary group-hover:bg-primary/10">
+                    <ArrowUpRight className="w-4 h-4 text-primary" />
+                  </div>
+                </div>
+              </Link>
+            </TiltCard>
           ))}
         </div>
       </div>
