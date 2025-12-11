@@ -1,6 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
+import { LeadershipSection } from '@/components/about/LeadershipSection';
 
 const milestones = [
   { year: '2008', title: 'Founded in Dubai', desc: 'Started as a small fabrication workshop' },
@@ -85,6 +86,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <LeadershipSection />
     </Layout>
   );
 }

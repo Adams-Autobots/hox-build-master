@@ -4,6 +4,7 @@ import { FeaturedCaseStudies } from '@/components/divisions/FeaturedCaseStudies'
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
+import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { Pen, Monitor, Film, Zap } from 'lucide-react';
 
 const caseStudies = [
@@ -81,6 +82,8 @@ export default function CreativePage() {
       <ProcessTimeline division="creative" />
 
       <FullPageGallery division="creative" images={galleryImages} />
+
+      <DivisionFAQ division="creative" />
       
       <FeaturedCaseStudies
         division="creative"
