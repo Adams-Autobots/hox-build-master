@@ -4,6 +4,7 @@ import { FeaturedCaseStudies } from '@/components/divisions/FeaturedCaseStudies'
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
+import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { Building2, Sofa, Ruler, Gem } from 'lucide-react';
 
 const caseStudies = [
@@ -81,6 +82,8 @@ export default function InteriorsPage() {
       <ProcessTimeline division="interiors" />
 
       <FullPageGallery division="interiors" images={galleryImages} />
+
+      <DivisionFAQ division="interiors" />
       
       <FeaturedCaseStudies
         division="interiors"

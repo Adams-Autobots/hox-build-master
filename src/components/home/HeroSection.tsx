@@ -27,7 +27,7 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Video Background */}
+      {/* Cinematic Video Showreel Background */}
       <div className="absolute inset-0">
         <video
           autoPlay
@@ -35,20 +35,24 @@ export function HeroSection() {
           loop
           playsInline
           poster={heroImage}
-          className="w-full h-full object-cover opacity-50"
+          className="w-full h-full object-cover"
+          style={{ filter: 'brightness(0.4) contrast(1.1)' }}
         >
-          {/* Replace this src with your actual video URL */}
-          <source src="/hero-video.mp4" type="video/mp4" />
-          {/* Fallback to image if video doesn't load */}
+          {/* Production showreel - replace with actual HOX showreel */}
+          <source src="https://player.vimeo.com/external/434045526.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
         </video>
-        {/* Fallback image for browsers that don't support video */}
+        {/* Fallback image */}
         <img 
           src={heroImage} 
           alt="HOX Exhibition Build"
-          className="absolute inset-0 w-full h-full object-cover opacity-40 -z-10"
+          className="absolute inset-0 w-full h-full object-cover -z-10"
+          style={{ filter: 'brightness(0.3)' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/80" />
+        {/* Cinematic gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-background/60" />
+        {/* Subtle vignette */}
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)) 100%)', opacity: 0.4 }} />
       </div>
 
       {/* Animated Grid */}
