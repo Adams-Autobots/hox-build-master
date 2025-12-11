@@ -247,3 +247,28 @@
     background-position: 200% 0;
   }
 }
+
+/* Scroll Snap Styles */
+.scroll-snap-container {
+  scroll-snap-type: y proximity;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.scroll-snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+}
+
+.scroll-snap-section-auto {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+/* Smooth scroll for all anchor links */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

@@ -6,17 +6,37 @@ import { ProjectsSection } from '@/components/home/ProjectsSection';
 import { WhyHoxSection } from '@/components/home/WhyHoxSection';
 import { ClientMarquee } from '@/components/home/ClientMarquee';
 import { ContactCTA } from '@/components/home/ContactCTA';
+import { MagneticCursor } from '@/components/ui/MagneticCursor';
 
 const Index = () => {
   return (
     <Layout>
-      <HeroSection />
-      <AboutSection />
-      <DivisionsSection />
-      <ProjectsSection />
-      <WhyHoxSection />
-      <ClientMarquee />
-      <ContactCTA />
+      <MagneticCursor />
+      
+      {/* Smooth Scroll Snap Container */}
+      <div className="scroll-snap-container">
+        <section className="scroll-snap-section">
+          <HeroSection />
+        </section>
+        <section className="scroll-snap-section-auto">
+          <AboutSection />
+        </section>
+        <section className="scroll-snap-section-auto">
+          <DivisionsSection />
+        </section>
+        <section className="scroll-snap-section-auto">
+          <ProjectsSection />
+        </section>
+        <section className="scroll-snap-section-auto">
+          <WhyHoxSection />
+        </section>
+        <section className="scroll-snap-section-auto">
+          <ClientMarquee />
+        </section>
+        <section className="scroll-snap-section-auto">
+          <ContactCTA />
+        </section>
+      </div>
     </Layout>
   );
 };

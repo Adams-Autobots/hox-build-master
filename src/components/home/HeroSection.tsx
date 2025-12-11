@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import heroImage from '@/assets/hero-exhibition.jpg';
+import { SplitText } from './SplitTextHero';
 
 const heroWords = [
   { word: 'exhibitions', color: 'hsl(var(--hox-red))' },
@@ -81,19 +83,31 @@ export function HeroSection() {
             </span>
           </div>
 
-          {/* Main Headline */}
-          <h1
-            className={cn(
-              'text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] mb-8 transition-all duration-700 delay-150',
-              isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            )}
-          >
-            <span className="hox-brand">hox</span>
-            <span className="text-primary">.</span>
-            <br />
-            <span className="text-muted-foreground/60">production</span>
-            <br />
-            <span className="text-muted-foreground/60">excellence.</span>
+          {/* Main Headline with Split Text Animation */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] mb-8">
+            <span className="block overflow-hidden">
+              <span className="hox-brand inline-flex">
+                <SplitText text="hox" delay={0.2} staggerDelay={0.08} />
+              </span>
+              <motion.span
+                className="text-primary inline-block"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, duration: 0.3, type: 'spring' }}
+              >
+                .
+              </motion.span>
+            </span>
+            <span className="block overflow-hidden">
+              <span className="text-muted-foreground/60">
+                <SplitText text="production" delay={0.4} staggerDelay={0.04} />
+              </span>
+            </span>
+            <span className="block overflow-hidden">
+              <span className="text-muted-foreground/60">
+                <SplitText text="excellence." delay={0.7} staggerDelay={0.04} />
+              </span>
+            </span>
           </h1>
 
           {/* Animated Division Words */}
