@@ -3,7 +3,9 @@ import { HeroSection } from '@/components/home/HeroSection';
 import { AboutSection } from '@/components/home/AboutSection';
 import { DivisionsSection } from '@/components/home/DivisionsSection';
 import { ProjectsSection } from '@/components/home/ProjectsSection';
+import { ProcessSection } from '@/components/home/ProcessSection';
 import { WhyHoxSection } from '@/components/home/WhyHoxSection';
+import { CertificationsSection } from '@/components/home/CertificationsSection';
 import { ClientMarquee } from '@/components/home/ClientMarquee';
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { MagneticCursor } from '@/components/ui/MagneticCursor';
@@ -28,7 +30,13 @@ const Index = () => {
           <ProjectsSection />
         </section>
         <section className="scroll-snap-section-auto">
+          <ProcessSection />
+        </section>
+        <section className="scroll-snap-section-auto">
           <WhyHoxSection />
+        </section>
+        <section className="scroll-snap-section-auto">
+          <CertificationsSection />
         </section>
         <section className="scroll-snap-section-auto">
           <ClientMarquee />
