@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-type Division = 'exhibitions' | 'events' | 'retail' | 'interiors' | 'creative';
+type Division = 'exhibitions' | 'events' | 'retail' | 'interiors';
 
 interface FAQ {
   question: string;
@@ -43,13 +43,6 @@ const divisionFAQs: Record<Division, FAQ[]> = {
     { question: 'Do you source premium materials?', answer: 'Yes, we have access to rare stones, specialty veneers, metals, and artisan finishes from around the world. We can source to specification or recommend materials based on your design intent.' },
     { question: 'How do you handle projects in occupied buildings?', answer: 'We have extensive experience with phased fit-outs and night works in occupied buildings. We implement strict noise control, dust management, and security protocols.' },
   ],
-  creative: [
-    { question: 'What creative services do you offer?', answer: 'We provide brand strategy, visual identity design, digital experiences (web/app), content production (photo/video), motion graphics, and interactive installations including AR/VR.' },
-    { question: 'Can you handle both strategy and production?', answer: 'Yes, we offer end-to-end creative services from initial brand strategy through to final asset production. Our integrated approach ensures consistency from concept to delivery.' },
-    { question: 'Do you produce content for social media campaigns?', answer: 'Absolutely. We create campaign content optimized for all platforms including Instagram, TikTok, LinkedIn, and YouTube. This includes video, photography, motion graphics, and copywriting.' },
-    { question: 'What interactive technologies do you work with?', answer: 'We develop AR experiences, VR environments, interactive touchscreens, gesture-controlled installations, and projection mapping. We handle both hardware and software development.' },
-    { question: 'Can you support brand activations and experiential?', answer: 'Yes, our creative team works closely with our production divisions to deliver immersive brand experiences. We design the creative concept and execute the physical build.' },
-  ],
 };
 
 const divisionColors: Record<Division, string> = {
@@ -57,7 +50,6 @@ const divisionColors: Record<Division, string> = {
   events: 'text-[hsl(var(--hox-blue))]',
   retail: 'text-[hsl(var(--hox-orange))]',
   interiors: 'text-[hsl(var(--hox-green))]',
-  creative: 'text-foreground',
 };
 
 const divisionBg: Record<Division, string> = {
@@ -65,7 +57,6 @@ const divisionBg: Record<Division, string> = {
   events: 'bg-[hsl(var(--hox-blue))]',
   retail: 'bg-[hsl(var(--hox-orange))]',
   interiors: 'bg-[hsl(var(--hox-green))]',
-  creative: 'bg-foreground',
 };
 
 interface DivisionFAQProps {

@@ -13,7 +13,6 @@ import ExhibitionsPage from "./pages/divisions/ExhibitionsPage";
 import EventsPage from "./pages/divisions/EventsPage";
 import RetailPage from "./pages/divisions/RetailPage";
 import InteriorsPage from "./pages/divisions/InteriorsPage";
-import CreativePage from "./pages/divisions/CreativePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,7 +34,6 @@ const App = () => (
           <Route path="/divisions/events" element={<EventsPage />} />
           <Route path="/divisions/retail" element={<RetailPage />} />
           <Route path="/divisions/interiors" element={<InteriorsPage />} />
-          <Route path="/divisions/creative" element={<CreativePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

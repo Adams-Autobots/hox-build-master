@@ -9,7 +9,7 @@ interface Capability {
 }
 
 interface CapabilitiesGridProps {
-  division: 'exhibitions' | 'events' | 'retail' | 'interiors' | 'creative';
+  division: 'exhibitions' | 'events' | 'retail' | 'interiors';
   capabilities: Capability[];
 }
 
@@ -18,7 +18,6 @@ const divisionBorders = {
   events: 'hover:border-hox-blue/50',
   retail: 'hover:border-hox-orange/50',
   interiors: 'hover:border-hox-green/50',
-  creative: 'hover:border-foreground/50',
 };
 
 const divisionIconColors = {
@@ -26,7 +25,6 @@ const divisionIconColors = {
   events: 'text-hox-blue',
   retail: 'text-hox-orange',
   interiors: 'text-hox-green',
-  creative: 'text-foreground',
 };
 
 export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridProps) {

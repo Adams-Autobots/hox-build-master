@@ -44,16 +44,6 @@ const divisions = [
     accentColor: 'hox-green',
     gradient: 'from-hox-green/20 via-hox-green/5 to-transparent',
   },
-  {
-    name: 'creative',
-    fullName: 'hoxcreative.',
-    headline: 'creative that drives production.',
-    description: 'Branding, graphics, spatial concepts, content creation — ideas built for fabrication and impact.',
-    path: '/divisions/creative',
-    colorClass: 'division-creative',
-    accentColor: 'hox-white',
-    gradient: 'from-white/10 via-white/5 to-transparent',
-  },
 ];
 
 export function DivisionsSection() {
@@ -80,7 +70,7 @@ export function DivisionsSection() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            <span className="hox-brand">five specialized arms.</span>
+            <span className="hox-brand">four specialized arms.</span>
             <br />
             <span className="text-muted-foreground/60">one unified vision.</span>
           </h2>

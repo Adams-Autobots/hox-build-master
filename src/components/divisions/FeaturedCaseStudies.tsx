@@ -11,7 +11,7 @@ interface CaseStudy {
 }
 
 interface FeaturedCaseStudiesProps {
-  division: 'exhibitions' | 'events' | 'retail' | 'interiors' | 'creative';
+  division: 'exhibitions' | 'events' | 'retail' | 'interiors';
   caseStudies: CaseStudy[];
 }
 
@@ -20,7 +20,6 @@ const divisionColors = {
   events: 'text-hox-blue border-hox-blue/30 hover:border-hox-blue',
   retail: 'text-hox-orange border-hox-orange/30 hover:border-hox-orange',
   interiors: 'text-hox-green border-hox-green/30 hover:border-hox-green',
-  creative: 'text-foreground border-foreground/30 hover:border-foreground',
 };
 
 export function FeaturedCaseStudies({ division, caseStudies }: FeaturedCaseStudiesProps) {

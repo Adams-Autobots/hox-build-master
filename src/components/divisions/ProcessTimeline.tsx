@@ -2,14 +2,13 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { MessageSquare, PenTool, Wrench, Truck, CheckCircle } from 'lucide-react';
 
-type Division = 'exhibitions' | 'events' | 'retail' | 'interiors' | 'creative';
+type Division = 'exhibitions' | 'events' | 'retail' | 'interiors';
 
 const divisionColors: Record<Division, string> = {
   exhibitions: 'text-[hsl(var(--hox-red))]',
   events: 'text-[hsl(var(--hox-blue))]',
   retail: 'text-[hsl(var(--hox-orange))]',
   interiors: 'text-[hsl(var(--hox-green))]',
-  creative: 'text-foreground',
 };
 
 const divisionBorders: Record<Division, string> = {
@@ -17,7 +16,6 @@ const divisionBorders: Record<Division, string> = {
   events: 'border-[hsl(var(--hox-blue))]',
   retail: 'border-[hsl(var(--hox-orange))]',
   interiors: 'border-[hsl(var(--hox-green))]',
-  creative: 'border-foreground',
 };
 
 const divisionBg: Record<Division, string> = {
@@ -25,7 +23,6 @@ const divisionBg: Record<Division, string> = {
   events: 'bg-[hsl(var(--hox-blue))]/10',
   retail: 'bg-[hsl(var(--hox-orange))]/10',
   interiors: 'bg-[hsl(var(--hox-green))]/10',
-  creative: 'bg-foreground/10',
 };
 
 const processSteps = [

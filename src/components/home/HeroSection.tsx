@@ -10,7 +10,6 @@ const heroWords = [
   { word: 'events', color: 'hsl(var(--hox-blue))' },
   { word: 'retail', color: 'hsl(var(--hox-orange))' },
   { word: 'interiors', color: 'hsl(var(--hox-green))' },
-  { word: 'creative', color: 'hsl(var(--foreground))' },
 ];
 
 export function HeroSection() {

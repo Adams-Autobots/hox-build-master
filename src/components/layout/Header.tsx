@@ -9,7 +9,6 @@ const divisions = [
   { name: 'events', path: '/divisions/events', color: 'hox-blue' },
   { name: 'retail', path: '/divisions/retail', color: 'hox-orange' },
   { name: 'interiors', path: '/divisions/interiors', color: 'hox-green' },
-  { name: 'creative', path: '/divisions/creative', color: 'hox-white' },
 ];
 
 const navItems = [

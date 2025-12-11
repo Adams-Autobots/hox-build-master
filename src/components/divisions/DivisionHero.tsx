@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface DivisionHeroProps {
-  division: 'exhibitions' | 'events' | 'retail' | 'interiors' | 'creative';
+  division: 'exhibitions' | 'events' | 'retail' | 'interiors';
   tagline: string;
   headline: string;
   highlightText: string;
@@ -41,13 +41,6 @@ const divisionConfig = {
     glow: 'shadow-[0_0_40px_hsl(87_53%_51%/0.6)]',
     bg: 'bg-hox-green',
     hover: 'hover:bg-hox-green/90',
-  },
-  creative: {
-    color: 'foreground',
-    gradient: 'from-foreground/10',
-    glow: 'shadow-[0_0_40px_hsl(0_0%_100%/0.3)]',
-    bg: 'bg-foreground',
-    hover: 'hover:bg-foreground/90',
   },
 };
 
