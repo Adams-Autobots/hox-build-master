@@ -4,7 +4,7 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { X, ChevronLeft, ChevronRight, Expand, Grid3X3 } from 'lucide-react';
 
-type Division = 'exhibitions' | 'events' | 'retail' | 'interiors' | 'creative';
+type Division = 'exhibitions' | 'events' | 'retail' | 'interiors';
 
 interface GalleryImage {
   src: string;
@@ -23,7 +23,6 @@ const divisionColors: Record<Division, string> = {
   events: 'text-[hsl(var(--hox-blue))]',
   retail: 'text-[hsl(var(--hox-orange))]',
   interiors: 'text-[hsl(var(--hox-green))]',
-  creative: 'text-foreground',
 };
 
 const divisionBg: Record<Division, string> = {
@@ -31,7 +30,6 @@ const divisionBg: Record<Division, string> = {
   events: 'bg-[hsl(var(--hox-blue))]',
   retail: 'bg-[hsl(var(--hox-orange))]',
   interiors: 'bg-[hsl(var(--hox-green))]',
-  creative: 'bg-foreground',
 };
 
 export function FullPageGallery({ division, images }: FullPageGalleryProps) {
