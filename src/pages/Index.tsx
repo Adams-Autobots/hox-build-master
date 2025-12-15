@@ -8,12 +8,10 @@ import { WhyHoxSection } from '@/components/home/WhyHoxSection';
 import { CertificationsSection } from '@/components/home/CertificationsSection';
 import { ClientMarquee } from '@/components/home/ClientMarquee';
 import { ContactCTA } from '@/components/home/ContactCTA';
-import { MagneticCursor } from '@/components/ui/MagneticCursor';
 
 const Index = () => {
   return (
     <Layout>
-      <MagneticCursor />
       
       {/* Smooth Scroll Snap Container */}
       <div className="scroll-snap-container">
