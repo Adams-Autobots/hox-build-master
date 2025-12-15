@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import heroImage from '@/assets/hero-exhibition.jpg';
 import { SplitText } from './SplitTextHero';
+import { VideoShowreel } from './VideoShowreel';
 
 const heroWords = [
   { word: 'exhibitions', color: 'hsl(var(--hox-red))' },
@@ -29,54 +29,7 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Cinematic Video Showreel Background */}
-      <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster={heroImage}
-          className="w-full h-full object-cover"
-          style={{ filter: 'brightness(0.35) contrast(1.15) saturate(1.1)' }}
-        >
-          {/* Industrial/fabrication production montage */}
-          <source src="https://cdn.coverr.co/videos/coverr-welding-sparks-in-slow-motion-2556/1080p.mp4" type="video/mp4" />
-        </video>
-        
-        {/* Fallback image if video doesn't load */}
-        <img 
-          src={heroImage} 
-          alt="HOX Exhibition Build"
-          className="absolute inset-0 w-full h-full object-cover -z-10"
-          style={{ filter: 'brightness(0.25)' }}
-        />
-        
-        {/* Multi-layer cinematic overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-background/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/80" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background" />
-        
-        {/* Cinematic color grade overlay */}
-        <div className="absolute inset-0 bg-primary/5 mix-blend-overlay" />
-        
-        {/* Deep vignette for focus */}
-        <div 
-          className="absolute inset-0" 
-          style={{ 
-            background: 'radial-gradient(ellipse 70% 60% at 30% 50%, transparent 0%, hsl(var(--background) / 0.7) 70%, hsl(var(--background)) 100%)' 
-          }} 
-        />
-        
-        {/* Scanline effect for industrial feel */}
-        <div 
-          className="absolute inset-0 opacity-[0.015] pointer-events-none"
-          style={{
-            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, hsl(var(--foreground)) 2px, hsl(var(--foreground)) 3px)',
-            backgroundSize: '100% 4px'
-          }}
-        />
-      </div>
+      <VideoShowreel posterImage={heroImage} />
 
       {/* Animated Grid */}
       <div className="absolute inset-0 opacity-[0.03]">
