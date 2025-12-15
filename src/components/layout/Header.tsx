@@ -20,7 +20,6 @@ const navItems = [
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDivisionsOpen, setIsDivisionsOpen] = useState(false);
   const location = useLocation();
 
@@ -34,7 +33,6 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    setIsMobileMenuOpen(false);
     setIsDivisionsOpen(false);
   }, [location]);
 
@@ -60,63 +58,156 @@ export function Header() {
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
           </Link>
 
-          {/* Hamburger Menu Toggle */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="relative p-2 text-foreground group"
-            aria-label="Toggle menu"
-          >
-            <div className="flex flex-col items-end gap-1.5 w-7">
-              <span 
-                className={cn(
-                  'h-0.5 bg-foreground transition-all duration-300 origin-right',
-                  isMobileMenuOpen ? 'w-7 rotate-[-45deg] translate-y-[3px]' : 'w-7 group-hover:w-5'
-                )} 
-              />
-              <span 
-                className={cn(
-                  'h-0.5 bg-foreground transition-all duration-300',
-                  isMobileMenuOpen ? 'w-0 opacity-0' : 'w-5 group-hover:w-7'
-                )} 
-              />
-              <span 
-                className={cn(
-                  'h-0.5 bg-foreground transition-all duration-300 origin-right',
-                  isMobileMenuOpen ? 'w-7 rotate-[45deg] -translate-y-[3px]' : 'w-7 group-hover:w-4'
-                )} 
-              />
-            </div>
-          </button>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {navItems.map((item) => (
+              item.hasDropdown ? (
+                <div 
+                  key={item.name}
+                  className="relative"
+                  onMouseEnter={() => setIsDivisionsOpen(true)}
+                  onMouseLeave={() => setIsDivisionsOpen(false)}
+                >
+                  <button
+                    className={cn(
+                      'flex items-center gap-1 text-sm font-medium transition-colors hox-brand',
+                      location.pathname.includes('/divisions')
+                        ? 'text-primary'
+                        : 'text-muted-foreground hover:text-foreground'
+                    )}
+                  >
+                    {item.name}
+                    <ChevronDown
+                      className={cn(
+                        'w-4 h-4 transition-transform duration-300',
+                        isDivisionsOpen && 'rotate-180'
+                      )}
+                    />
+                  </button>
+                  
+                  {/* Dropdown */}
+                  <div
+                    className={cn(
+                      'absolute top-full left-0 pt-2 transition-all duration-300',
+                      isDivisionsOpen
+                        ? 'opacity-100 translate-y-0 pointer-events-auto'
+                        : 'opacity-0 -translate-y-2 pointer-events-none'
+                    )}
+                  >
+                    <div className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-lg p-3 min-w-48">
+                      {divisions.map((division) => (
+                        <Link
+                          key={division.name}
+                          to={division.path}
+                          className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50 hox-brand group"
+                        >
+                          <span
+                            className={cn(
+                              'w-2 h-2 rounded-full transition-transform duration-300 group-hover:scale-150',
+                              division.color === 'hox-red' && 'bg-hox-red',
+                              division.color === 'hox-blue' && 'bg-hox-blue',
+                              division.color === 'hox-orange' && 'bg-hox-orange',
+                              division.color === 'hox-green' && 'bg-hox-green'
+                            )}
+                          />
+                          hox{division.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={cn(
+                    'text-sm font-medium transition-colors hox-brand relative group',
+                    location.pathname === item.path
+                      ? 'text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  {item.name}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                </Link>
+              )
+            ))}
+          </div>
+
+          {/* Mobile Navigation Toggle */}
+          <MobileNav />
         </nav>
       </div>
+    </header>
+  );
+}
 
-      {/* Full-screen Menu Overlay */}
+function MobileNav() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDivisionsOpen, setIsDivisionsOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsOpen(false);
+    setIsDivisionsOpen(false);
+  }, [location]);
+
+  return (
+    <div className="md:hidden">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="relative p-2 text-foreground group"
+        aria-label="Toggle menu"
+      >
+        <div className="flex flex-col items-end gap-1.5 w-7">
+          <span 
+            className={cn(
+              'h-0.5 bg-foreground transition-all duration-300 origin-right',
+              isOpen ? 'w-7 rotate-[-45deg] translate-y-[3px]' : 'w-7 group-hover:w-5'
+            )} 
+          />
+          <span 
+            className={cn(
+              'h-0.5 bg-foreground transition-all duration-300',
+              isOpen ? 'w-0 opacity-0' : 'w-5 group-hover:w-7'
+            )} 
+          />
+          <span 
+            className={cn(
+              'h-0.5 bg-foreground transition-all duration-300 origin-right',
+              isOpen ? 'w-7 rotate-[45deg] -translate-y-[3px]' : 'w-7 group-hover:w-4'
+            )} 
+          />
+        </div>
+      </button>
+
+      {/* Mobile Menu Overlay */}
       <div
         className={cn(
           'fixed inset-0 top-0 bg-background/98 backdrop-blur-xl transition-all duration-500 z-40',
-          isMobileMenuOpen
+          isOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'
         )}
       >
-        <div className="container mx-auto px-6 lg:px-12 pt-32 pb-12 h-full overflow-auto">
+        <div className="container mx-auto px-6 pt-32 pb-12 h-full overflow-auto">
           <div className="flex flex-col gap-2">
             {navItems.map((item, index) => (
               <div 
                 key={item.name}
                 className={cn(
                   'transition-all duration-500',
-                  isMobileMenuOpen 
+                  isOpen 
                     ? 'opacity-100 translate-x-0' 
                     : 'opacity-0 -translate-x-8'
                 )}
-                style={{ transitionDelay: isMobileMenuOpen ? `${index * 75}ms` : '0ms' }}
+                style={{ transitionDelay: isOpen ? `${index * 75}ms` : '0ms' }}
               >
                 {item.hasDropdown ? (
                   <div className="space-y-3">
                     <button
                       onClick={() => setIsDivisionsOpen(!isDivisionsOpen)}
-                      className="flex items-center gap-3 text-4xl md:text-6xl lg:text-7xl font-bold text-muted-foreground hover:text-foreground transition-colors hox-brand"
+                      className="flex items-center gap-3 text-4xl font-bold text-muted-foreground hover:text-foreground transition-colors hox-brand"
                     >
                       {item.name}
                       <ChevronDown
@@ -128,7 +219,7 @@ export function Header() {
                     </button>
                     <div 
                       className={cn(
-                        'pl-4 md:pl-8 flex flex-col gap-2 overflow-hidden transition-all duration-500',
+                        'pl-4 flex flex-col gap-2 overflow-hidden transition-all duration-500',
                         isDivisionsOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                       )}
                     >
@@ -136,7 +227,7 @@ export function Header() {
                         <Link
                           key={division.name}
                           to={division.path}
-                          className="flex items-center gap-4 text-xl md:text-2xl text-muted-foreground hover:text-foreground transition-colors hox-brand group"
+                          className="flex items-center gap-4 text-xl text-muted-foreground hover:text-foreground transition-colors hox-brand group"
                         >
                           <span
                             className={cn(
@@ -156,7 +247,7 @@ export function Header() {
                   <Link
                     to={item.path}
                     className={cn(
-                      'block text-4xl md:text-6xl lg:text-7xl font-bold transition-colors hox-brand group',
+                      'block text-4xl font-bold transition-colors hox-brand group',
                       location.pathname === item.path
                         ? 'text-primary'
                         : 'text-muted-foreground hover:text-foreground'
@@ -176,16 +267,16 @@ export function Header() {
           <div 
             className={cn(
               'mt-16 pt-8 border-t border-border/30 transition-all duration-700 delay-500',
-              isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
+              isOpen ? 'opacity-100' : 'opacity-0'
             )}
           >
             <p className="text-muted-foreground text-sm mb-2">get in touch</p>
-            <a href="mailto:hello@hox.ae" className="text-xl md:text-2xl text-foreground hover:text-primary transition-colors">
+            <a href="mailto:hello@hox.ae" className="text-xl text-foreground hover:text-primary transition-colors">
               hello@hox.ae
             </a>
           </div>
         </div>
       </div>
-    </header>
+    </div>
   );
 }

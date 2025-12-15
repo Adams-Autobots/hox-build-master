@@ -21,37 +21,37 @@ const Index = () => {
           <HeroSection />
         </section>
 
-        <CinematicReveal glowColor="red" maskDirection="up" parallaxIntensity={40} enableSpray sprayDirection="left" sprayIntensity="medium">
+        <CinematicReveal glowColor="red" maskDirection="up" parallaxIntensity={40}>
           <section className="scroll-snap-section-auto cinematic-section">
             <AboutSection />
           </section>
         </CinematicReveal>
 
-        <CinematicReveal glowColor="blue" maskDirection="left" parallaxIntensity={50} enableSpray sprayDirection="right" sprayIntensity="medium">
+        <CinematicReveal glowColor="blue" maskDirection="left" parallaxIntensity={50}>
           <section className="scroll-snap-section-auto cinematic-section">
             <DivisionsSection />
           </section>
         </CinematicReveal>
 
-        <CinematicReveal glowColor="orange" maskDirection="up" parallaxIntensity={60} enableSpray sprayDirection="left" sprayIntensity="subtle">
+        <CinematicReveal glowColor="orange" maskDirection="up" parallaxIntensity={60}>
           <section className="scroll-snap-section-auto cinematic-section">
             <ProjectsSection />
           </section>
         </CinematicReveal>
 
-        <CinematicReveal glowColor="white" maskDirection="right" parallaxIntensity={35} enableSpray sprayDirection="right" sprayIntensity="subtle">
+        <CinematicReveal glowColor="white" maskDirection="right" parallaxIntensity={35}>
           <section className="scroll-snap-section-auto cinematic-section">
             <ProcessSection />
           </section>
         </CinematicReveal>
 
-        <CinematicReveal glowColor="green" maskDirection="up" parallaxIntensity={45} enableSpray sprayDirection="left" sprayIntensity="medium">
+        <CinematicReveal glowColor="green" maskDirection="up" parallaxIntensity={45}>
           <section className="scroll-snap-section-auto cinematic-section">
             <WhyHoxSection />
           </section>
         </CinematicReveal>
 
-        <CinematicReveal glowColor="red" maskDirection="left" parallaxIntensity={30} enableSpray sprayDirection="right" sprayIntensity="subtle">
+        <CinematicReveal glowColor="red" maskDirection="left" parallaxIntensity={30}>
           <section className="scroll-snap-section-auto cinematic-section">
             <CertificationsSection />
           </section>
@@ -63,7 +63,7 @@ const Index = () => {
           </section>
         </CinematicReveal>
 
-        <CinematicReveal glowColor="red" maskDirection="up" parallaxIntensity={40} enableSpray sprayDirection="both" sprayIntensity="intense">
+        <CinematicReveal glowColor="red" maskDirection="up" parallaxIntensity={40}>
           <section className="scroll-snap-section-auto cinematic-section">
             <ContactCTA />
           </section>
