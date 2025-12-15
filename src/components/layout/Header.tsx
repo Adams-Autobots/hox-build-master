@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const divisions = [
@@ -61,139 +60,91 @@ export function Header() {
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navItems.map((item) => (
-              <div key={item.name} className="relative">
-                {item.hasDropdown ? (
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setIsDivisionsOpen(true)}
-                    onMouseLeave={() => setIsDivisionsOpen(false)}
-                  >
-                    <button
-                      className={cn(
-                        'flex items-center gap-1 text-sm font-medium tracking-wide transition-colors duration-300 hox-brand',
-                        location.pathname.includes('/divisions')
-                          ? 'text-primary'
-                          : 'text-muted-foreground hover:text-foreground'
-                      )}
-                    >
-                      {item.name}
-                      <ChevronDown
-                        className={cn(
-                          'w-4 h-4 transition-transform duration-300',
-                          isDivisionsOpen && 'rotate-180'
-                        )}
-                      />
-                    </button>
-
-                    {/* Dropdown */}
-                    <div
-                      className={cn(
-                        'absolute top-full left-0 pt-4 transition-all duration-300',
-                        isDivisionsOpen
-                          ? 'opacity-100 translate-y-0 pointer-events-auto'
-                          : 'opacity-0 -translate-y-2 pointer-events-none'
-                      )}
-                    >
-                      <div className="glass rounded-lg p-2 min-w-[200px]">
-                        {divisions.map((division) => (
-                          <Link
-                            key={division.name}
-                            to={division.path}
-                            className={cn(
-                              'flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium transition-all duration-300 hox-brand',
-                              'hover:bg-foreground/5 group'
-                            )}
-                          >
-                            <span
-                              className={cn(
-                                'w-2 h-2 rounded-full transition-transform duration-300 group-hover:scale-150',
-                                division.color === 'hox-red' && 'bg-hox-red',
-                                division.color === 'hox-blue' && 'bg-hox-blue',
-                                division.color === 'hox-orange' && 'bg-hox-orange',
-                                division.color === 'hox-green' && 'bg-hox-green',
-                                division.color === 'hox-white' && 'bg-hox-white'
-                              )}
-                            />
-                            <span className="text-muted-foreground group-hover:text-foreground">
-                              hox{division.name}.
-                            </span>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <Link
-                    to={item.path}
-                    className={cn(
-                      'relative text-sm font-medium tracking-wide transition-colors duration-300 hox-brand group',
-                      location.pathname === item.path
-                        ? 'text-primary'
-                        : 'text-muted-foreground hover:text-foreground'
-                    )}
-                  >
-                    {item.name}
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full" />
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Button */}
-          <div className="hidden lg:block">
-            <Button variant="hero" size="sm" asChild>
-              <Link to="/contact">request proposal</Link>
-            </Button>
-          </div>
-
-          {/* Mobile Menu Toggle */}
+          {/* Hamburger Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-foreground"
+            className="relative p-2 text-foreground group"
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <div className="flex flex-col items-end gap-1.5 w-7">
+              <span 
+                className={cn(
+                  'h-0.5 bg-foreground transition-all duration-300 origin-right',
+                  isMobileMenuOpen ? 'w-7 rotate-[-45deg] translate-y-[3px]' : 'w-7 group-hover:w-5'
+                )} 
+              />
+              <span 
+                className={cn(
+                  'h-0.5 bg-foreground transition-all duration-300',
+                  isMobileMenuOpen ? 'w-0 opacity-0' : 'w-5 group-hover:w-7'
+                )} 
+              />
+              <span 
+                className={cn(
+                  'h-0.5 bg-foreground transition-all duration-300 origin-right',
+                  isMobileMenuOpen ? 'w-7 rotate-[45deg] -translate-y-[3px]' : 'w-7 group-hover:w-4'
+                )} 
+              />
+            </div>
           </button>
         </nav>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Full-screen Menu Overlay */}
       <div
         className={cn(
-          'lg:hidden fixed inset-0 top-[72px] bg-background/98 backdrop-blur-xl transition-all duration-500 z-40',
+          'fixed inset-0 top-0 bg-background/98 backdrop-blur-xl transition-all duration-500 z-40',
           isMobileMenuOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'
         )}
       >
-        <div className="container mx-auto px-6 py-8">
-          <div className="flex flex-col gap-6">
-            {navItems.map((item) => (
-              <div key={item.name}>
+        <div className="container mx-auto px-6 lg:px-12 pt-32 pb-12 h-full overflow-auto">
+          <div className="flex flex-col gap-2">
+            {navItems.map((item, index) => (
+              <div 
+                key={item.name}
+                className={cn(
+                  'transition-all duration-500',
+                  isMobileMenuOpen 
+                    ? 'opacity-100 translate-x-0' 
+                    : 'opacity-0 -translate-x-8'
+                )}
+                style={{ transitionDelay: isMobileMenuOpen ? `${index * 75}ms` : '0ms' }}
+              >
                 {item.hasDropdown ? (
-                  <div className="space-y-4">
-                    <span className="text-lg font-medium text-muted-foreground hox-brand">
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => setIsDivisionsOpen(!isDivisionsOpen)}
+                      className="flex items-center gap-3 text-4xl md:text-6xl lg:text-7xl font-bold text-muted-foreground hover:text-foreground transition-colors hox-brand"
+                    >
                       {item.name}
-                    </span>
-                    <div className="pl-4 flex flex-col gap-3">
+                      <ChevronDown
+                        className={cn(
+                          'w-8 h-8 transition-transform duration-300',
+                          isDivisionsOpen && 'rotate-180'
+                        )}
+                      />
+                    </button>
+                    <div 
+                      className={cn(
+                        'pl-4 md:pl-8 flex flex-col gap-2 overflow-hidden transition-all duration-500',
+                        isDivisionsOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                      )}
+                    >
                       {divisions.map((division) => (
                         <Link
                           key={division.name}
                           to={division.path}
-                          className="flex items-center gap-3 text-foreground hox-brand"
+                          className="flex items-center gap-4 text-xl md:text-2xl text-muted-foreground hover:text-foreground transition-colors hox-brand group"
                         >
                           <span
                             className={cn(
-                              'w-2 h-2 rounded-full',
+                              'w-3 h-3 rounded-full transition-transform duration-300 group-hover:scale-150',
                               division.color === 'hox-red' && 'bg-hox-red',
                               division.color === 'hox-blue' && 'bg-hox-blue',
                               division.color === 'hox-orange' && 'bg-hox-orange',
-                              division.color === 'hox-green' && 'bg-hox-green',
-                              division.color === 'hox-white' && 'bg-hox-white'
+                              division.color === 'hox-green' && 'bg-hox-green'
                             )}
                           />
                           hox{division.name}.
@@ -205,22 +156,33 @@ export function Header() {
                   <Link
                     to={item.path}
                     className={cn(
-                      'text-lg font-medium transition-colors hox-brand',
+                      'block text-4xl md:text-6xl lg:text-7xl font-bold transition-colors hox-brand group',
                       location.pathname === item.path
                         ? 'text-primary'
-                        : 'text-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
                     )}
                   >
-                    {item.name}
+                    <span className="relative">
+                      {item.name}
+                      <span className="absolute bottom-0 left-0 w-0 h-1 bg-primary transition-all duration-300 group-hover:w-full" />
+                    </span>
                   </Link>
                 )}
               </div>
             ))}
-            <div className="pt-6 border-t border-border">
-              <Button variant="hero" className="w-full" asChild>
-                <Link to="/contact">request proposal</Link>
-              </Button>
-            </div>
+          </div>
+          
+          {/* Contact Info at bottom */}
+          <div 
+            className={cn(
+              'mt-16 pt-8 border-t border-border/30 transition-all duration-700 delay-500',
+              isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
+            )}
+          >
+            <p className="text-muted-foreground text-sm mb-2">get in touch</p>
+            <a href="mailto:hello@hox.ae" className="text-xl md:text-2xl text-foreground hover:text-primary transition-colors">
+              hello@hox.ae
+            </a>
           </div>
         </div>
       </div>
