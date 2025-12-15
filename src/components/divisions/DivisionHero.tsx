@@ -17,7 +17,7 @@ const divisionConfig = {
   exhibitions: {
     color: 'hox-red',
     gradient: 'from-hox-red/20',
-    glow: 'shadow-[0_0_40px_hsl(355_100%_50%/0.6)]',
+    glow: 'shadow-[0_0_40px_hsl(357_85%_52%/0.6)]',
     bg: 'bg-hox-red',
     hover: 'hover:bg-hox-red/90',
   },
