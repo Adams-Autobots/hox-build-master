@@ -9,12 +9,10 @@ import { CertificationsSection } from '@/components/home/CertificationsSection';
 import { ClientMarquee } from '@/components/home/ClientMarquee';
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { CinematicReveal } from '@/components/motion/CinematicReveal';
-import { WorkerSilhouettes } from '@/components/motion/WorkerSilhouettes';
 
 const Index = () => {
   return (
     <Layout>
-      <WorkerSilhouettes />
       {/* Smooth Scroll Snap Container */}
       <div className="scroll-snap-container">
         <section className="scroll-snap-section">
