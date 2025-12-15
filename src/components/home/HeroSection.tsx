@@ -108,26 +108,13 @@ export function HeroSection() {
           {/* Main Headline with Split Text Animation */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] mb-8">
             <span className="block overflow-hidden">
-              <span className="hox-brand inline-flex">
-                <SplitText text="hox" delay={0.2} staggerDelay={0.08} />
-              </span>
-              <motion.span
-                className="text-primary inline-block"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5, duration: 0.3, type: 'spring' }}
-              >
-                .
-              </motion.span>
-            </span>
-            <span className="block overflow-hidden">
               <span className="text-muted-foreground/60">
-                <SplitText text="production" delay={0.4} staggerDelay={0.04} />
+                <SplitText text="production" delay={0.2} staggerDelay={0.04} />
               </span>
             </span>
             <span className="block overflow-hidden">
               <span className="text-muted-foreground/60">
-                <SplitText text="excellence." delay={0.7} staggerDelay={0.04} />
+                <SplitText text="excellence." delay={0.5} staggerDelay={0.04} />
               </span>
             </span>
           </h1>
