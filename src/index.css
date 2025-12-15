@@ -272,3 +272,86 @@
     scroll-behavior: smooth;
   }
 }
+
+/* Cinematic Section Transitions */
+.cinematic-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.cinematic-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 100% at 50% 0%, hsl(var(--primary) / 0.03), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glow accent classes */
+.glow-accent-red {
+  --accent-glow: var(--glow-red);
+  --accent-color: hsl(355 100% 50%);
+}
+
+.glow-accent-blue {
+  --accent-glow: var(--glow-blue);
+  --accent-color: hsl(196 100% 47%);
+}
+
+.glow-accent-orange {
+  --accent-glow: var(--glow-orange);
+  --accent-color: hsl(36 89% 61%);
+}
+
+.glow-accent-green {
+  --accent-glow: var(--glow-green);
+  --accent-color: hsl(87 53% 51%);
+}
+
+/* Animated glow pulse */
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+/* Cinematic text reveal */
+@keyframes text-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+.text-reveal {
+  animation: text-reveal 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+/* Horizontal line grow */
+@keyframes line-reveal {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+.line-reveal {
+  animation: line-reveal 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  transform-origin: left center;
+}
