@@ -1,5 +1,7 @@
 import { useRef, ReactNode } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { SprayReveal } from './SprayReveal';
+import { SplatterShapes } from './SplatterShapes';
 
 interface CinematicRevealProps {
   children: ReactNode;
@@ -8,6 +10,9 @@ interface CinematicRevealProps {
   glowColor?: 'red' | 'blue' | 'orange' | 'green' | 'white';
   maskDirection?: 'up' | 'down' | 'left' | 'right';
   delay?: number;
+  enableSpray?: boolean;
+  sprayDirection?: 'left' | 'right' | 'both' | 'center';
+  sprayIntensity?: 'subtle' | 'medium' | 'intense';
 }
 
 const glowColors = {
@@ -19,7 +24,7 @@ const glowColors = {
 };
 
 const glowBgColors = {
-  red: 'hsl(355 100% 50% / 0.15)',
+  red: 'hsl(357 85% 52% / 0.15)',
   blue: 'hsl(196 100% 47% / 0.15)',
   orange: 'hsl(36 89% 61% / 0.15)',
   green: 'hsl(87 53% 51% / 0.15)',
@@ -33,6 +38,9 @@ export function CinematicReveal({
   glowColor = 'red',
   maskDirection = 'up',
   delay = 0,
+  enableSpray = false,
+  sprayDirection = 'left',
+  sprayIntensity = 'medium',
 }: CinematicRevealProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -82,6 +90,23 @@ export function CinematicReveal({
 
   return (
     <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+      {/* Paint Spray Effect Layer */}
+      {enableSpray && (
+        <>
+          <SprayReveal
+            containerRef={containerRef}
+            color={glowColor}
+            direction={sprayDirection}
+            intensity={sprayIntensity}
+          />
+          <SplatterShapes
+            containerRef={containerRef}
+            color={glowColor}
+            count={3}
+          />
+        </>
+      )}
+
       {/* Background Glow Layer */}
       <motion.div
         className="absolute inset-0 pointer-events-none z-0"
