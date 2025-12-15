@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import heroImage from '@/assets/hero-exhibition.jpg';
 import { SplitText } from './SplitTextHero';
@@ -44,7 +41,7 @@ export function HeroSection() {
       <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px] animate-glow-pulse" style={{ animationDelay: '1.5s' }} />
 
       {/* Bottom Left Content */}
-      <div className="absolute bottom-12 md:bottom-16 left-6 lg:left-12 z-10">
+      <div className="absolute bottom-12 md:bottom-20 left-6 lg:left-12 z-10">
         <h1
           className={cn(
             'text-4xl md:text-6xl lg:text-7xl font-bold leading-[0.95] transition-all duration-700',
@@ -62,17 +59,17 @@ export function HeroSection() {
         {/* Animated Division Words */}
         <div
           className={cn(
-            'mt-4 overflow-hidden transition-all duration-700 delay-300',
+            'mt-6 overflow-hidden transition-all duration-700 delay-300',
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           )}
         >
-          <div className="flex items-center gap-3 text-sm md:text-base text-muted-foreground">
+          <div className="flex items-center gap-4 md:gap-6 text-lg md:text-2xl lg:text-3xl font-medium">
             {heroWords.map((item, index) => (
               <span
                 key={item.word}
                 className={cn(
                   'transition-all duration-500',
-                  index === currentWordIndex ? 'scale-105' : 'opacity-40'
+                  index === currentWordIndex ? 'scale-110' : 'opacity-30'
                 )}
                 style={index === currentWordIndex ? { color: item.color } : undefined}
               >
@@ -81,21 +78,6 @@ export function HeroSection() {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Bottom Right CTA */}
-      <div
-        className={cn(
-          'absolute bottom-12 md:bottom-16 right-6 lg:right-12 z-10 transition-all duration-700 delay-500',
-          isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        )}
-      >
-        <Button variant="hero" size="lg" asChild>
-          <Link to="/work" className="group">
-            explore work
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </Button>
       </div>
     </section>
   );

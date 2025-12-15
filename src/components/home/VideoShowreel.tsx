@@ -130,40 +130,6 @@ export function VideoShowreel({ posterImage }: VideoShowreelProps) {
         }}
       />
 
-      {/* Video progress indicator */}
-      <div className="absolute bottom-8 right-8 z-20 hidden md:flex items-center gap-2">
-        {videoClips.map((clip, index) => (
-          <button
-            key={clip.label}
-            onClick={() => {
-              setIsTransitioning(true);
-              setTimeout(() => {
-                setCurrentIndex(index);
-                setIsTransitioning(false);
-              }, 400);
-            }}
-            className={cn(
-              'group flex items-center gap-2 transition-all duration-300',
-              index === currentIndex ? 'opacity-100' : 'opacity-40 hover:opacity-70'
-            )}
-          >
-            <span
-              className={cn(
-                'h-0.5 bg-foreground/50 transition-all duration-300',
-                index === currentIndex ? 'w-8 bg-primary' : 'w-4 group-hover:w-6'
-              )}
-            />
-            <span
-              className={cn(
-                'text-xs uppercase tracking-wider transition-all duration-300',
-                index === currentIndex ? 'text-primary opacity-100' : 'opacity-0 group-hover:opacity-100'
-              )}
-            >
-              {clip.label}
-            </span>
-          </button>
-        ))}
-      </div>
     </div>
   );
 }
