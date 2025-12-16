@@ -68,7 +68,7 @@ export default function ExhibitionsPage() {
       <DivisionHero
         division="exhibitions"
         tagline="hoxexhibitions."
-        headline="exhibition builds"
+        headline="Exhibition builds"
         highlightText="engineered to perform."
         description="We design and fabricate exhibition stands that capture attention and deliver measurable impact. Structural engineering meets brand storytelling."
         ctaText="Request exhibition proposal"

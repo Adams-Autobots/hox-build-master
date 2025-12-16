@@ -7,7 +7,7 @@ const divisions = [
   {
     name: 'exhibitions',
     fullName: 'hoxexhibitions.',
-    headline: 'exhibition builds with impact.',
+    headline: 'Exhibition builds with impact.',
     description: 'From exhibition stands to large-scale pavilions, we engineer spaces that attract, engage, and convert.',
     path: '/divisions/exhibitions',
     colorClass: 'division-exhibitions',
@@ -17,7 +17,7 @@ const divisions = [
   {
     name: 'events',
     fullName: 'hoxevents.',
-    headline: 'events that come alive.',
+    headline: 'Events that come alive.',
     description: 'Stage design, live experiences, product launches — we build the physical worlds your audience remembers.',
     path: '/divisions/events',
     colorClass: 'division-events',
@@ -27,7 +27,7 @@ const divisions = [
   {
     name: 'retail',
     fullName: 'hoxretail.',
-    headline: 'retail fabrication, redefined.',
+    headline: 'Retail fabrication, redefined.',
     description: 'POP displays, mall activations, kiosks, store environments — crafted with precision and durability.',
     path: '/divisions/retail',
     colorClass: 'division-retail',
@@ -37,7 +37,7 @@ const divisions = [
   {
     name: 'interiors',
     fullName: 'hoxinteriors.',
-    headline: 'interiors that elevate space.',
+    headline: 'Interiors that elevate space.',
     description: 'Commercial, residential, and hospitality fit-outs with in-house joinery and turnkey delivery.',
     path: '/divisions/interiors',
     colorClass: 'division-interiors',

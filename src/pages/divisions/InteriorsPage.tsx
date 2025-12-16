@@ -68,7 +68,7 @@ export default function InteriorsPage() {
       <DivisionHero
         division="interiors"
         tagline="hoxinteriors."
-        headline="interiors crafted"
+        headline="Interiors crafted"
         highlightText="with precision."
         description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
         ctaText="Request interiors proposal"
