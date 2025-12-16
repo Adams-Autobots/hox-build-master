@@ -50,13 +50,23 @@ export default function ContactPage() {
               </p>
 
               <div className="space-y-6 mb-12">
-                <a href="tel:+97143456789" className="flex items-center gap-4 text-foreground hover:text-primary transition-colors">
+                <a href="tel:+97143477519" className="flex items-center gap-4 text-foreground hover:text-primary transition-colors">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                     <Phone className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Phone</p>
-                    <p className="font-medium">+971 4 345 6789</p>
+                    <p className="text-sm text-muted-foreground">Landline</p>
+                    <p className="font-medium">+971 4 3477519</p>
+                  </div>
+                </a>
+
+                <a href="tel:+971588950056" className="flex items-center gap-4 text-foreground hover:text-primary transition-colors">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Phone className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Mobile / WhatsApp</p>
+                    <p className="font-medium">+971 58 895 0056</p>
                   </div>
                 </a>
 
@@ -82,7 +92,7 @@ export default function ContactPage() {
               </div>
 
               <Button variant="outline" size="lg" asChild>
-                <a href="https://wa.me/97143456789" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/971588950056" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="w-4 h-4" />
                   WhatsApp Us
                 </a>

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 export function WhatsAppButton() {
   return (
     <motion.a
-      href="https://wa.me/97143456789"
+      href="https://wa.me/971588950056"
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
