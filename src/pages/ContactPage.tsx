@@ -180,14 +180,14 @@ export default function ContactPage() {
           <h2 className="text-2xl font-bold mb-6 hox-brand">find us</h2>
           <div className="rounded-lg overflow-hidden border border-border aspect-video">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.178864695387!2d55.36063827538576!3d25.187502577719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f682b8e0d3c4f%3A0x7c1234567890abcd!2sGaladari%20Group%20of%20Warehouses%20%232!5e0!3m2!1sen!2sae!4v1702657200000!5m2!1sen!2sae"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1!2d55.3632!3d25.1868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f69d46f95cfc7%3A0x5e3d49c3eae31a92!2sHOUSE%20OF%20EXHIBITIONS!5e0!3m2!1sen!2sae!4v1702657200000!5m2!1sen!2sae"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="HOX Location - Galadari Group of Warehouses, Ras Al Khor Industrial Area 2, Dubai"
+              title="HOUSE OF EXHIBITIONS - Ras Al Khor Industrial Area 2, Dubai"
             />
           </div>
         </div>
