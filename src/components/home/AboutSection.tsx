@@ -1,18 +1,37 @@
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { AnimatedStatsCounter } from './AnimatedStatsCounter';
 
 export function AboutSection() {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
+  
+  // Track scroll progress relative to this section
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start start"]
+  });
+  
+  // Background opacity: starts at 10%, solidifies to 100%
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.4, 0.8], [0.1, 0.5, 1]);
+  const backgroundOpacity = useSpring(rawOpacity, { stiffness: 100, damping: 30 });
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-card relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden">
+      {/* Scroll-responsive background that solidifies */}
+      <motion.div 
+        className="absolute inset-0 bg-card"
+        style={{ opacity: backgroundOpacity }}
+      />
+      
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.02]">
+      <div className="absolute inset-0 opacity-[0.02] z-[1]">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/20 to-transparent" />
       </div>
 
-      <div className="container mx-auto px-6 lg:px-12 relative">
+      <div ref={ref} className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Content */}
           <div>
