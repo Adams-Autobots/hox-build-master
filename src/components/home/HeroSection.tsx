@@ -1,6 +1,6 @@
 import { useEffect, useState, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -132,18 +132,6 @@ export function HeroSection() {
                   className="w-full h-full object-cover"
                 />
                 
-                {/* Play icon overlay */}
-                <div className={cn(
-                  'absolute inset-0 flex items-center justify-center transition-opacity duration-300',
-                  isHovered ? 'opacity-100' : 'opacity-60'
-                )}>
-                  <div className={cn(
-                    'w-16 h-16 md:w-20 md:h-20 rounded-full bg-background/20 backdrop-blur-md border border-foreground/20 flex items-center justify-center transition-all duration-300',
-                    isHovered && 'scale-110 bg-primary/30 border-primary/40'
-                  )}>
-                    <Play className="w-6 h-6 md:w-8 md:h-8 text-foreground fill-foreground/80 ml-1" />
-                  </div>
-                </div>
 
                 {/* Corner accent */}
                 <div className="absolute top-4 right-4 w-3 h-3 rounded-full bg-primary animate-pulse" />
