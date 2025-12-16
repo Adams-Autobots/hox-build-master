@@ -36,6 +36,8 @@ export function HeroSection() {
         />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/70" />
+        {/* Subtle red brand tint */}
+        <div className="absolute inset-0 bg-[hsl(var(--hox-red)/0.08)]" />
         {/* Gradient overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
