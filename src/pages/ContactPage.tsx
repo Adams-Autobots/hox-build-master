@@ -70,13 +70,13 @@ export default function ContactPage() {
                   </div>
                 </a>
 
-                <a href="mailto:hello@hox.ae" className="flex items-center gap-4 text-foreground hover:text-primary transition-colors">
+                <a href="mailto:info@hox.ae" className="flex items-center gap-4 text-foreground hover:text-primary transition-colors">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                     <Mail className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">hello@hox.ae</p>
+                    <p className="font-medium">info@hox.ae</p>
                   </div>
                 </a>
 
