@@ -53,9 +53,10 @@ export function WhyHoxSection() {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
             >
-              <span className="hox-brand">the power of building</span>
+              <span className="hox-brand">The power of </span>
+              <span className="text-primary">Building</span>
               <br />
-              <span className="text-primary">in-house.</span>
+              <span className="text-muted-foreground/60">in-house.</span>
             </h2>
 
             <p

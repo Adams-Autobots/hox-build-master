@@ -80,7 +80,8 @@ export function LeadershipSection() {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
             >
-              The people behind the builds.
+              <span className="hox-brand">The people behind the </span>
+              <span className="text-primary">Builds.</span>
             </h2>
             
             <p

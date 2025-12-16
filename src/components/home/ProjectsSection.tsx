@@ -81,7 +81,8 @@ export function ProjectsSection() {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
             >
-              <span className="hox-brand">Projects that define us.</span>
+              <span className="hox-brand">Projects that </span>
+              <span className="text-primary">Define us.</span>
             </h2>
           </div>
 

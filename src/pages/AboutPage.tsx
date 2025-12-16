@@ -25,7 +25,8 @@ export default function AboutPage() {
             </span>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
-              <span className="hox-brand">production excellence</span>
+              <span className="hox-brand">Production </span>
+              <span className="text-primary">Excellence</span>
               <br />
               <span className="text-muted-foreground/60">since 2008.</span>
             </h1>
@@ -43,7 +44,8 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
             <div>
               <h2 className={cn('text-4xl md:text-5xl font-bold leading-tight mb-8 transition-all duration-700', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')}>
-                <span className="hox-brand">our story.</span>
+                <span className="hox-brand">Our </span>
+                <span className="text-primary">Story.</span>
               </h2>
 
               <div className={cn('space-y-6 text-lg text-muted-foreground leading-relaxed transition-all duration-700 delay-150', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')}>

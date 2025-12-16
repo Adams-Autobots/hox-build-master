@@ -32,7 +32,8 @@ export function AboutSection() {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
             >
-              <span className="hox-brand">built to deliver.</span>
+              <span className="hox-brand">Built to </span>
+              <span className="text-primary">Deliver.</span>
               <br />
               <span className="text-muted-foreground/60">engineered to impress.</span>
             </h2>

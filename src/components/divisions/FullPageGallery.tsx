@@ -116,7 +116,8 @@ export function FullPageGallery({ division, images }: FullPageGalleryProps) {
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 )}
               >
-                See our work in action.
+                <span className="hox-brand">See our work in </span>
+                <span className={divisionColors[division]}>Action.</span>
               </h2>
             </div>
 

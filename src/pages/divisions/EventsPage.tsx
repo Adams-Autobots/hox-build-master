@@ -69,7 +69,7 @@ export default function EventsPage() {
         division="events"
         tagline="hoxevents."
         headline="Events built"
-        highlightText="to be remembered."
+        highlightText="To be remembered."
         description="From corporate galas to product launches, we create immersive event experiences that leave lasting impressions. Precision production meets creative excellence."
         ctaText="Request event proposal"
       />

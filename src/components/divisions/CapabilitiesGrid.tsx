@@ -46,7 +46,7 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
             Capabilities
             <span className="w-8 h-px bg-current" />
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold hox-brand">What we deliver.</h2>
+          <h2 className="text-4xl md:text-5xl font-bold"><span className="hox-brand">What we </span><span className={iconColor}>Deliver.</span></h2>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">

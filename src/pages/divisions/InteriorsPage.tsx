@@ -69,7 +69,7 @@ export default function InteriorsPage() {
         division="interiors"
         tagline="hoxinteriors."
         headline="Interiors crafted"
-        highlightText="with precision."
+        highlightText="With precision."
         description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
         ctaText="Request interiors proposal"
       />
