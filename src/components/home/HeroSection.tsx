@@ -87,10 +87,10 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <Link 
-              to="/work" 
+              to="/projects"
               className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground/10 backdrop-blur-sm border border-foreground/20 text-foreground font-medium transition-all duration-300 hover:bg-foreground hover:text-background hover:font-bold"
             >
-              explore our work
+              Explore our work
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </motion.div>

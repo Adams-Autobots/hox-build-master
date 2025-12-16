@@ -71,7 +71,7 @@ export default function InteriorsPage() {
         headline="interiors crafted"
         highlightText="with precision."
         description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
-        ctaText="request interiors proposal"
+        ctaText="Request interiors proposal"
       />
       
       <CapabilitiesGrid

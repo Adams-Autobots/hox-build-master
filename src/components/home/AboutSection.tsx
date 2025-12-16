@@ -18,12 +18,12 @@ export function AboutSection() {
           <div>
             <span
               className={cn(
-                'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary uppercase mb-6 transition-all duration-700',
+                'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               )}
             >
               <span className="w-8 h-px bg-primary" />
-              who we are
+              Who we are
             </span>
 
             <h2

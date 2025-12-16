@@ -71,7 +71,7 @@ export default function ExhibitionsPage() {
         headline="exhibition builds"
         highlightText="engineered to perform."
         description="We design and fabricate exhibition stands that capture attention and deliver measurable impact. Structural engineering meets brand storytelling."
-        ctaText="request exhibition proposal"
+        ctaText="Request exhibition proposal"
       />
       
       <CapabilitiesGrid

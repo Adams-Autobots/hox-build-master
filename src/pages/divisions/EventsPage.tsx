@@ -71,7 +71,7 @@ export default function EventsPage() {
         headline="events built"
         highlightText="to be remembered."
         description="From corporate galas to product launches, we create immersive event experiences that leave lasting impressions. Precision production meets creative excellence."
-        ctaText="request event proposal"
+        ctaText="Request event proposal"
       />
       
       <CapabilitiesGrid

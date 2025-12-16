@@ -30,12 +30,12 @@ export function ClientsSection() {
         <div className="text-center mb-16 lg:mb-24">
           <span
             className={cn(
-              'inline-flex items-center justify-center gap-2 text-sm font-medium tracking-widest text-primary uppercase mb-6 transition-all duration-700',
+              'inline-flex items-center justify-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
             <span className="w-8 h-px bg-primary" />
-            trusted across the uae
+            Trusted across the UAE
             <span className="w-8 h-px bg-primary" />
           </span>
 
@@ -91,8 +91,8 @@ export function ClientsSection() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
         >
-          <p className="text-center text-sm text-muted-foreground uppercase tracking-wider mb-8">
-            trusted by leading brands
+          <p className="text-center text-sm text-muted-foreground tracking-wider mb-8">
+            Trusted by leading brands
           </p>
           <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-12">
             {clients.map((client) => (
