@@ -43,7 +43,7 @@ export function FeaturedCaseStudies({ division, caseStudies }: FeaturedCaseStudi
             <h2 className="text-4xl md:text-5xl font-bold hox-brand">case studies.</h2>
           </div>
           <Link
-            to="/case-studies"
+            to="/work"
             className={cn('hidden md:flex items-center gap-2 text-sm font-medium transition-colors', colorClasses.split(' ')[0])}
           >
             view all work
@@ -61,7 +61,7 @@ export function FeaturedCaseStudies({ division, caseStudies }: FeaturedCaseStudi
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               <Link
-                to={`/case-studies/${study.id}`}
+                to={`/work`}
                 className={cn(
                   'block group relative aspect-[4/3] rounded-lg overflow-hidden border transition-all duration-500',
                   colorClasses
@@ -90,7 +90,7 @@ export function FeaturedCaseStudies({ division, caseStudies }: FeaturedCaseStudi
         </div>
 
         <Link
-          to="/case-studies"
+          to="/work"
           className={cn('md:hidden flex items-center justify-center gap-2 mt-8 text-sm font-medium', colorClasses.split(' ')[0])}
         >
           view all work

@@ -11,7 +11,7 @@ const divisions = [
 const quickLinks = [
   { name: 'work', path: '/work' },
   { name: 'about', path: '/about' },
-  { name: 'case studies', path: '/case-studies' },
+  { name: 'blog', path: '/blog' },
   { name: 'contact', path: '/contact' },
 ];
 
