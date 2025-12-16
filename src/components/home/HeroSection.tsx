@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { ArrowRight } from 'lucide-react';
 import heroVideo from '@/assets/hero-showreel.mp4';
 
 const heroWords = [
@@ -72,10 +74,24 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-lg"
+            className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-lg mb-10"
           >
             Dubai's premier production powerhouse delivering world-class exhibitions, events, retail environments, and interior solutions with precision engineering.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <Link 
+              to="/work" 
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground/10 backdrop-blur-sm border border-foreground/20 text-foreground font-medium transition-all duration-300 hover:bg-foreground hover:text-background hover:font-bold"
+            >
+              explore our work
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
     </section>
