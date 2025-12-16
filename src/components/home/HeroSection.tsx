@@ -32,15 +32,15 @@ export function HeroSection() {
           muted
           loop
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover scale-x-[-1]"
         />
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-background/40" />
+        <div className="absolute inset-0 bg-background/50" />
         {/* Subtle red brand tint */}
-        <div className="absolute inset-0 bg-[hsl(var(--hox-red)/0.05)]" />
+        <div className="absolute inset-0 bg-[hsl(var(--hox-red)/0.06)]" />
         {/* Gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-background/20 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/25" />
       </div>
 
       {/* Content */}
