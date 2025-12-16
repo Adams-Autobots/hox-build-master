@@ -39,9 +39,10 @@ export default function ContactPage() {
               </span>
 
               <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-8">
-                <span className="hox-brand">let's build</span>
+                <span className="hox-brand">Let's </span>
+                <span className="text-primary">Build</span>
                 <br />
-                <span className="text-primary">together.</span>
+                <span className="text-muted-foreground/60">together.</span>
               </h1>
 
               <p className="text-xl text-muted-foreground mb-12 leading-relaxed">

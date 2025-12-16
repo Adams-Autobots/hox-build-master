@@ -82,7 +82,8 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            From concept to completion.
+            <span className="hox-brand">From concept to </span>
+            <span className={divisionColors[division]}>Completion.</span>
           </h2>
         </div>
 

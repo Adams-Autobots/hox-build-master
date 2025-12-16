@@ -75,7 +75,8 @@ export function CertificationsSection() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            <span className="hox-brand">certified. recognized. trusted.</span>
+            <span className="hox-brand">Certified. recognized. </span>
+            <span className="text-primary">Trusted.</span>
           </h2>
 
           <p

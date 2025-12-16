@@ -33,9 +33,10 @@ export function ContactCTA() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            <span className="hox-brand">ready to build something</span>
+            <span className="hox-brand">Ready to build </span>
+            <span className="text-primary">Something</span>
             <br />
-            <span className="text-primary">exceptional?</span>
+            <span className="text-muted-foreground/60">exceptional?</span>
           </h2>
 
           <p

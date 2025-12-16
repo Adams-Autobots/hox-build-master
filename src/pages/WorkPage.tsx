@@ -29,7 +29,8 @@ export default function WorkPage() {
       <section className="pt-32 pb-16 lg:pb-24">
         <div className="container mx-auto px-6 lg:px-12">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
-            <span className="hox-brand">Our projects.</span>
+            <span className="hox-brand">Our </span>
+            <span className="text-primary">Projects.</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl">
             A selection of projects that showcase our capabilities across all five divisions.

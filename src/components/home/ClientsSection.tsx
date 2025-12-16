@@ -45,7 +45,8 @@ export function ClientsSection() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            <span className="hox-brand">our clients speak.</span>
+            <span className="hox-brand">Our clients </span>
+            <span className="text-primary">Speak.</span>
           </h2>
         </div>
 

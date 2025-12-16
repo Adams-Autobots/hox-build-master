@@ -91,7 +91,8 @@ export function DivisionFAQ({ division }: DivisionFAQProps) {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
             >
-              Frequently asked questions.
+              <span className="hox-brand">Frequently asked </span>
+              <span className={divisionColors[division]}>Questions.</span>
             </h2>
           </div>
 

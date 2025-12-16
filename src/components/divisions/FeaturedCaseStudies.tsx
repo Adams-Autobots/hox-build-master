@@ -40,7 +40,7 @@ export function FeaturedCaseStudies({ division, caseStudies }: FeaturedCaseStudi
               <span className={cn('w-8 h-px', `bg-${division === 'exhibitions' ? 'hox-red' : division === 'events' ? 'hox-blue' : division === 'retail' ? 'hox-orange' : division === 'interiors' ? 'hox-green' : 'foreground'}`)} />
               Featured work
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold hox-brand">Case studies.</h2>
+            <h2 className="text-4xl md:text-5xl font-bold"><span className="hox-brand">Case </span><span className={colorClasses.split(' ')[0]}>Studies.</span></h2>
           </div>
           <Link
             to="/projects"

@@ -69,7 +69,7 @@ export default function ExhibitionsPage() {
         division="exhibitions"
         tagline="hoxexhibitions."
         headline="Exhibition builds"
-        highlightText="engineered to perform."
+        highlightText="Engineered to perform."
         description="We design and fabricate exhibition stands that capture attention and deliver measurable impact. Structural engineering meets brand storytelling."
         ctaText="Request exhibition proposal"
       />
