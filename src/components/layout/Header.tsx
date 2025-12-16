@@ -14,7 +14,6 @@ const navItems = [
   { name: 'work', path: '/work' },
   { name: 'divisions', path: '/divisions', hasDropdown: true },
   { name: 'about', path: '/about' },
-  { name: 'case studies', path: '/case-studies' },
   { name: 'contact', path: '/contact' },
 ];
 
