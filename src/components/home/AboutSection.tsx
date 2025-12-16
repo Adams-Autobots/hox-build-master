@@ -14,8 +14,8 @@ export function AboutSection() {
     offset: ["start end", "start start"]
   });
   
-  // Background opacity: starts fully transparent, solidifies slowly
-  const rawOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [0, 0.3, 1]);
+  // Background opacity: stays transparent most of scroll, solidifies only at end
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.85, 1], [0, 0.15, 1]);
   const backgroundOpacity = useSpring(rawOpacity, { stiffness: 100, damping: 30 });
 
   return (
