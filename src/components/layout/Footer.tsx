@@ -6,7 +6,6 @@ const divisions = [
   { name: 'hoxevents.', path: '/divisions/events' },
   { name: 'hoxretail.', path: '/divisions/retail' },
   { name: 'hoxinteriors.', path: '/divisions/interiors' },
-  { name: 'hoxcreative.', path: '/divisions/creative' },
 ];
 
 const quickLinks = [

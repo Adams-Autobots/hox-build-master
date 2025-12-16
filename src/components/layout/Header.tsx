@@ -271,8 +271,8 @@ function MobileNav() {
             )}
           >
             <p className="text-muted-foreground text-sm mb-2">get in touch</p>
-            <a href="mailto:hello@hox.ae" className="text-xl text-foreground hover:text-primary transition-colors">
-              hello@hox.ae
+            <a href="mailto:info@hox.ae" className="text-xl text-foreground hover:text-primary transition-colors">
+              info@hox.ae
             </a>
           </div>
         </div>

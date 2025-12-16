@@ -133,7 +133,6 @@ export default function ContactPage() {
                     <option value="events">Events</option>
                     <option value="retail">Retail</option>
                     <option value="interiors">Interiors</option>
-                    <option value="creative">Creative</option>
                     <option value="multiple">Multiple Divisions</option>
                   </select>
                 </div>
