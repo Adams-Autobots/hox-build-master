@@ -52,7 +52,7 @@ export function HeroSection() {
           className="max-w-3xl"
         >
           <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[0.95] mb-6">
-            <span className="block text-foreground">production</span>
+            <span className="block text-foreground">Production</span>
             <span className="block text-foreground">excellence.</span>
           </h1>
 
