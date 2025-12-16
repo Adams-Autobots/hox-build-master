@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
-import heroVideo from '@/assets/hero-showreel.mp4';
+import heroVideo from '@/assets/hero-video.mp4';
 
 const heroWords = [
   { word: 'exhibitions', color: 'hsl(var(--hox-red))' },
@@ -35,10 +35,10 @@ export function HeroSection() {
           className="w-full h-full object-cover"
         />
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-background/60" />
+        <div className="absolute inset-0 bg-background/70" />
         {/* Gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
       </div>
 
       {/* Content */}
