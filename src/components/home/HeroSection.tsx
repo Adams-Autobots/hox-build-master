@@ -18,9 +18,6 @@ export function HeroSection() {
   
   // Video fades out as user scrolls (starts at 60% of viewport, fully faded at 120%)
   const videoOpacity = useTransform(scrollY, [0, window.innerHeight * 0.6, window.innerHeight * 1.2], [1, 1, 0]);
-  
-  // Subtle parallax - video moves at 30% of scroll speed for depth effect
-  const videoY = useTransform(scrollY, [0, window.innerHeight], [0, window.innerHeight * 0.3]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,10 +28,10 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-visible">
-      {/* Fixed Background Video that bleeds into next section */}
+      {/* Fixed Background Video - stays constant while content scrolls */}
       <motion.div 
-        className="fixed inset-0 w-full h-[130vh] pointer-events-none"
-        style={{ opacity: videoOpacity, y: videoY, zIndex: 0 }}
+        className="fixed inset-0 w-full h-screen pointer-events-none"
+        style={{ opacity: videoOpacity, zIndex: 0 }}
       >
         <video
           src={heroVideo}
