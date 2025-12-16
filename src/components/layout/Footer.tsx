@@ -128,7 +128,8 @@ export function Footer() {
                 <div className="flex items-start gap-3 text-sm text-muted-foreground">
                   <MapPin className="w-4 h-4 text-primary mt-0.5" />
                   <span>
-                    Al Quoz Industrial Area 3<br />
+                    Galadari Group of Warehouses #2<br />
+                    Ras Al Khor Industrial Area 2<br />
                     Dubai, UAE
                   </span>
                 </div>
