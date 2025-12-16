@@ -110,7 +110,7 @@
 @layer components {
   /* Brand Text Styling */
   .hox-brand {
-    @apply lowercase tracking-tight;
+    @apply tracking-tight;
   }
 
   /* Division Color Classes */
