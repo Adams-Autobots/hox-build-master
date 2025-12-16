@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageCircle, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Instagram, Linkedin } from 'lucide-react';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -92,13 +92,6 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-center gap-4">
-                <Button variant="outline" size="lg" asChild>
-                  <a href="https://wa.me/971588950056" target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="w-4 h-4" />
-                    WhatsApp Us
-                  </a>
-                </Button>
-
                 <a
                   href="https://www.instagram.com/hox_creativeproductions/"
                   target="_blank"
