@@ -86,7 +86,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Location</p>
-                    <p className="font-medium">Al Quoz Industrial Area 3<br />Dubai, UAE</p>
+                    <p className="font-medium">Galadari Group of Warehouses #2<br />Ras Al Khor Industrial Area 2<br />Dubai, UAE</p>
                   </div>
                 </div>
               </div>
