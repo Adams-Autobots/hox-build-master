@@ -6,6 +6,7 @@ import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { Store, Palette, Package, Wrench } from 'lucide-react';
+import heroRetail from '@/assets/hero-retail.jpg';
 
 const caseStudies = [
   {
@@ -72,6 +73,7 @@ export default function RetailPage() {
         highlightText="That convert."
         description="We build retail environments that drive foot traffic and conversions. From flagship stores to pop-up activations, every detail is designed to sell."
         ctaText="Request retail proposal"
+        heroImage={heroRetail}
       />
       
       <CapabilitiesGrid

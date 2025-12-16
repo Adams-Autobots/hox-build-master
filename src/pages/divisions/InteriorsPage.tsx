@@ -6,6 +6,7 @@ import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { Building2, Sofa, Ruler, Gem } from 'lucide-react';
+import heroInteriors from '@/assets/hero-interiors.jpg';
 
 const caseStudies = [
   {
@@ -72,6 +73,7 @@ export default function InteriorsPage() {
         highlightText="With precision."
         description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
         ctaText="Request interiors proposal"
+        heroImage={heroInteriors}
       />
       
       <CapabilitiesGrid
