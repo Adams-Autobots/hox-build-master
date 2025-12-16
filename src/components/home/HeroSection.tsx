@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import heroVideo from '@/assets/hero-showreel.mp4';
+import { FloatingShapes } from './FloatingShapes';
 
 const heroWords = [
   { word: 'exhibitions', color: 'hsl(var(--hox-red))' },
@@ -32,6 +33,11 @@ export function HeroSection() {
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] translate-x-1/3 translate-y-1/3" />
         <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-muted/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
       </div>
+
+      {/* 3D Floating Shapes */}
+      <Suspense fallback={null}>
+        <FloatingShapes />
+      </Suspense>
 
       {/* Subtle grid overlay */}
       <div className="absolute inset-0 opacity-[0.02]">
