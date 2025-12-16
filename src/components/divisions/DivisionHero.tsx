@@ -11,6 +11,7 @@ interface DivisionHeroProps {
   highlightText: string;
   description: string;
   ctaText: string;
+  heroImage?: string;
 }
 
 const divisionConfig = {
@@ -51,18 +52,34 @@ export function DivisionHero({
   highlightText,
   description,
   ctaText,
+  heroImage,
 }: DivisionHeroProps) {
   const config = divisionConfig[division];
 
   return (
     <section className="relative min-h-[80vh] flex items-center pt-32 pb-24 overflow-hidden">
+      {/* Hero Background Image */}
+      {heroImage && (
+        <div className="absolute inset-0 z-0">
+          <img
+            src={heroImage}
+            alt={`${division} hero`}
+            className="w-full h-full object-cover"
+          />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-background/70" />
+          {/* Color tint overlay */}
+          <div className={cn('absolute inset-0 opacity-20', config.bg)} />
+        </div>
+      )}
+
       {/* Background Gradient */}
-      <div className={cn('absolute inset-0 bg-gradient-to-br via-transparent to-transparent', config.gradient)} />
+      <div className={cn('absolute inset-0 bg-gradient-to-br via-transparent to-transparent z-[1]', config.gradient)} />
       
       {/* Floating Glow Orb */}
       <motion.div
         className={cn(
-          'absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full blur-[180px] opacity-30',
+          'absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full blur-[180px] opacity-30 z-[1]',
           config.bg
         )}
         animate={{
@@ -76,7 +93,7 @@ export function DivisionHero({
         }}
       />
 
-      <div className="container mx-auto px-6 lg:px-12 relative">
+      <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="max-w-4xl">
           {/* Division Badge */}
           <motion.div

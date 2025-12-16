@@ -6,6 +6,7 @@ import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { Boxes, Hammer, Lightbulb, Truck } from 'lucide-react';
+import heroExhibitions from '@/assets/hero-exhibitions.jpg';
 
 const caseStudies = [
   {
@@ -72,6 +73,7 @@ export default function ExhibitionsPage() {
         highlightText="Engineered to perform."
         description="We design and fabricate exhibition stands that capture attention and deliver measurable impact. Structural engineering meets brand storytelling."
         ctaText="Request exhibition proposal"
+        heroImage={heroExhibitions}
       />
       
       <CapabilitiesGrid
