@@ -180,22 +180,6 @@ export function CinematicReveal({
         </motion.div>
       </motion.div>
 
-      {/* Edge Glow Lines */}
-      <motion.div
-        className="absolute top-0 left-0 right-0 h-px pointer-events-none z-20"
-        style={{
-          opacity: glowOpacity,
-          background: `linear-gradient(90deg, transparent, hsl(var(--${glowColor === 'white' ? 'foreground' : `hox-${glowColor}`}) / 0.5), transparent)`,
-          boxShadow: glowColors[glowColor],
-        }}
-      />
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-px pointer-events-none z-20"
-        style={{
-          opacity: glowOpacity,
-          background: `linear-gradient(90deg, transparent, hsl(var(--${glowColor === 'white' ? 'foreground' : `hox-${glowColor}`}) / 0.3), transparent)`,
-        }}
-      />
     </div>
   );
 }
