@@ -9,9 +9,9 @@ const divisions = [
 ];
 
 const quickLinks = [
-  { name: 'work', path: '/work' },
   { name: 'about', path: '/about' },
-  { name: 'blog', path: '/blog' },
+  { name: 'divisions', path: '/divisions/exhibitions' },
+  { name: 'projects', path: '/projects' },
   { name: 'contact', path: '/contact' },
 ];
 
