@@ -20,7 +20,7 @@ const Index = () => {
         </section>
 
         <CinematicReveal glowColor="red" maskDirection="up" parallaxIntensity={40}>
-          <section className="scroll-snap-section-auto cinematic-section">
+          <section className="scroll-snap-section-auto cinematic-section relative z-10">
             <AboutSection />
           </section>
         </CinematicReveal>

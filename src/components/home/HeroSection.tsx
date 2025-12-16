@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import heroVideo from '@/assets/hero-video.mp4';
@@ -14,6 +14,10 @@ const heroWords = [
 
 export function HeroSection() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const { scrollY } = useScroll();
+  
+  // Video fades out as user scrolls (starts at 60% of viewport, fully faded at 120%)
+  const videoOpacity = useTransform(scrollY, [0, window.innerHeight * 0.6, window.innerHeight * 1.2], [1, 1, 0]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,9 +27,12 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Full-screen Background Video */}
-      <div className="absolute inset-0">
+    <section className="relative min-h-screen flex items-center overflow-visible">
+      {/* Fixed Background Video that bleeds into next section */}
+      <motion.div 
+        className="fixed inset-0 w-full h-[130vh] pointer-events-none"
+        style={{ opacity: videoOpacity, zIndex: 0 }}
+      >
         <video
           src={heroVideo}
           autoPlay
@@ -41,7 +48,9 @@ export function HeroSection() {
         {/* Gradient overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/30 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/25" />
-      </div>
+        {/* Bottom fade gradient for smooth bleed transition */}
+        <div className="absolute bottom-0 left-0 right-0 h-[40vh] bg-gradient-to-t from-background via-background/60 to-transparent" />
+      </motion.div>
 
       {/* Content */}
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
