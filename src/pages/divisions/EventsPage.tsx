@@ -68,7 +68,7 @@ export default function EventsPage() {
       <DivisionHero
         division="events"
         tagline="hoxevents."
-        headline="events built"
+        headline="Events built"
         highlightText="to be remembered."
         description="From corporate galas to product launches, we create immersive event experiences that leave lasting impressions. Precision production meets creative excellence."
         ctaText="Request event proposal"

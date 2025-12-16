@@ -68,7 +68,7 @@ export default function RetailPage() {
       <DivisionHero
         division="retail"
         tagline="hoxretail."
-        headline="retail spaces"
+        headline="Retail spaces"
         highlightText="that convert."
         description="We build retail environments that drive foot traffic and conversions. From flagship stores to pop-up activations, every detail is designed to sell."
         ctaText="Request retail proposal"
