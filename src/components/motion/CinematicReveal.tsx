@@ -179,10 +179,6 @@ export function CinematicReveal({
           {children}
         </motion.div>
       </motion.div>
-
-      {/* Subtle fade edges for smooth section transitions */}
-      <div className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-20 bg-gradient-to-b from-background/80 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none z-20 bg-gradient-to-t from-background/40 to-transparent" />
     </div>
   );
 }
