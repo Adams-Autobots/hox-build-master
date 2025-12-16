@@ -77,7 +77,7 @@ export function DivisionsSection() {
         </div>
 
         {/* Divisions Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
           {divisions.map((division, index) => (
             <Link
               key={division.name}
