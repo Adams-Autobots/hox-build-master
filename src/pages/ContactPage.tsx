@@ -180,9 +180,26 @@ export default function ContactPage() {
                 </Button>
               </form>
             </div>
+        </div>
+
+        {/* Map Section */}
+        <div className="mt-16 lg:mt-24">
+          <h2 className="text-2xl font-bold mb-6 hox-brand">find us</h2>
+          <div className="rounded-lg overflow-hidden border border-border aspect-video">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1788646954!2d55.3632!3d25.1875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f69d8d7c74a97%3A0x8f9b9d6a3e5f6a9b!2sRas%20Al%20Khor%20Industrial%20Area%202%2C%20Dubai!5e0!3m2!1sen!2sae!4v1702657200000!5m2!1sen!2sae"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="HOX Location - Ras Al Khor Industrial Area 2, Dubai"
+            />
           </div>
         </div>
-      </section>
+      </div>
+    </section>
     </Layout>
   );
 }
