@@ -35,12 +35,12 @@ export function HeroSection() {
           className="w-full h-full object-cover"
         />
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-background/70" />
+        <div className="absolute inset-0 bg-background/40" />
         {/* Subtle red brand tint */}
-        <div className="absolute inset-0 bg-[hsl(var(--hox-red)/0.08)]" />
+        <div className="absolute inset-0 bg-[hsl(var(--hox-red)/0.05)]" />
         {/* Gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-background/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/20" />
       </div>
 
       {/* Content */}
