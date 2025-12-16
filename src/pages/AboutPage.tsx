@@ -19,9 +19,9 @@ export default function AboutPage() {
       <section className="pt-32 pb-16 lg:pb-24">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-4xl">
-            <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary uppercase mb-6">
+            <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6">
               <span className="w-8 h-px bg-primary" />
-              about hox
+              About hox
             </span>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
@@ -66,7 +66,7 @@ export default function AboutPage() {
             </div>
 
             <div>
-              <h3 className={cn('text-2xl font-bold mb-8 hox-brand transition-all duration-700 delay-300', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')}>milestones</h3>
+              <h3 className={cn('text-2xl font-bold mb-8 hox-brand transition-all duration-700 delay-300', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')}>Milestones</h3>
               <div className="space-y-6">
                 {milestones.map((item, index) => (
                   <div

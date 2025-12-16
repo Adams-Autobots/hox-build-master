@@ -75,13 +75,13 @@ export function DivisionFAQ({ division }: DivisionFAQProps) {
           <div className="text-center mb-16">
             <span
               className={cn(
-                'inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase mb-6 transition-all duration-700',
+                'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6 transition-all duration-700',
                 divisionColors[division],
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               )}
             >
               <span className={cn('w-8 h-px', divisionBg[division])} />
-              common questions
+              Common questions
               <span className={cn('w-8 h-px', divisionBg[division])} />
             </span>
             
@@ -91,7 +91,7 @@ export function DivisionFAQ({ division }: DivisionFAQProps) {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
             >
-              frequently asked questions.
+              Frequently asked questions.
             </h2>
           </div>
 

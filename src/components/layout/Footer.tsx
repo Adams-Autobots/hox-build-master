@@ -9,10 +9,10 @@ const divisions = [
 ];
 
 const quickLinks = [
-  { name: 'about', path: '/about' },
-  { name: 'divisions', path: '/divisions/exhibitions' },
-  { name: 'projects', path: '/projects' },
-  { name: 'contact', path: '/contact' },
+  { name: 'About', path: '/about' },
+  { name: 'Divisions', path: '/divisions/exhibitions' },
+  { name: 'Projects', path: '/projects' },
+  { name: 'Contact', path: '/contact' },
 ];
 
 export function Footer() {
@@ -65,8 +65,8 @@ export function Footer() {
 
           {/* Divisions Column */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-6">
-              divisions
+            <h4 className="text-sm font-semibold tracking-wider text-foreground mb-6">
+              Divisions
             </h4>
             <ul className="space-y-3">
               {divisions.map((item) => (
@@ -84,8 +84,8 @@ export function Footer() {
 
           {/* Quick Links Column */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-6">
-              company
+            <h4 className="text-sm font-semibold tracking-wider text-foreground mb-6">
+              Company
             </h4>
             <ul className="space-y-3">
               {quickLinks.map((item) => (
@@ -103,8 +103,8 @@ export function Footer() {
 
           {/* Contact Column */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground mb-6">
-              contact
+            <h4 className="text-sm font-semibold tracking-wider text-foreground mb-6">
+              Contact
             </h4>
             <ul className="space-y-4">
               <li>

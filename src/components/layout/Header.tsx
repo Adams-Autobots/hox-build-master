@@ -11,10 +11,10 @@ const divisions = [
 ];
 
 const navItems = [
-  { name: 'about', path: '/about' },
-  { name: 'divisions', path: '/divisions', hasDropdown: true },
-  { name: 'projects', path: '/projects' },
-  { name: 'contact', path: '/contact' },
+  { name: 'About', path: '/about' },
+  { name: 'Divisions', path: '/divisions', hasDropdown: true },
+  { name: 'Projects', path: '/projects' },
+  { name: 'Contact', path: '/contact' },
 ];
 
 export function Header() {

@@ -67,12 +67,12 @@ export function ProjectsSection() {
           <div>
             <span
               className={cn(
-                'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary uppercase mb-6 transition-all duration-700',
+                'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               )}
             >
               <span className="w-8 h-px bg-primary" />
-              featured work
+              Featured work
             </span>
 
             <h2
@@ -81,7 +81,7 @@ export function ProjectsSection() {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
             >
-              <span className="hox-brand">projects that define us.</span>
+              <span className="hox-brand">Projects that define us.</span>
             </h2>
           </div>
 
@@ -94,8 +94,8 @@ export function ProjectsSection() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            <Link to="/work" className="group">
-              view all work
+            <Link to="/projects" className="group">
+              View all work
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
@@ -114,7 +114,7 @@ export function ProjectsSection() {
               tiltAmount={8}
             >
               <Link
-                to={`/case-studies/${project.id}`}
+                to={`/projects`}
                 className="group relative overflow-hidden rounded-lg bg-background block"
                 data-cursor="view"
               >

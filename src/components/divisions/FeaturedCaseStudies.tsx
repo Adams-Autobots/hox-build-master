@@ -36,17 +36,17 @@ export function FeaturedCaseStudies({ division, caseStudies }: FeaturedCaseStudi
           transition={{ duration: 0.6 }}
         >
           <div>
-            <span className={cn('inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase mb-4', colorClasses.split(' ')[0])}>
+            <span className={cn('inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-4', colorClasses.split(' ')[0])}>
               <span className={cn('w-8 h-px', `bg-${division === 'exhibitions' ? 'hox-red' : division === 'events' ? 'hox-blue' : division === 'retail' ? 'hox-orange' : division === 'interiors' ? 'hox-green' : 'foreground'}`)} />
-              featured work
+              Featured work
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold hox-brand">case studies.</h2>
+            <h2 className="text-4xl md:text-5xl font-bold hox-brand">Case studies.</h2>
           </div>
           <Link
-            to="/work"
+            to="/projects"
             className={cn('hidden md:flex items-center gap-2 text-sm font-medium transition-colors', colorClasses.split(' ')[0])}
           >
-            view all work
+            View all work
             <ArrowUpRight className="w-4 h-4" />
           </Link>
         </motion.div>
@@ -61,7 +61,7 @@ export function FeaturedCaseStudies({ division, caseStudies }: FeaturedCaseStudi
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               <Link
-                to={`/work`}
+                to={`/projects`}
                 className={cn(
                   'block group relative aspect-[4/3] rounded-lg overflow-hidden border transition-all duration-500',
                   colorClasses
@@ -90,10 +90,10 @@ export function FeaturedCaseStudies({ division, caseStudies }: FeaturedCaseStudi
         </div>
 
         <Link
-          to="/work"
+          to="/projects"
           className={cn('md:hidden flex items-center justify-center gap-2 mt-8 text-sm font-medium', colorClasses.split(' ')[0])}
         >
-          view all work
+          View all work
           <ArrowUpRight className="w-4 h-4" />
         </Link>
       </div>

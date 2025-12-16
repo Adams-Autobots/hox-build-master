@@ -15,7 +15,7 @@ export default function BlogPage() {
       <section className="pt-32 pb-16">
         <div className="container mx-auto px-6 lg:px-12">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
-            <span className="hox-brand">blog.</span>
+            <span className="hox-brand">Blog.</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl">
             Insights, trends, and stories from the world of production excellence.

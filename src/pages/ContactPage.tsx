@@ -33,9 +33,9 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
             {/* Left Column - Info */}
             <div>
-              <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary uppercase mb-6">
+              <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6">
                 <span className="w-8 h-px bg-primary" />
-                get in touch
+                Get in touch
               </span>
 
               <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-8">
@@ -126,7 +126,7 @@ export default function ContactPage() {
 
             {/* Right Column - Form */}
             <div className="bg-card border border-border rounded-lg p-8 lg:p-10">
-              <h2 className="text-2xl font-bold mb-6 hox-brand">request a proposal</h2>
+              <h2 className="text-2xl font-bold mb-6 hox-brand">Request a proposal</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -177,7 +177,7 @@ export default function ContactPage() {
 
         {/* Map Section */}
         <div className="mt-16 lg:mt-24">
-          <h2 className="text-2xl font-bold mb-6 hox-brand">find us</h2>
+          <h2 className="text-2xl font-bold mb-6 hox-brand">Find us</h2>
           <div className="rounded-lg overflow-hidden border border-border aspect-video">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1!2d55.3632!3d25.1868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f69d46f95cfc7%3A0x5e3d49c3eae31a92!2sHOUSE%20OF%20EXHIBITIONS!5e0!3m2!1sen!2sae!4v1702657200000!5m2!1sen!2sae"

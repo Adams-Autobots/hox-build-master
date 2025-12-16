@@ -18,12 +18,12 @@ export function ContactCTA() {
         <div className="max-w-4xl mx-auto text-center">
           <span
             className={cn(
-              'inline-flex items-center justify-center gap-2 text-sm font-medium tracking-widest text-primary uppercase mb-6 transition-all duration-700',
+              'inline-flex items-center justify-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
             <span className="w-8 h-px bg-primary" />
-            start your project
+            Start your project
             <span className="w-8 h-px bg-primary" />
           </span>
 
@@ -56,7 +56,7 @@ export function ContactCTA() {
           >
             <Button variant="hero" size="xl" asChild>
               <Link to="/contact" className="group">
-                request a proposal
+                Request a proposal
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
@@ -68,7 +68,7 @@ export function ContactCTA() {
                 className="group"
               >
                 <MessageCircle className="w-4 h-4" />
-                whatsapp us
+                Whatsapp us
               </a>
             </Button>
           </div>

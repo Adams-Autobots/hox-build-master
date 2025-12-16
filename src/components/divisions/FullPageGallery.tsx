@@ -101,13 +101,13 @@ export function FullPageGallery({ division, images }: FullPageGalleryProps) {
             <div>
               <span
                 className={cn(
-                  'inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase mb-6 transition-all duration-700',
+                  'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6 transition-all duration-700',
                   divisionColors[division],
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 )}
               >
                 <span className={cn('w-8 h-px', divisionBg[division])} />
-                project gallery
+                Project gallery
               </span>
               
               <h2
@@ -116,7 +116,7 @@ export function FullPageGallery({ division, images }: FullPageGalleryProps) {
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 )}
               >
-                see our work in action.
+                See our work in action.
               </h2>
             </div>
 

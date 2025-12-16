@@ -67,13 +67,13 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
         <div className="max-w-3xl mb-16">
           <span
             className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase mb-6 transition-all duration-700',
+              'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6 transition-all duration-700',
               divisionColors[division],
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
             <span className={cn('w-8 h-px', divisionColors[division].replace('text-', 'bg-'))} />
-            our process
+            Our process
           </span>
           
           <h2
@@ -82,7 +82,7 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            from concept to completion.
+            From concept to completion.
           </h2>
         </div>
 

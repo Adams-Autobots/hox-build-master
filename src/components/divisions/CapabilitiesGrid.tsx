@@ -41,12 +41,12 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className={cn('inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase mb-4', iconColor)}>
+          <span className={cn('inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-4', iconColor)}>
             <span className="w-8 h-px bg-current" />
-            capabilities
+            Capabilities
             <span className="w-8 h-px bg-current" />
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold hox-brand">what we deliver.</h2>
+          <h2 className="text-4xl md:text-5xl font-bold hox-brand">What we deliver.</h2>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
