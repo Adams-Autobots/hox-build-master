@@ -1,8 +1,5 @@
 import { useEffect, useState, Suspense } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import heroVideo from '@/assets/hero-showreel.mp4';
 import { FloatingShapes } from './FloatingShapes';
@@ -87,18 +84,6 @@ export function HeroSection() {
               Dubai's premier production powerhouse delivering world-class exhibitions, events, retail environments, and interior solutions with precision engineering.
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <Button variant="hero" size="xl" asChild>
-                <Link to="/work" className="group">
-                  explore our work
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </motion.div>
           </motion.div>
 
           {/* Right Video Container */}
