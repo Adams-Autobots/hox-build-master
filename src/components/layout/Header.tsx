@@ -50,7 +50,7 @@ export function Header() {
           {/* Logo */}
           <Link
             to="/"
-            className="block -ml-1"
+            className="block -ml-3"
           >
             <img 
               src={hoxLogo} 
