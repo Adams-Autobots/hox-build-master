@@ -49,7 +49,7 @@ export function Header() {
           {/* Logo */}
           <Link
             to="/"
-            className="block -ml-1"
+            className="block"
           >
             <span className="text-2xl font-bold tracking-tight hox-brand">
               <span className="text-primary">hox</span>
