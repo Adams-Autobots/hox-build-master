@@ -27,7 +27,7 @@ export function Footer() {
               <img 
                 src={hoxLogo} 
                 alt="hoxcreative" 
-                className="h-8 w-auto"
+                className="h-10 w-auto"
               />
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
