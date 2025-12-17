@@ -60,23 +60,21 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="max-w-3xl"
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8 whitespace-nowrap">
             <span className="text-foreground">HOX </span>
-            <span className="relative inline-block h-[1.15em] align-baseline overflow-hidden min-w-[280px] md:min-w-[340px] lg:min-w-[420px]">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={currentWordIndex}
-                  initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
-                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, y: -40, filter: 'blur(8px)' }}
-                  transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="absolute left-0 bottom-0"
-                  style={{ color: heroWords[currentWordIndex].color }}
-                >
-                  {heroWords[currentWordIndex].word}
-                </motion.span>
-              </AnimatePresence>
-            </span>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentWordIndex}
+                initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -20, filter: 'blur(8px)' }}
+                transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="inline-block"
+                style={{ color: heroWords[currentWordIndex].color }}
+              >
+                {heroWords[currentWordIndex].word}
+              </motion.span>
+            </AnimatePresence>
           </h1>
 
           <motion.p
