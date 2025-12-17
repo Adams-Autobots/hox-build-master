@@ -6,10 +6,10 @@ import { ArrowRight } from 'lucide-react';
 import heroVideo from '@/assets/hero-video.mp4';
 
 const heroWords = [
-  { word: 'exhibitions', color: 'hsl(var(--hox-red))' },
-  { word: 'events', color: 'hsl(var(--hox-blue))' },
-  { word: 'retail', color: 'hsl(var(--hox-orange))' },
-  { word: 'interiors', color: 'hsl(var(--hox-green))' },
+  { word: 'Exhibitions', color: 'hsl(var(--hox-red))' },
+  { word: 'Events', color: 'hsl(var(--hox-blue))' },
+  { word: 'Retail', color: 'hsl(var(--hox-orange))' },
+  { word: 'Interiors', color: 'hsl(var(--hox-green))' },
 ];
 
 export function HeroSection() {
