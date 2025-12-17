@@ -55,7 +55,7 @@ export function Header() {
             <img 
               src={hoxLogo} 
               alt="hoxcreative" 
-              className="h-10 w-auto"
+              className="h-12 w-auto"
             />
           </Link>
 
