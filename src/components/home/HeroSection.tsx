@@ -60,7 +60,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="max-w-3xl"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[0.95] mb-6">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
             <span className="text-foreground">Production </span>
             <span className="text-primary">Excellence.</span>
           </h1>
