@@ -22,7 +22,7 @@ export function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWordIndex((prev) => (prev + 1) % heroWords.length);
-    }, 2500);
+    }, 3500);
     return () => clearInterval(interval);
   }, []);
 
@@ -60,27 +60,24 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="max-w-3xl"
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-            <span className="text-foreground">Production </span>
-            <span className="text-primary">Excellence.</span>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8 flex items-baseline gap-4">
+            <span className="text-foreground">HOX</span>
+            <span className="relative h-[1.1em] overflow-hidden inline-flex items-baseline min-w-[280px] md:min-w-[340px] lg:min-w-[420px]">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={currentWordIndex}
+                  initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -30, filter: 'blur(8px)' }}
+                  transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  className="absolute left-0"
+                  style={{ color: heroWords[currentWordIndex].color }}
+                >
+                  {heroWords[currentWordIndex].word}
+                </motion.span>
+              </AnimatePresence>
+            </span>
           </h1>
-
-          {/* Animated Division Words - Single Word Morph */}
-          <div className="h-8 md:h-10 lg:h-12 mb-8 overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={currentWordIndex}
-                initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, y: -20, filter: 'blur(8px)' }}
-                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="block text-xl md:text-2xl lg:text-3xl font-medium"
-                style={{ color: heroWords[currentWordIndex].color }}
-              >
-                {heroWords[currentWordIndex].word}
-              </motion.span>
-            </AnimatePresence>
-          </div>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
