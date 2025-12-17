@@ -72,7 +72,7 @@ export function HeroSection() {
                 className="inline-block"
                 style={{ color: heroWords[currentWordIndex].color }}
               >
-                {heroWords[currentWordIndex].word}
+                {heroWords[currentWordIndex].word}.
               </motion.span>
             </AnimatePresence>
           </h1>
