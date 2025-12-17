@@ -68,30 +68,8 @@ export function DivisionHero({
           />
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-background/70" />
-          {/* Color tint overlay */}
-          <div className={cn('absolute inset-0 opacity-20', config.bg)} />
         </div>
       )}
-
-      {/* Background Gradient */}
-      <div className={cn('absolute inset-0 bg-gradient-to-br via-transparent to-transparent z-[1]', config.gradient)} />
-      
-      {/* Floating Glow Orb */}
-      <motion.div
-        className={cn(
-          'absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full blur-[180px] opacity-30 z-[1]',
-          config.bg
-        )}
-        animate={{
-          y: [0, -30, 0],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="max-w-4xl">
