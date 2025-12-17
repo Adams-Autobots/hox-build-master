@@ -61,7 +61,7 @@ export function HeroSection() {
           className="max-w-3xl"
         >
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8 whitespace-nowrap">
-            <span className="text-foreground">HOX </span>
+            <span className="text-foreground">Hox </span>
             <AnimatePresence mode="wait">
               <motion.span
                 key={currentWordIndex}
