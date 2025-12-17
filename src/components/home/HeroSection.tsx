@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import heroVideo from '@/assets/hero-video.mp4';
@@ -65,20 +65,21 @@ export function HeroSection() {
             <span className="text-primary">Excellence.</span>
           </h1>
 
-          {/* Animated Division Words */}
-          <div className="flex items-center gap-3 md:gap-4 text-base md:text-lg lg:text-xl font-medium mb-8">
-            {heroWords.map((item, index) => (
-              <span
-                key={item.word}
-                className={cn(
-                  'transition-all duration-500',
-                  index === currentWordIndex ? 'scale-110' : 'opacity-30'
-                )}
-                style={index === currentWordIndex ? { color: item.color } : undefined}
+          {/* Animated Division Words - Single Word Morph */}
+          <div className="h-8 md:h-10 lg:h-12 mb-8 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentWordIndex}
+                initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -20, filter: 'blur(8px)' }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="block text-xl md:text-2xl lg:text-3xl font-medium"
+                style={{ color: heroWords[currentWordIndex].color }}
               >
-                {item.word}
-              </span>
-            ))}
+                {heroWords[currentWordIndex].word}
+              </motion.span>
+            </AnimatePresence>
           </div>
 
           <motion.p
