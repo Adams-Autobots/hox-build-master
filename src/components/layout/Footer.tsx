@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
-import hoxLogo from '@/assets/hox-logo.png';
 
 const divisions = [
   { name: 'hoxexhibitions.', path: '/divisions/exhibitions' },
@@ -23,12 +22,12 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand Column */}
           <div className="lg:col-span-1">
-            <Link to="/" className="inline-block mb-6 -ml-6">
-              <img 
-                src={hoxLogo} 
-                alt="hoxcreative" 
-                className="h-14 w-auto"
-              />
+            <Link to="/" className="inline-block mb-6">
+              <span className="text-2xl font-bold tracking-tight hox-brand">
+                <span className="text-primary">hox</span>
+                <span className="text-foreground">creative</span>
+                <span className="text-primary">.</span>
+              </span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
               Dubai-born production powerhouse delivering precision-built environments and immersive experiences since 2008.

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import hoxLogo from '@/assets/hox-logo.png';
 
 const divisions = [
   { name: 'exhibitions', path: '/divisions/exhibitions', color: 'hox-red' },
@@ -50,13 +49,13 @@ export function Header() {
           {/* Logo */}
           <Link
             to="/"
-            className="block -ml-8"
+            className="block -ml-1"
           >
-            <img 
-              src={hoxLogo} 
-              alt="hoxcreative" 
-              className="h-14 w-auto"
-            />
+            <span className="text-2xl font-bold tracking-tight hox-brand">
+              <span className="text-primary">hox</span>
+              <span className="text-foreground">creative</span>
+              <span className="text-primary">.</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
