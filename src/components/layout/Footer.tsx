@@ -23,11 +23,11 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand Column */}
           <div className="lg:col-span-1">
-            <Link to="/" className="inline-block mb-6">
+            <Link to="/" className="inline-block mb-6 -ml-6">
               <img 
                 src={hoxLogo} 
                 alt="hoxcreative" 
-                className="h-10 w-auto"
+                className="h-14 w-auto"
               />
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
