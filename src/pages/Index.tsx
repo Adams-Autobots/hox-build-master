@@ -5,7 +5,7 @@ import { DivisionsSection } from '@/components/home/DivisionsSection';
 import { ProjectsSection } from '@/components/home/ProjectsSection';
 import { ProcessSection } from '@/components/home/ProcessSection';
 import { WhyHoxSection } from '@/components/home/WhyHoxSection';
-import { CertificationsSection } from '@/components/home/CertificationsSection';
+import { ClientsSection } from '@/components/home/ClientsSection';
 import { ContactCTA } from '@/components/home/ContactCTA';
 
 const Index = () => {
@@ -37,7 +37,7 @@ const Index = () => {
         </section>
 
         <section className="scroll-snap-section-auto">
-          <CertificationsSection />
+          <ClientsSection />
         </section>
 
         <section className="scroll-snap-section-auto">
