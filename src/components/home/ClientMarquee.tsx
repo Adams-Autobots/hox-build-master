@@ -32,11 +32,15 @@ export function ClientMarquee() {
   const [isPaused, setIsPaused] = useState(false);
 
   return (
-    <section className="py-12 lg:py-16 bg-card overflow-hidden">
-      <div className="container mx-auto px-6 lg:px-12 mb-8">
-        <span className="text-sm text-muted-foreground/60 tracking-wide">
-          Selected clients
+    <section className="py-16 lg:py-20 bg-card overflow-hidden">
+      <div className="container mx-auto px-6 lg:px-12 mb-10">
+        <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-4">
+          <span className="w-8 h-px bg-primary" />
+          Our Clients
         </span>
+        <p className="text-muted-foreground text-sm md:text-base max-w-xl">
+          We consider the completion of a project the start of a new relationship.
+        </p>
       </div>
 
       <div 
