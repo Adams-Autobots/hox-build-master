@@ -1,66 +1,54 @@
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 const clients = [
-  'Expo 2020 Dubai',
-  'Emaar Properties',
-  'Dubai Holding',
-  'ADNOC',
-  'Etihad Airways',
-  'du Telecom',
-  'Majid Al Futtaim',
-  'Chalhoub Group',
-  'Al Tayer Group',
-  'Noon',
-  'Carrefour',
-  'VOX Cinemas',
-  'National Geographic',
-  'TP-Link',
-  'Clinell',
-  'Citizen',
-  'Rolls-Royce',
-  'Mubadala',
-  'RTA Dubai',
-  'DWTC',
-  'The Industrial Group',
-  'Dahua Technology',
-  'La Ronda',
-  'Tazzetti',
-  'Society of Petroleum Engineers (SPE)',
-  'Notions Group',
-  'Eurofire',
-  'Madar',
-  'CABSAT',
-  'Underwriters Laboratories (UL)',
-  'Emirates Nuclear Energy Corporation (ENEC)',
-  'Lukoil',
-  'Cisco',
-  'Global Light & Power LLC',
-  'Enviromena Power Systems',
-  'Dubai Carbon',
-  'Newland',
-  'Nahla',
-  'Zaun',
-  'Hochiki',
-  'JM Posner',
-  'Energy Pioneers',
-  'Temac',
-  'SPF Realty',
-  'Made in Britain',
-  'Synectics',
-  'Tayto Group Limited',
-  'Sohar Port & Freezone',
-  'Marketing Eye',
-  'Nawah',
-  'Jewellery Design Awards',
-  'Independent Diabetes Trust',
-  'Nissan',
-  'Selevision',
-  'Telenor Satellite Broadcasting',
-  'Bin Ablan Food Industry',
-  'EMI',
-  'Karam',
+  "National Geographic",
+  "TP-Link",
+  "Clinell",
+  "Citizen",
+  "Rolls-Royce",
+  "Mubadala",
+  "RTA Dubai",
+  "DWTC",
+  "The Industrial Group",
+  "Dahua Technology",
+  "La Ronda",
+  "Tazzetti",
+  "Society of Petroleum Engineers (SPE)",
+  "Notions Group",
+  "Eurofire",
+  "Madar",
+  "CABSAT",
+  "Underwriters Laboratories (UL)",
+  "Emirates Nuclear Energy Corporation (ENEC)",
+  "Lukoil",
+  "Cisco",
+  "Global Light & Power LLC",
+  "Enviromena Power Systems",
+  "Dubai Carbon",
+  "Newland",
+  "Nahla",
+  "Zaun",
+  "Hochiki",
+  "JM Posner",
+  "Energy Pioneers",
+  "Temac",
+  "SPF Realty",
+  "Made in Britain",
+  "Synectics",
+  "Tayto Group Limited",
+  "Sohar Port & Freezone",
+  "Marketing Eye",
+  "Nawah",
+  "Jewellery Design Awards",
+  "Independent Diabetes Trust",
+  "Nissan",
+  "Selevision",
+  "Telenor Satellite Broadcasting",
+  "Bin Ablan Food Industry",
+  "EMI",
+  "Karam",
 ];
 
 export function ClientMarquee() {
@@ -75,11 +63,7 @@ export function ClientMarquee() {
         </span>
       </div>
 
-      <div 
-        className="relative"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
+      <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
         {/* Gradient Overlays - subtle fade */}
         <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-card via-card/80 to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-card via-card/80 to-transparent z-10 pointer-events-none" />
@@ -93,24 +77,21 @@ export function ClientMarquee() {
           transition={{
             x: {
               repeat: Infinity,
-              repeatType: 'loop',
+              repeatType: "loop",
               duration: 50,
-              ease: 'linear',
+              ease: "linear",
             },
           }}
         >
           {/* Triple the items for seamless loop */}
           {[...clients, ...clients, ...clients].map((client, index) => (
-            <div
-              key={`${client}-${index}`}
-              className="flex-shrink-0"
-            >
+            <div key={`${client}-${index}`} className="flex-shrink-0">
               <span
                 className={cn(
-                  'text-base md:text-lg font-medium whitespace-nowrap',
-                  'text-muted-foreground/50',
-                  'transition-colors duration-300',
-                  'hover:text-foreground/80'
+                  "text-base md:text-lg font-medium whitespace-nowrap",
+                  "text-muted-foreground/50",
+                  "transition-colors duration-300",
+                  "hover:text-foreground/80",
                 )}
               >
                 {client}
