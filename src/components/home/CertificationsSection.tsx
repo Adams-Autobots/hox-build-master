@@ -203,10 +203,10 @@ export function CertificationsSection() {
             <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-card to-transparent z-10" />
 
             <motion.div
-              className="flex gap-12 whitespace-nowrap"
-              animate={{ x: [0, -50 * trustedBy.length] }}
+              className="flex gap-8 whitespace-nowrap"
+              animate={{ x: [0, -30 * trustedBy.length] }}
               transition={{
-                duration: 20,
+                duration: 30,
                 repeat: Infinity,
                 ease: 'linear',
               }}
@@ -214,7 +214,7 @@ export function CertificationsSection() {
               {[...trustedBy, ...trustedBy, ...trustedBy].map((client, index) => (
                 <span
                   key={index}
-                  className="text-xl font-medium text-muted-foreground/50 hover:text-foreground transition-colors"
+                  className="text-sm md:text-base font-medium text-muted-foreground/50 hover:text-foreground transition-colors"
                 >
                   {client}
                 </span>
