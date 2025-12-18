@@ -6,7 +6,7 @@ import { ProjectsSection } from '@/components/home/ProjectsSection';
 import { ProcessSection } from '@/components/home/ProcessSection';
 import { WhyHoxSection } from '@/components/home/WhyHoxSection';
 import { CertificationsSection } from '@/components/home/CertificationsSection';
-import { ClientMarquee } from '@/components/home/ClientMarquee';
+
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { CinematicReveal } from '@/components/motion/CinematicReveal';
 
@@ -55,11 +55,6 @@ const Index = () => {
           </section>
         </CinematicReveal>
 
-        <CinematicReveal glowColor="white" maskDirection="up" parallaxIntensity={25}>
-          <section className="scroll-snap-section-auto cinematic-section">
-            <ClientMarquee />
-          </section>
-        </CinematicReveal>
 
         <CinematicReveal glowColor="red" maskDirection="up" parallaxIntensity={40}>
           <section className="scroll-snap-section-auto cinematic-section">
