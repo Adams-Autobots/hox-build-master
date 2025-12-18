@@ -1,74 +1,72 @@
-import { motion } from 'framer-motion';
-import { Award, Shield, Leaf, BadgeCheck, Star, Globe } from 'lucide-react';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { cn } from '@/lib/utils';
+import { motion } from "framer-motion";
+import { Award, Shield, Leaf, BadgeCheck, Star, Globe } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { cn } from "@/lib/utils";
 
 const certifications = [
   {
     icon: Shield,
-    title: 'ISO 9001:2015',
-    category: 'Quality Management',
-    description: 'Certified quality management systems ensuring consistent delivery standards.',
+    title: "ISO 9001:2015",
+    category: "Quality Management",
+    description: "Certified quality management systems ensuring consistent delivery standards.",
   },
   {
     icon: Leaf,
-    title: 'ISO 14001:2015',
-    category: 'Environmental',
-    description: 'Committed to sustainable practices and environmental responsibility.',
+    title: "ISO 14001:2015",
+    category: "Environmental",
+    description: "Committed to sustainable practices and environmental responsibility.",
   },
   {
     icon: BadgeCheck,
-    title: 'OHSAS 18001',
-    category: 'Health & Safety',
-    description: 'Industry-leading occupational health and safety management.',
+    title: "OHSAS 18001",
+    category: "Health & Safety",
+    description: "Industry-leading occupational health and safety management.",
   },
 ];
 
 const achievements = [
-  { value: '50+', label: 'Awards Won', icon: Award },
-  { value: '15+', label: 'Countries Served', icon: Globe },
-  { value: '98%', label: 'Client Retention', icon: Star },
+  { value: "50+", label: "Awards Won", icon: Award },
+  { value: "15+", label: "Countries Served", icon: Globe },
+  { value: "98%", label: "Client Retention", icon: Star },
 ];
 
 const trustedBy = [
-  'Expo 2020 Dubai',
-  'Dubai Holding',
-  'Emaar Properties',
-  'DWTC',
-  'RTA Dubai',
-  'Mubadala',
-  'Tayto Group',
-  'Sohar Freezone',
-  'Marketing Eye',
-  'Nawah',
-  'Jewellery Design Awards',
-  'Independent Diabetes Trust',
-  'National Geographic',
-  'TP-Link',
-  'Clinell',
-  'Citizen',
-  'Rolls-Royce',
-  'Emirates Nuclear Energy',
-  'Lukoil',
-  'Cisco',
-  'Global Light & Power',
-  'Enviromena',
-  'Dubai Carbon',
-  'Gama Aviation',
-  'The Industrial Group',
-  'Dahua Technology',
-  'La Ronda',
-  'Tazzetti',
-  'SPE International',
-  'Jetour',
-  'Madame Tussauds Dubai',
-  'Bath and Body Works',
-  'Notions Group',
-  'New Zealand',
-  'Eurofiere',
-  'Madar',
-  'Cabsat',
-  'Underwriters Laboratories',
+  "Expo 2020 Dubai",
+  "Dubai Holding",
+  "Emaar Properties",
+  "RTA Dubai",
+  "Mubadala",
+  "Tayto Group",
+  "Sohar Freezone",
+  "Marketing Eye",
+  "Nawah",
+  "Jewellery Design Awards",
+  "Independent Diabetes Trust",
+  "National Geographic",
+  "TP-Link",
+  "Clinell",
+  "Citizen",
+  "Rolls-Royce",
+  "Emirates Nuclear Energy",
+  "Lukoil",
+  "Cisco",
+  "Global Light & Power",
+  "Enviromena",
+  "Dubai Carbon",
+  "Gama Aviation",
+  "The Industrial Group",
+  "Dahua Technology",
+  "La Ronda",
+  "Tazzetti",
+  "SPE International",
+  "Jetour",
+  "Madame Tussauds Dubai",
+  "Bath and Body Works",
+  "Notions Group",
+  "Newland",
+  "Eurofiere",
+  "Madar",
+  "Cabsat",
 ];
 
 export function CertificationsSection() {
@@ -82,7 +80,7 @@ export function CertificationsSection() {
           className="absolute inset-0"
           style={{
             backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
-            backgroundSize: '40px 40px',
+            backgroundSize: "40px 40px",
           }}
         />
       </div>
@@ -92,8 +90,8 @@ export function CertificationsSection() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span
             className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              "inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700",
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
             )}
           >
             <span className="w-8 h-px bg-primary" />
@@ -103,8 +101,8 @@ export function CertificationsSection() {
 
           <h2
             className={cn(
-              'text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 transition-all duration-700 delay-150',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              "text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 transition-all duration-700 delay-150",
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
             )}
           >
             <span className="hox-brand">Certified. recognized. </span>
@@ -113,12 +111,12 @@ export function CertificationsSection() {
 
           <p
             className={cn(
-              'text-lg text-muted-foreground transition-all duration-700 delay-300',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              "text-lg text-muted-foreground transition-all duration-700 delay-300",
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
             )}
           >
-            Industry-leading certifications and a track record of excellence 
-            that gives our clients confidence in every project.
+            Industry-leading certifications and a track record of excellence that gives our clients confidence in every
+            project.
           </p>
         </div>
 
@@ -141,9 +139,7 @@ export function CertificationsSection() {
                 <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2">
                   {achievement.value}
                 </div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wider">
-                  {achievement.label}
-                </div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wider">{achievement.label}</div>
               </motion.div>
             );
           })}
@@ -171,18 +167,14 @@ export function CertificationsSection() {
                     <div className="w-14 h-14 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
                       <Icon className="w-6 h-6 text-primary" />
                     </div>
-                    <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                      {cert.category}
-                    </span>
+                    <span className="text-xs text-muted-foreground uppercase tracking-wider">{cert.category}</span>
                   </div>
 
                   <h3 className="text-xl font-bold mb-3 hox-brand group-hover:text-primary transition-colors">
                     {cert.title}
                   </h3>
 
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {cert.description}
-                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{cert.description}</p>
                 </div>
               </motion.div>
             );
@@ -192,9 +184,7 @@ export function CertificationsSection() {
         {/* Trusted By Grid */}
         <div className="relative">
           <div className="text-center mb-12">
-            <span className="text-sm text-muted-foreground uppercase tracking-widest">
-              Trusted by industry leaders
-            </span>
+            <span className="text-sm text-muted-foreground uppercase tracking-widest">Trusted by industry leaders</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 lg:gap-8">
@@ -207,9 +197,7 @@ export function CertificationsSection() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.03 }}
               >
-                <span className="text-sm font-medium text-muted-foreground text-center leading-tight">
-                  {client}
-                </span>
+                <span className="text-sm font-medium text-muted-foreground text-center leading-tight">{client}</span>
               </motion.div>
             ))}
           </div>
