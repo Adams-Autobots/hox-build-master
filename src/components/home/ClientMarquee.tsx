@@ -88,13 +88,13 @@ export function ClientMarquee() {
         <motion.div
           className="flex items-center gap-12 md:gap-16 lg:gap-20"
           animate={{
-            x: isPaused ? undefined : [0, -50 * clients.length],
+            x: isPaused ? undefined : [0, -80 * clients.length],
           }}
           transition={{
             x: {
               repeat: Infinity,
               repeatType: 'loop',
-              duration: 30,
+              duration: 50,
               ease: 'linear',
             },
           }}
