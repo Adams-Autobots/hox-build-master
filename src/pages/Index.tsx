@@ -5,7 +5,7 @@ import { DivisionsSection } from '@/components/home/DivisionsSection';
 import { ProjectsSection } from '@/components/home/ProjectsSection';
 import { ProcessSection } from '@/components/home/ProcessSection';
 import { WhyHoxSection } from '@/components/home/WhyHoxSection';
-
+import { ClientMarquee } from '@/components/home/ClientMarquee';
 import { ContactCTA } from '@/components/home/ContactCTA';
 
 const Index = () => {
@@ -34,6 +34,10 @@ const Index = () => {
 
         <section className="scroll-snap-section-auto">
           <WhyHoxSection />
+        </section>
+
+        <section className="scroll-snap-section-auto">
+          <ClientMarquee />
         </section>
 
         <section className="scroll-snap-section-auto">
