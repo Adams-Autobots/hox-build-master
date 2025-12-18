@@ -48,6 +48,12 @@ const trustedBy = [
   'Clinell',
   'Citizen',
   'Rolls-Royce',
+  'Emirates Nuclear Energy',
+  'Lukoil',
+  'Cisco',
+  'Global Light & Power',
+  'Enviromena',
+  'Dubai Carbon',
 ];
 
 export function CertificationsSection() {
