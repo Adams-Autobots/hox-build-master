@@ -1,71 +1,80 @@
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
 
 const clients = [
-  'expo 2020 dubai',
-  'emaar',
-  'dubai holding',
-  'adnoc',
-  'etihad airways',
-  'du telecom',
-  'majid al futtaim',
-  'chalhoub group',
-  'al tayer group',
-  'noon',
-  'carrefour',
-  'vox cinemas',
-  'national geographic',
-  'tp-link',
-  'clinell',
-  'citizen',
-  'rolls-royce',
+  'Expo 2020 Dubai',
+  'Emaar Properties',
+  'Dubai Holding',
+  'ADNOC',
+  'Etihad Airways',
+  'du Telecom',
+  'Majid Al Futtaim',
+  'Chalhoub Group',
+  'Al Tayer Group',
+  'Noon',
+  'Carrefour',
+  'VOX Cinemas',
+  'National Geographic',
+  'TP-Link',
+  'Clinell',
+  'Citizen',
+  'Rolls-Royce',
+  'Emirates Nuclear Energy',
+  'Cisco',
+  'Dubai Carbon',
+  'Mubadala',
+  'RTA Dubai',
+  'DWTC',
 ];
 
 export function ClientMarquee() {
+  const [isPaused, setIsPaused] = useState(false);
+
   return (
-    <section className="py-12 lg:py-16 bg-card overflow-hidden border-y border-border">
-      <div className="container mx-auto px-6 lg:px-12 mb-12">
-        <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-muted-foreground uppercase">
-          <span className="w-8 h-px bg-muted-foreground" />
-          trusted by industry leaders
+    <section className="py-12 lg:py-16 bg-card overflow-hidden">
+      <div className="container mx-auto px-6 lg:px-12 mb-8">
+        <span className="text-sm text-muted-foreground/60 tracking-wide">
+          Selected clients
         </span>
       </div>
 
-      <div className="relative">
-        {/* Gradient Overlays */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-card to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-card to-transparent z-10 pointer-events-none" />
+      <div 
+        className="relative"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Gradient Overlays - subtle fade */}
+        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-card via-card/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-card via-card/80 to-transparent z-10 pointer-events-none" />
 
         {/* Marquee Track */}
         <motion.div
-          className="flex gap-16"
+          className="flex items-center gap-12 md:gap-16 lg:gap-20"
           animate={{
-            x: [0, -50 * clients.length * 16],
+            x: isPaused ? undefined : [0, -50 * clients.length],
           }}
           transition={{
             x: {
               repeat: Infinity,
               repeatType: 'loop',
-              duration: 40,
+              duration: 60,
               ease: 'linear',
             },
           }}
         >
-          {/* Double the items for seamless loop */}
+          {/* Triple the items for seamless loop */}
           {[...clients, ...clients, ...clients].map((client, index) => (
             <div
               key={`${client}-${index}`}
-              className={cn(
-                'flex-shrink-0 group cursor-default',
-                'transition-all duration-500'
-              )}
+              className="flex-shrink-0"
             >
               <span
                 className={cn(
-                  'text-2xl md:text-3xl font-bold hox-brand whitespace-nowrap',
-                  'text-muted-foreground/40 grayscale',
-                  'group-hover:text-foreground group-hover:grayscale-0',
-                  'transition-all duration-500'
+                  'text-base md:text-lg font-medium whitespace-nowrap',
+                  'text-muted-foreground/50',
+                  'transition-colors duration-300',
+                  'hover:text-foreground/80'
                 )}
               >
                 {client}
