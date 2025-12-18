@@ -24,7 +24,7 @@ export function AboutSection() {
     stiffness: 100,
     damping: 30
   });
-  return <section ref={sectionRef} className="py-24 lg:py-32 relative overflow-hidden">
+  return <section ref={sectionRef} className="py-16 lg:py-24 relative overflow-hidden">
       {/* Scroll-responsive background that solidifies */}
       <motion.div className="absolute inset-0 bg-card" style={{
       opacity: backgroundOpacity

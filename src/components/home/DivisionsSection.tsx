@@ -50,7 +50,7 @@ export function DivisionsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-background relative">
+    <section ref={ref} className="py-16 lg:py-24 bg-background relative">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="mb-16 lg:mb-24">

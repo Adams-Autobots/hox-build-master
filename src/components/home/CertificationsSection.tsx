@@ -75,7 +75,7 @@ export function CertificationsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-card relative overflow-hidden">
+    <section ref={ref} className="py-16 lg:py-24 bg-card relative overflow-hidden">
       {/* Subtle Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div
