@@ -55,12 +55,9 @@ const Index = () => {
           </section>
         </CinematicReveal>
 
-
-        <CinematicReveal glowColor="red" maskDirection="up" parallaxIntensity={40}>
-          <section className="scroll-snap-section-auto cinematic-section">
-            <ContactCTA />
-          </section>
-        </CinematicReveal>
+        <section className="scroll-snap-section-auto">
+          <ContactCTA />
+        </section>
       </div>
     </Layout>
   );
