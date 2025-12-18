@@ -30,46 +30,6 @@ const achievements = [
   { value: '98%', label: 'Client Retention', icon: Star },
 ];
 
-const trustedBy = [
-  'Expo 2020 Dubai',
-  'Dubai Holding',
-  'Emaar Properties',
-  'DWTC',
-  'RTA Dubai',
-  'Mubadala',
-  'Tayto Group',
-  'Sohar Freezone',
-  'Marketing Eye',
-  'Nawah',
-  'Jewellery Design Awards',
-  'Independent Diabetes Trust',
-  'National Geographic',
-  'TP-Link',
-  'Clinell',
-  'Citizen',
-  'Rolls-Royce',
-  'Emirates Nuclear Energy',
-  'Lukoil',
-  'Cisco',
-  'Global Light & Power',
-  'Enviromena',
-  'Dubai Carbon',
-  'Gama Aviation',
-  'The Industrial Group',
-  'Dahua Technology',
-  'La Ronda',
-  'Tazzetti',
-  'SPE International',
-  'Jetour',
-  'Madame Tussauds Dubai',
-  'Bath and Body Works',
-  'Notions Group',
-  'New Zealand',
-  'Eurofiere',
-  'Madar',
-  'Cabsat',
-  'Underwriters Laboratories',
-];
 
 export function CertificationsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
@@ -189,31 +149,6 @@ export function CertificationsSection() {
           })}
         </div>
 
-        {/* Trusted By Grid */}
-        <div className="relative">
-          <div className="text-center mb-12">
-            <span className="text-sm text-muted-foreground uppercase tracking-widest">
-              Trusted by industry leaders
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 lg:gap-8">
-            {trustedBy.map((client, index) => (
-              <motion.div
-                key={client}
-                className="flex items-center justify-center p-4 rounded-lg border border-border/50 bg-background/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.03 }}
-              >
-                <span className="text-sm font-medium text-muted-foreground text-center leading-tight">
-                  {client}
-                </span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
