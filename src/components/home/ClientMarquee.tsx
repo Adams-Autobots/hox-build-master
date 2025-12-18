@@ -14,6 +14,11 @@ const clients = [
   'noon',
   'carrefour',
   'vox cinemas',
+  'national geographic',
+  'tp-link',
+  'clinell',
+  'citizen',
+  'rolls-royce',
 ];
 
 export function ClientMarquee() {
