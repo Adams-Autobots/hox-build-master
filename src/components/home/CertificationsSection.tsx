@@ -54,6 +54,12 @@ const trustedBy = [
   'Global Light & Power',
   'Enviromena',
   'Dubai Carbon',
+  'Gama Aviation',
+  'The Industrial Group',
+  'Dahua Technology',
+  'La Ronda',
+  'Tazzetti',
+  'SPE International',
 ];
 
 export function CertificationsSection() {
