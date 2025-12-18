@@ -24,7 +24,7 @@ export function ClientsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-card relative overflow-hidden">
+    <section ref={ref} className="py-16 lg:py-20 bg-card relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="text-center mb-16 lg:mb-24">

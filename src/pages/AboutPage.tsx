@@ -39,7 +39,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section ref={ref} className="py-24 lg:py-32 bg-card">
+      <section ref={ref} className="py-16 lg:py-20 bg-card">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
             <div>

@@ -23,7 +23,7 @@ const clients = [
 
 export function ClientMarquee() {
   return (
-    <section className="py-16 lg:py-24 bg-card overflow-hidden border-y border-border">
+    <section className="py-12 lg:py-16 bg-card overflow-hidden border-y border-border">
       <div className="container mx-auto px-6 lg:px-12 mb-12">
         <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-muted-foreground uppercase">
           <span className="w-8 h-px bg-muted-foreground" />
