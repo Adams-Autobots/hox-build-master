@@ -46,6 +46,21 @@ const clients = [
   'JM Posner',
   'Energy Pioneers',
   'Temac',
+  'SPF Realty',
+  'Made in Britain',
+  'Synectics',
+  'Tayto Group Limited',
+  'Sohar Port & Freezone',
+  'Marketing Eye',
+  'Nawah',
+  'Jewellery Design Awards',
+  'Independent Diabetes Trust',
+  'Nissan',
+  'Selevision',
+  'Telenor Satellite Broadcasting',
+  'Bin Ablan Food Industry',
+  'EMI',
+  'Karam',
 ];
 
 export function ClientMarquee() {
