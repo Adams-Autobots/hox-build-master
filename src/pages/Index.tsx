@@ -6,54 +6,39 @@ import { ProjectsSection } from '@/components/home/ProjectsSection';
 import { ProcessSection } from '@/components/home/ProcessSection';
 import { WhyHoxSection } from '@/components/home/WhyHoxSection';
 import { CertificationsSection } from '@/components/home/CertificationsSection';
-
 import { ContactCTA } from '@/components/home/ContactCTA';
-import { CinematicReveal } from '@/components/motion/CinematicReveal';
 
 const Index = () => {
   return (
     <Layout>
-      {/* Smooth Scroll Snap Container */}
       <div className="scroll-snap-container">
         <section className="scroll-snap-section">
           <HeroSection />
         </section>
 
-        <CinematicReveal glowColor="red" maskDirection="up" parallaxIntensity={40}>
-          <section className="scroll-snap-section-auto cinematic-section relative z-10">
-            <AboutSection />
-          </section>
-        </CinematicReveal>
+        <section className="scroll-snap-section-auto">
+          <AboutSection />
+        </section>
 
-        <CinematicReveal glowColor="blue" maskDirection="left" parallaxIntensity={50}>
-          <section className="scroll-snap-section-auto cinematic-section">
-            <DivisionsSection />
-          </section>
-        </CinematicReveal>
+        <section className="scroll-snap-section-auto">
+          <DivisionsSection />
+        </section>
 
-        <CinematicReveal glowColor="orange" maskDirection="up" parallaxIntensity={60}>
-          <section className="scroll-snap-section-auto cinematic-section">
-            <ProjectsSection />
-          </section>
-        </CinematicReveal>
+        <section className="scroll-snap-section-auto">
+          <ProjectsSection />
+        </section>
 
-        <CinematicReveal glowColor="white" maskDirection="right" parallaxIntensity={35}>
-          <section className="scroll-snap-section-auto cinematic-section">
-            <ProcessSection />
-          </section>
-        </CinematicReveal>
+        <section className="scroll-snap-section-auto">
+          <ProcessSection />
+        </section>
 
-        <CinematicReveal glowColor="green" maskDirection="up" parallaxIntensity={45}>
-          <section className="scroll-snap-section-auto cinematic-section">
-            <WhyHoxSection />
-          </section>
-        </CinematicReveal>
+        <section className="scroll-snap-section-auto">
+          <WhyHoxSection />
+        </section>
 
-        <CinematicReveal glowColor="red" maskDirection="left" parallaxIntensity={30}>
-          <section className="scroll-snap-section-auto cinematic-section">
-            <CertificationsSection />
-          </section>
-        </CinematicReveal>
+        <section className="scroll-snap-section-auto">
+          <CertificationsSection />
+        </section>
 
         <section className="scroll-snap-section-auto">
           <ContactCTA />
