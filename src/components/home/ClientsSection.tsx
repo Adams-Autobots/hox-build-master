@@ -16,8 +16,11 @@ const testimonials = [
 ];
 
 const clients = [
-  'Mercedes-Benz', 'Samsung', 'Emaar', 'Dubai Holdings', 
-  'Marriott', 'LVMH', 'Porsche', 'Apple'
+  'Expo 2020 Dubai', 'Dubai Holding', 'Emaar Properties', 'DWTC', 'RTA Dubai', 'Mubadala',
+  'Tayto Group', 'Sohar Freezone', 'Marketing Eye', 'Nawah', 'Jewellery Design Awards', 'Independent Diabetes Trust',
+  'National Geographic', 'TP-Link', 'Clinell', 'Citizen', 'Rolls-Royce', 'Emirates Nuclear Energy',
+  'Lukoil', 'Cisco', 'Global Light & Power', 'Enviromena', 'Dubai Carbon', 'Gama Aviation',
+  'The Industrial Group', 'Dahua Technology', 'La Ronda', 'Tazzetti', 'SPE International', 'Jetour'
 ];
 
 export function ClientsSection() {
@@ -95,17 +98,17 @@ export function ClientsSection() {
           <p className="text-center text-sm text-muted-foreground tracking-wider mb-8">
             Trusted by leading brands
           </p>
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden group">
             {/* Gradient overlays */}
             <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-card to-transparent z-10" />
             <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-card to-transparent z-10" />
             
             {/* Marquee */}
-            <div className="flex animate-marquee">
+            <div className="flex animate-marquee group-hover:[animation-play-state:paused]">
               {[...clients, ...clients].map((client, index) => (
                 <div
                   key={`${client}-${index}`}
-                  className="flex-shrink-0 px-8 lg:px-12 text-xl lg:text-2xl font-bold text-muted-foreground/30 hover:text-muted-foreground/60 transition-colors duration-300"
+                  className="flex-shrink-0 px-6 lg:px-10 text-base lg:text-lg font-medium text-muted-foreground/50 whitespace-nowrap"
                 >
                   {client}
                 </div>
