@@ -29,7 +29,7 @@ export function WhyHoxSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-background relative overflow-hidden">
+    <section ref={ref} className="py-16 lg:py-24 bg-background relative overflow-hidden">
       {/* Background Accent */}
       <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-primary/5 to-transparent opacity-50" />
 

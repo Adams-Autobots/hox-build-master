@@ -54,7 +54,7 @@ export function ProcessSection() {
   const lineHeight = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '100%']);
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-background relative overflow-hidden">
+    <section ref={ref} className="py-16 lg:py-24 bg-background relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-foreground to-transparent" />
