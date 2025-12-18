@@ -38,9 +38,6 @@ export function ClientMarquee() {
           <span className="w-8 h-px bg-primary" />
           Our Clients
         </span>
-        <p className="text-muted-foreground text-sm md:text-base max-w-xl">
-          We consider the completion of a project the start of a new relationship.
-        </p>
       </div>
 
       <div 
