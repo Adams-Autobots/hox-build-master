@@ -60,7 +60,7 @@ export function ProjectsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="py-16 lg:py-24 bg-card relative overflow-hidden">
+    <section ref={ref} className="py-24 lg:py-32 bg-card relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 lg:mb-24 gap-8">

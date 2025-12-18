@@ -354,21 +354,3 @@
   animation: line-reveal 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
   transform-origin: left center;
 }
-
-/* Marquee animation */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: marquee 20s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
