@@ -189,37 +189,29 @@ export function CertificationsSection() {
           })}
         </div>
 
-        {/* Trusted By Marquee */}
+        {/* Trusted By Grid */}
         <div className="relative">
-          <div className="text-center mb-8">
+          <div className="text-center mb-12">
             <span className="text-sm text-muted-foreground uppercase tracking-widest">
               Trusted by industry leaders
             </span>
           </div>
 
-          <div className="relative overflow-hidden py-4">
-            {/* Fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-card to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-card to-transparent z-10" />
-
-            <motion.div
-              className="flex gap-8 whitespace-nowrap"
-              animate={{ x: [0, -30 * trustedBy.length] }}
-              transition={{
-                duration: 30,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-            >
-              {[...trustedBy, ...trustedBy, ...trustedBy].map((client, index) => (
-                <span
-                  key={index}
-                  className="text-sm md:text-base font-medium text-muted-foreground/50 hover:text-foreground transition-colors"
-                >
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 lg:gap-8">
+            {trustedBy.map((client, index) => (
+              <motion.div
+                key={client}
+                className="flex items-center justify-center p-4 rounded-lg border border-border/50 bg-background/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.03 }}
+              >
+                <span className="text-sm font-medium text-muted-foreground text-center leading-tight">
                   {client}
                 </span>
-              ))}
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
