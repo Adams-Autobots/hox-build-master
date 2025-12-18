@@ -60,6 +60,9 @@ const trustedBy = [
   'La Ronda',
   'Tazzetti',
   'SPE International',
+  'Jetour',
+  'Madame Tussauds Dubai',
+  'Bath and Body Works',
 ];
 
 export function CertificationsSection() {
