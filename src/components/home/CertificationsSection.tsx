@@ -63,6 +63,12 @@ const trustedBy = [
   'Jetour',
   'Madame Tussauds Dubai',
   'Bath and Body Works',
+  'Notions Group',
+  'New Zealand',
+  'Eurofiere',
+  'Madar',
+  'Cabsat',
+  'Underwriters Laboratories',
 ];
 
 export function CertificationsSection() {
