@@ -37,6 +37,17 @@ const trustedBy = [
   'DWTC',
   'RTA Dubai',
   'Mubadala',
+  'Tayto Group',
+  'Sohar Freezone',
+  'Marketing Eye',
+  'Nawah',
+  'Jewellery Design Awards',
+  'Independent Diabetes Trust',
+  'National Geographic',
+  'TP-Link',
+  'Clinell',
+  'Citizen',
+  'Rolls-Royce',
 ];
 
 export function CertificationsSection() {
