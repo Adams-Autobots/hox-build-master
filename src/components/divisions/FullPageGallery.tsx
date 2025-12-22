@@ -265,7 +265,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                       division === 'interiors' && 'border-[hsl(var(--hox-green))] text-[hsl(var(--hox-green))] hover:bg-[hsl(var(--hox-green))] hover:text-white',
                     )}
                   >
-                    View All {allImages.length} Photos
+                    View All Photos
                     <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </motion.div>
