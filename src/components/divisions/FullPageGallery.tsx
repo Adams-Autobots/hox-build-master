@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import { X, ChevronLeft, ChevronRight, Expand, Grid3X3, Loader2, ArrowRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Expand, Loader2, ArrowRight } from 'lucide-react';
 import { useGalleryImages, type Division, type GalleryImage } from '@/hooks/useGalleryImages';
 import { GalleryStructuredData } from '@/components/seo/GalleryStructuredData';
 import { DivisionNav } from './DivisionNav';
@@ -45,7 +45,7 @@ const divisionRoutes: Record<Division, string> = {
 export function FullPageGallery({ division, images: fallbackImages, maxImages, showViewAll = false }: FullPageGalleryProps) {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [isGridView, setIsGridView] = useState(false);
+  
   
   const { data: dbImages, isLoading } = useGalleryImages(division);
   const allImages = dbImages && dbImages.length > 0 ? dbImages : (fallbackImages || []);
@@ -93,17 +93,6 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedIndex, closeLightbox, goToPrevious, goToNext]);
 
-  const getGridClass = (index: number) => {
-    const patterns = [
-      'col-span-2 row-span-2',
-      'col-span-1 row-span-1',
-      'col-span-1 row-span-2',
-      'col-span-1 row-span-1',
-      'col-span-2 row-span-1',
-      'col-span-1 row-span-1',
-    ];
-    return patterns[index % patterns.length];
-  };
 
   // Convert to GalleryImage type for structured data
   const galleryImages = images.map((img, i) => ({
@@ -158,17 +147,6 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
               </h2>
             </div>
 
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isVisible ? 1 : 0 }}
-              transition={{ delay: 0.3 }}
-              onClick={() => setIsGridView(!isGridView)}
-              className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:border-primary/50 transition-colors self-start md:self-auto"
-              aria-label={isGridView ? 'Switch to masonry view' : 'Switch to grid view'}
-            >
-              <Grid3X3 className="w-4 h-4" aria-hidden="true" />
-              <span className="text-sm">{isGridView ? 'Masonry View' : 'Grid View'}</span>
-            </motion.button>
           </header>
 
           {/* Loading State */}
@@ -182,12 +160,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
           {!isLoading && images.length > 0 && (
             <>
               <div
-                className={cn(
-                  'transition-all duration-500',
-                  isGridView
-                    ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
-                    : 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[200px] md:auto-rows-[250px] gap-4'
-                )}
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
                 role="list"
                 aria-label={`${division} gallery images`}
               >
@@ -203,10 +176,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                       delay: 0.1 * (index % 6),
                       duration: 0.5 
                     }}
-                    className={cn(
-                      'group relative overflow-hidden rounded-lg cursor-pointer m-0',
-                      !isGridView && getGridClass(index)
-                    )}
+                    className="group relative overflow-hidden rounded-lg cursor-pointer m-0 aspect-square"
                     onClick={() => openLightbox(index)}
                     role="listitem"
                     tabIndex={0}
