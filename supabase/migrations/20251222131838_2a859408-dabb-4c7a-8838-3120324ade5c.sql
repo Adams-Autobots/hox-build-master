@@ -1,0 +1,2 @@
+-- Enable realtime for gallery_images table
+ALTER PUBLICATION supabase_realtime ADD TABLE public.gallery_images;
