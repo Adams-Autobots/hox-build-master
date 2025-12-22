@@ -58,17 +58,15 @@ export default function GalleryAdminPage() {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [compressionProgress, setCompressionProgress] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0, fileName: '' });
   const [selectedDivision, setSelectedDivision] = useState<Division>('exhibitions');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState({ alt: '', caption: '', project: '' });
   const [dragOver, setDragOver] = useState(false);
 
-  // New image form
-  const [newImage, setNewImage] = useState({
-    file: null as File | null,
-    alt: '',
-    caption: '',
+  // Bulk upload state
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [bulkSettings, setBulkSettings] = useState({
     project: '',
     division: 'exhibitions' as Division,
   });
@@ -133,28 +131,57 @@ export default function GalleryAdminPage() {
   const handleDrop = useCallback(async (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
-    const files = Array.from(e.dataTransfer.files);
-    if (files.length > 0 && files[0].type.startsWith('image/')) {
-      const validation = await validateImage(files[0]);
-      if (!validation.valid) {
-        toast({ title: 'Invalid Image', description: validation.error, variant: 'destructive' });
-        return;
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    
+    if (files.length === 0) return;
+
+    // Validate all files
+    const validFiles: File[] = [];
+    for (const file of files) {
+      const validation = await validateImage(file);
+      if (validation.valid) {
+        validFiles.push(file);
+      } else {
+        toast({ title: `Skipped: ${file.name}`, description: validation.error, variant: 'destructive' });
       }
-      setNewImage((prev) => ({ ...prev, file: files[0] }));
+    }
+    
+    if (validFiles.length > 0) {
+      setPendingFiles(prev => [...prev, ...validFiles]);
+      toast({ title: 'Files Added', description: `${validFiles.length} image(s) ready to upload` });
     }
   }, [toast]);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files.length > 0) {
-      const validation = await validateImage(files[0]);
-      if (!validation.valid) {
-        toast({ title: 'Invalid Image', description: validation.error, variant: 'destructive' });
-        e.target.value = '';
-        return;
+    if (!files || files.length === 0) return;
+
+    const fileArray = Array.from(files).filter(f => f.type.startsWith('image/'));
+    const validFiles: File[] = [];
+    
+    for (const file of fileArray) {
+      const validation = await validateImage(file);
+      if (validation.valid) {
+        validFiles.push(file);
+      } else {
+        toast({ title: `Skipped: ${file.name}`, description: validation.error, variant: 'destructive' });
       }
-      setNewImage((prev) => ({ ...prev, file: files[0] }));
     }
+    
+    if (validFiles.length > 0) {
+      setPendingFiles(prev => [...prev, ...validFiles]);
+      toast({ title: 'Files Added', description: `${validFiles.length} image(s) ready to upload` });
+    }
+    
+    e.target.value = '';
+  };
+
+  const removeFromQueue = (index: number) => {
+    setPendingFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const clearQueue = () => {
+    setPendingFiles([]);
   };
 
   const compressImage = async (file: File): Promise<File> => {
@@ -163,82 +190,91 @@ export default function GalleryAdminPage() {
       maxWidthOrHeight: 1920,
       useWebWorker: true,
       fileType: 'image/webp' as const,
-      onProgress: (progress: number) => {
-        setCompressionProgress(progress);
-      },
     };
 
     try {
       const compressedFile = await imageCompression(file, options);
-      console.log(`Compressed from ${(file.size / 1024).toFixed(0)}KB to ${(compressedFile.size / 1024).toFixed(0)}KB`);
+      console.log(`Compressed ${file.name} from ${(file.size / 1024).toFixed(0)}KB to ${(compressedFile.size / 1024).toFixed(0)}KB`);
       return compressedFile;
     } catch (error) {
       console.error('Compression error:', error);
-      return file; // Return original if compression fails
+      return file;
     }
   };
 
-  const handleUpload = async () => {
-    if (!newImage.file || !newImage.alt) {
-      toast({ title: 'Required', description: 'Please add an image and alt text', variant: 'destructive' });
+  const handleBulkUpload = async () => {
+    if (pendingFiles.length === 0) {
+      toast({ title: 'No Files', description: 'Add images to upload', variant: 'destructive' });
       return;
     }
 
     setUploading(true);
-    setCompressionProgress(0);
+    let successCount = 0;
+    let failCount = 0;
 
-    try {
-      // Compress image before upload
-      toast({ title: 'Optimizing', description: 'Compressing image...' });
-      const compressedFile = await compressImage(newImage.file);
-      
-      // Upload to storage (always use .webp extension for compressed files)
-      const fileName = `${newImage.division}/${Date.now()}.webp`;
+    // Get current max display order
+    const { data: maxOrderData } = await supabase
+      .from('gallery_images')
+      .select('display_order')
+      .eq('division', bulkSettings.division)
+      .order('display_order', { ascending: false })
+      .limit(1);
 
-      const { error: uploadError } = await supabase.storage
-        .from('gallery-photos')
-        .upload(fileName, compressedFile, {
-          contentType: 'image/webp',
+    let nextOrder = (maxOrderData?.[0]?.display_order || 0) + 1;
+
+    for (let i = 0; i < pendingFiles.length; i++) {
+      const file = pendingFiles[i];
+      setUploadProgress({ current: i + 1, total: pendingFiles.length, fileName: file.name });
+
+      try {
+        // Compress
+        const compressedFile = await compressImage(file);
+        
+        // Upload to storage
+        const fileName = `${bulkSettings.division}/${Date.now()}-${i}.webp`;
+        const { error: uploadError } = await supabase.storage
+          .from('gallery-photos')
+          .upload(fileName, compressedFile, { contentType: 'image/webp' });
+
+        if (uploadError) throw uploadError;
+
+        // Get public URL
+        const { data: urlData } = supabase.storage
+          .from('gallery-photos')
+          .getPublicUrl(fileName);
+
+        // Insert into database (use filename as alt text)
+        const altText = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+        const { error: insertError } = await supabase.from('gallery_images').insert({
+          src: urlData.publicUrl,
+          alt: altText,
+          caption: null,
+          project: bulkSettings.project || null,
+          division: bulkSettings.division,
+          display_order: nextOrder++,
         });
 
-      if (uploadError) throw uploadError;
+        if (insertError) throw insertError;
+        successCount++;
+      } catch (error: any) {
+        console.error(`Failed to upload ${file.name}:`, error);
+        failCount++;
+      }
+    }
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from('gallery-photos')
-        .getPublicUrl(fileName);
+    setUploading(false);
+    setUploadProgress({ current: 0, total: 0, fileName: '' });
+    setPendingFiles([]);
+    fetchImages();
 
-      // Get max display order
-      const { data: maxOrderData } = await supabase
-        .from('gallery_images')
-        .select('display_order')
-        .eq('division', newImage.division)
-        .order('display_order', { ascending: false })
-        .limit(1);
-
-      const nextOrder = (maxOrderData?.[0]?.display_order || 0) + 1;
-
-      // Insert into database
-      const { error: insertError } = await supabase.from('gallery_images').insert({
-        src: urlData.publicUrl,
-        alt: newImage.alt,
-        caption: newImage.caption || null,
-        project: newImage.project || null,
-        division: newImage.division,
-        display_order: nextOrder,
+    if (failCount === 0) {
+      toast({ title: 'Success', description: `Uploaded ${successCount} image(s)` });
+    } else {
+      toast({ 
+        title: 'Partial Success', 
+        description: `${successCount} uploaded, ${failCount} failed`, 
+        variant: 'destructive' 
       });
-
-      if (insertError) throw insertError;
-
-      const savings = ((1 - compressedFile.size / newImage.file.size) * 100).toFixed(0);
-      toast({ title: 'Success', description: `Uploaded! (${savings}% smaller)` });
-      setNewImage({ file: null, alt: '', caption: '', project: '', division: selectedDivision });
-      fetchImages();
-    } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    } finally {
-      setUploading(false);
-      setCompressionProgress(0);
     }
   };
 
@@ -333,7 +369,7 @@ export default function GalleryAdminPage() {
           {/* Upload Section */}
           <div className="lg:col-span-1">
             <div className="bg-card border border-border rounded-xl p-6 sticky top-24">
-              <h2 className="text-lg font-semibold mb-4">Upload New Image</h2>
+              <h2 className="text-lg font-semibold mb-4">Bulk Upload Images</h2>
 
               {/* Drop Zone */}
               <div
@@ -343,7 +379,7 @@ export default function GalleryAdminPage() {
                 className={cn(
                   'border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer mb-4',
                   dragOver ? 'border-primary bg-primary/5' : 'border-border hover:border-muted-foreground',
-                  newImage.file && 'border-primary'
+                  pendingFiles.length > 0 && 'border-primary'
                 )}
                 onClick={() => document.getElementById('file-input')?.click()}
               >
@@ -351,40 +387,63 @@ export default function GalleryAdminPage() {
                   id="file-input"
                   type="file"
                   accept="image/*"
+                  multiple
                   onChange={handleFileSelect}
                   className="hidden"
                 />
-                {newImage.file ? (
-                  <div className="space-y-2">
-                    <img
-                      src={URL.createObjectURL(newImage.file)}
-                      alt="Preview"
-                      className="w-full h-32 object-cover rounded-lg"
-                    />
-                    <p className="text-sm text-muted-foreground truncate">
-                      {newImage.file.name} ({(newImage.file.size / 1024).toFixed(0)}KB)
-                    </p>
-                  </div>
-                ) : (
-                  <>
-                    <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">
-                      Drag & drop or click to upload
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Auto-compressed to WebP
-                    </p>
-                  </>
-                )}
+                <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  Drag & drop or click to select
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Multiple images • Auto-compressed to WebP
+                </p>
               </div>
+
+              {/* Pending Files Queue */}
+              {pendingFiles.length > 0 && (
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">{pendingFiles.length} file(s) ready</span>
+                    <Button variant="ghost" size="sm" onClick={clearQueue}>
+                      Clear all
+                    </Button>
+                  </div>
+                  <div className="max-h-40 overflow-y-auto space-y-2">
+                    {pendingFiles.map((file, index) => (
+                      <div key={index} className="flex items-center gap-2 bg-muted/50 rounded-lg p-2">
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt="Preview"
+                          className="w-10 h-10 object-cover rounded"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs truncate">{file.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {(file.size / 1024).toFixed(0)}KB
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="w-6 h-6 shrink-0"
+                          onClick={(e) => { e.stopPropagation(); removeFromQueue(index); }}
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Form Fields */}
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="division">Division</Label>
                   <Select
-                    value={newImage.division}
-                    onValueChange={(v) => setNewImage((prev) => ({ ...prev, division: v as Division }))}
+                    value={bulkSettings.division}
+                    onValueChange={(v) => setBulkSettings((prev) => ({ ...prev, division: v as Division }))}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -400,55 +459,34 @@ export default function GalleryAdminPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="alt">Alt Text *</Label>
-                  <Input
-                    id="alt"
-                    value={newImage.alt}
-                    onChange={(e) => setNewImage((prev) => ({ ...prev, alt: e.target.value }))}
-                    placeholder="Describe the image"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="project">Project Name</Label>
+                  <Label htmlFor="project">Project Name (optional)</Label>
                   <Input
                     id="project"
-                    value={newImage.project}
-                    onChange={(e) => setNewImage((prev) => ({ ...prev, project: e.target.value }))}
-                    placeholder="e.g., GITEX 2024"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="caption">Caption</Label>
-                  <Textarea
-                    id="caption"
-                    value={newImage.caption}
-                    onChange={(e) => setNewImage((prev) => ({ ...prev, caption: e.target.value }))}
-                    placeholder="Brief description"
-                    rows={2}
+                    value={bulkSettings.project}
+                    onChange={(e) => setBulkSettings((prev) => ({ ...prev, project: e.target.value }))}
+                    placeholder="Applied to all images"
                   />
                 </div>
 
                 <Button
-                  onClick={handleUpload}
-                  disabled={uploading || !newImage.file}
+                  onClick={handleBulkUpload}
+                  disabled={uploading || pendingFiles.length === 0}
                   className="w-full"
                 >
                   {uploading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      {compressionProgress < 100 ? `Compressing ${compressionProgress}%` : 'Uploading...'}
+                      {uploadProgress.current}/{uploadProgress.total}: {uploadProgress.fileName}
                     </>
                   ) : (
                     <>
                       <Upload className="w-4 h-4 mr-2" />
-                      Upload Image
+                      Upload {pendingFiles.length > 0 ? `${pendingFiles.length} Image(s)` : 'Images'}
                     </>
                   )}
                 </Button>
                 {uploading && (
-                  <Progress value={compressionProgress} className="h-1 mt-2" />
+                  <Progress value={(uploadProgress.current / uploadProgress.total) * 100} className="h-1 mt-2" />
                 )}
               </div>
             </div>
