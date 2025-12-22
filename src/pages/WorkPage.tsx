@@ -99,23 +99,23 @@ export default function WorkPage() {
                     </Link>
                   </div>
 
-                  {/* Preview Grid - 4 images */}
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Preview Grid - 4 images vertical */}
+                  <div className="grid grid-cols-1 gap-4 max-w-3xl">
                     {images.map((image) => (
                       <Link
                         key={image.id}
                         to={division.route}
-                        className="group relative overflow-hidden rounded-lg bg-card aspect-[4/3]"
+                        className="group relative overflow-hidden rounded-lg bg-card aspect-[16/9]"
                       >
                         <img
                           src={image.src}
                           alt={image.alt}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                           loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <h3 className="text-sm font-semibold text-foreground line-clamp-2">
+                        <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <h3 className="text-lg font-semibold text-foreground line-clamp-2">
                             {image.title || image.alt}
                           </h3>
                         </div>
