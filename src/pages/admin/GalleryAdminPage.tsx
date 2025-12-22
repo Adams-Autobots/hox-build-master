@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import imageCompression from 'browser-image-compression';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -237,6 +238,7 @@ function SortableImageCard({
 export default function GalleryAdminPage() {
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const [images, setImages] = useState<GalleryImage[]>([]);
@@ -467,6 +469,8 @@ export default function GalleryAdminPage() {
     setUploading(false);
     setUploadProgress({ current: 0, total: 0, fileName: '' });
     setPendingFiles([]);
+    // Invalidate React Query cache for this division
+    queryClient.invalidateQueries({ queryKey: ['gallery-images', bulkSettings.division] });
     fetchImages();
 
     if (failCount === 0) {
@@ -494,6 +498,8 @@ export default function GalleryAdminPage() {
       if (error) throw error;
 
       toast({ title: 'Deleted', description: 'Image removed' });
+      // Invalidate React Query cache for this division
+      queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
       fetchImages();
     } catch (error: any) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
@@ -531,6 +537,8 @@ export default function GalleryAdminPage() {
 
       toast({ title: 'Updated', description: 'Image SEO data saved' });
       setEditingId(null);
+      // Invalidate React Query cache for this division
+      queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
       fetchImages();
     } catch (error: any) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
@@ -574,6 +582,8 @@ export default function GalleryAdminPage() {
 
       toast({ title: 'Success', description: 'Display order saved' });
       setHasOrderChanges(false);
+      // Invalidate React Query cache for this division so other pages sync
+      queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
       fetchImages();
     } catch (error: any) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
