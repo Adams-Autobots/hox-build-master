@@ -1,6 +1,6 @@
 import { Layout } from '@/components/layout/Layout';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
-import { FeaturedCaseStudies } from '@/components/divisions/FeaturedCaseStudies';
+
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
@@ -10,26 +10,6 @@ import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Calendar, Users, Sparkles, Settings } from 'lucide-react';
 import heroEvents from '@/assets/hero-events.jpg';
 
-const caseStudies = [
-  {
-    id: 'corporate-gala',
-    title: 'annual corporate gala',
-    location: 'atlantis, dubai',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 'product-launch',
-    title: 'luxury product launch',
-    location: 'downtown dubai',
-    image: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 'conference-setup',
-    title: 'tech conference setup',
-    location: 'madinat jumeirah',
-    image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop',
-  },
-];
 
 const capabilities = [
   {
@@ -97,10 +77,6 @@ export default function EventsPage() {
 
       <DivisionFAQ division="events" />
       
-      <FeaturedCaseStudies
-        division="events"
-        caseStudies={caseStudies}
-      />
     </Layout>
   );
 }

@@ -1,6 +1,6 @@
 import { Layout } from '@/components/layout/Layout';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
-import { FeaturedCaseStudies } from '@/components/divisions/FeaturedCaseStudies';
+
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
@@ -10,26 +10,6 @@ import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Building2, Sofa, Ruler, Gem } from 'lucide-react';
 import heroInteriors from '@/assets/hero-interiors.jpg';
 
-const caseStudies = [
-  {
-    id: 'corporate-hq',
-    title: 'corporate headquarters',
-    location: 'difc, dubai',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 'restaurant-fitout',
-    title: 'signature restaurant',
-    location: 'palm jumeirah',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 'luxury-villa',
-    title: 'private villa interior',
-    location: 'emirates hills',
-    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&auto=format&fit=crop',
-  },
-];
 
 const capabilities = [
   {
@@ -97,10 +77,6 @@ export default function InteriorsPage() {
 
       <DivisionFAQ division="interiors" />
       
-      <FeaturedCaseStudies
-        division="interiors"
-        caseStudies={caseStudies}
-      />
     </Layout>
   );
 }
