@@ -7,10 +7,10 @@ import { useGalleryImages, Division } from '@/hooks/useGalleryImages';
 import { supabase } from '@/integrations/supabase/client';
 
 const divisions: { key: Division; title: string; route: string }[] = [
-  { key: 'exhibitions', title: 'Exhibitions', route: '/divisions/exhibitions' },
-  { key: 'events', title: 'Events', route: '/divisions/events' },
-  { key: 'retail', title: 'Retail', route: '/divisions/retail' },
-  { key: 'interiors', title: 'Interiors', route: '/divisions/interiors' },
+  { key: 'exhibitions', title: 'Exhibitions', route: '/gallery/exhibitions' },
+  { key: 'events', title: 'Events', route: '/gallery/events' },
+  { key: 'retail', title: 'Retail', route: '/gallery/retail' },
+  { key: 'interiors', title: 'Interiors', route: '/gallery/interiors' },
 ];
 
 export default function WorkPage() {
