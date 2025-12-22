@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Loader2 } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Layout } from '@/components/layout/Layout';
 import { cn } from '@/lib/utils';
 import { useGalleryImages, Division } from '@/hooks/useGalleryImages';
+import { supabase } from '@/integrations/supabase/client';
 
 const categories: Array<'all' | Division> = ['all', 'exhibitions', 'events', 'retail', 'interiors'];
 
@@ -16,6 +18,30 @@ const divisionRoutes: Record<Division, string> = {
 
 export default function WorkPage() {
   const [activeCategory, setActiveCategory] = useState<'all' | Division>('all');
+  const queryClient = useQueryClient();
+
+  // Subscribe to realtime changes on gallery_images
+  useEffect(() => {
+    const channel = supabase
+      .channel('gallery-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'gallery_images',
+        },
+        (payload) => {
+          // Invalidate all gallery queries when any change occurs
+          queryClient.invalidateQueries({ queryKey: ['gallery-images'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   // Fetch images from all divisions
   const { data: exhibitionsImages = [], isLoading: loadingExhibitions } = useGalleryImages('exhibitions');
