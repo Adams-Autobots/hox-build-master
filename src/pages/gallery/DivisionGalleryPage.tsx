@@ -84,7 +84,7 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
 
       {/* Gallery Grid */}
       {!isLoading && images.length > 0 && (
-        <section className="pb-24 lg:pb-32">
+        <section className="pb-32 lg:pb-32">
           <div className="container mx-auto px-6 lg:px-12">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {images.map((image, index) => (
