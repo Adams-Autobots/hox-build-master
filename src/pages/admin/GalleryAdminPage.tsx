@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import imageCompression from 'browser-image-compression';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -28,8 +27,26 @@ import {
   ArrowLeft,
   Image as ImageIcon,
   GripVertical,
+  Save,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 type Division = 'exhibitions' | 'events' | 'retail' | 'interiors';
 
@@ -50,12 +67,147 @@ const divisions: { value: Division; label: string }[] = [
   { value: 'interiors', label: 'Interiors' },
 ];
 
+interface SortableImageCardProps {
+  image: GalleryImage;
+  onEdit: (image: GalleryImage) => void;
+  onDelete: (id: string, src: string) => void;
+  isEditing: boolean;
+  editForm: { alt: string; caption: string; project: string };
+  setEditForm: React.Dispatch<React.SetStateAction<{ alt: string; caption: string; project: string }>>;
+  onSaveEdit: (id: string) => void;
+  onCancelEdit: () => void;
+}
+
+function SortableImageCard({
+  image,
+  onEdit,
+  onDelete,
+  isEditing,
+  editForm,
+  setEditForm,
+  onSaveEdit,
+  onCancelEdit,
+}: SortableImageCardProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: image.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 1000 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        'bg-card border border-border rounded-lg overflow-hidden',
+        isDragging && 'shadow-xl ring-2 ring-primary'
+      )}
+    >
+      <div className="aspect-video relative">
+        <div
+          {...attributes}
+          {...listeners}
+          className="absolute top-2 left-2 z-10 p-1.5 bg-background/80 backdrop-blur-sm rounded cursor-grab active:cursor-grabbing hover:bg-background/90 transition-colors"
+        >
+          <GripVertical className="w-4 h-4 text-muted-foreground" />
+        </div>
+        <img
+          src={image.src}
+          alt={image.alt}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute top-2 right-2 flex gap-1">
+          <Button
+            size="icon"
+            variant="secondary"
+            className="w-8 h-8"
+            onClick={() => onEdit(image)}
+          >
+            <Edit2 className="w-4 h-4" />
+          </Button>
+          <Button
+            size="icon"
+            variant="destructive"
+            className="w-8 h-8"
+            onClick={() => onDelete(image.id, image.src)}
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
+        <div className="absolute bottom-2 left-2 px-2 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-medium">
+          #{image.display_order}
+        </div>
+      </div>
+
+      <div className="p-4">
+        {isEditing ? (
+          <div className="space-y-2">
+            <Input
+              value={editForm.alt}
+              onChange={(e) => setEditForm((prev) => ({ ...prev, alt: e.target.value }))}
+              placeholder="Alt text"
+            />
+            <Input
+              value={editForm.project}
+              onChange={(e) => setEditForm((prev) => ({ ...prev, project: e.target.value }))}
+              placeholder="Project"
+            />
+            <Textarea
+              value={editForm.caption}
+              onChange={(e) => setEditForm((prev) => ({ ...prev, caption: e.target.value }))}
+              placeholder="Caption"
+              rows={2}
+            />
+            <div className="flex gap-2">
+              <Button size="sm" onClick={() => onSaveEdit(image.id)}>
+                <Check className="w-4 h-4 mr-1" />
+                Save
+              </Button>
+              <Button size="sm" variant="ghost" onClick={onCancelEdit}>
+                <X className="w-4 h-4 mr-1" />
+                Cancel
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <>
+            {image.project && (
+              <p className="text-xs font-medium text-primary mb-1">
+                {image.project}
+              </p>
+            )}
+            <p className="text-sm font-medium line-clamp-1">{image.alt}</p>
+            {image.caption && (
+              <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                {image.caption}
+              </p>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function GalleryAdminPage() {
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const [images, setImages] = useState<GalleryImage[]>([]);
+  const [localImages, setLocalImages] = useState<GalleryImage[]>([]);
+  const [hasOrderChanges, setHasOrderChanges] = useState(false);
+  const [savingOrder, setSavingOrder] = useState(false);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0, fileName: '' });
@@ -70,6 +222,24 @@ export default function GalleryAdminPage() {
     project: '',
     division: 'exhibitions' as Division,
   });
+
+  // DnD sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Sync local images with fetched data
+  useEffect(() => {
+    setLocalImages(images);
+    setHasOrderChanges(false);
+  }, [images]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -328,6 +498,51 @@ export default function GalleryAdminPage() {
     }
   };
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setLocalImages((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        const newItems = arrayMove(items, oldIndex, newIndex);
+        // Update display_order based on new positions
+        return newItems.map((item, index) => ({
+          ...item,
+          display_order: index,
+        }));
+      });
+      setHasOrderChanges(true);
+    }
+  };
+
+  const handleSaveOrder = async () => {
+    setSavingOrder(true);
+    try {
+      const updates = localImages.map((image, index) => ({
+        id: image.id,
+        display_order: index,
+      }));
+
+      for (const update of updates) {
+        const { error } = await supabase
+          .from('gallery_images')
+          .update({ display_order: update.display_order })
+          .eq('id', update.id);
+
+        if (error) throw error;
+      }
+
+      toast({ title: 'Success', description: 'Display order saved' });
+      setHasOrderChanges(false);
+      fetchImages();
+    } catch (error: any) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    } finally {
+      setSavingOrder(false);
+    }
+  };
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
@@ -495,9 +710,30 @@ export default function GalleryAdminPage() {
           {/* Gallery Section */}
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold">
-                {divisions.find((d) => d.value === selectedDivision)?.label} Gallery
-              </h2>
+              <div className="flex items-center gap-4">
+                <h2 className="text-lg font-semibold">
+                  {divisions.find((d) => d.value === selectedDivision)?.label} Gallery
+                </h2>
+                {hasOrderChanges && (
+                  <Button
+                    size="sm"
+                    onClick={handleSaveOrder}
+                    disabled={savingOrder}
+                  >
+                    {savingOrder ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4 mr-2" />
+                        Save Order
+                      </>
+                    )}
+                  </Button>
+                )}
+              </div>
               <Select
                 value={selectedDivision}
                 onValueChange={(v) => setSelectedDivision(v as Division)}
@@ -515,100 +751,48 @@ export default function GalleryAdminPage() {
               </Select>
             </div>
 
+            {hasOrderChanges && (
+              <p className="text-sm text-muted-foreground mb-4">
+                Drag images to reorder, then click "Save Order" to apply changes.
+              </p>
+            )}
+
             {loading ? (
               <div className="flex items-center justify-center py-20">
                 <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
               </div>
-            ) : images.length === 0 ? (
+            ) : localImages.length === 0 ? (
               <div className="text-center py-20 text-muted-foreground">
                 <ImageIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <p>No images in this division yet</p>
               </div>
             ) : (
-              <div className="grid sm:grid-cols-2 gap-4">
-                {images.map((image) => (
-                  <motion.div
-                    key={image.id}
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="bg-card border border-border rounded-lg overflow-hidden"
-                  >
-                    <div className="aspect-video relative">
-                      <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="w-full h-full object-cover"
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={localImages.map((img) => img.id)}
+                  strategy={rectSortingStrategy}
+                >
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {localImages.map((image) => (
+                      <SortableImageCard
+                        key={image.id}
+                        image={image}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                        isEditing={editingId === image.id}
+                        editForm={editForm}
+                        setEditForm={setEditForm}
+                        onSaveEdit={handleSaveEdit}
+                        onCancelEdit={() => setEditingId(null)}
                       />
-                      <div className="absolute top-2 right-2 flex gap-1">
-                        <Button
-                          size="icon"
-                          variant="secondary"
-                          className="w-8 h-8"
-                          onClick={() => handleEdit(image)}
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="destructive"
-                          className="w-8 h-8"
-                          onClick={() => handleDelete(image.id, image.src)}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="p-4">
-                      {editingId === image.id ? (
-                        <div className="space-y-2">
-                          <Input
-                            value={editForm.alt}
-                            onChange={(e) => setEditForm((prev) => ({ ...prev, alt: e.target.value }))}
-                            placeholder="Alt text"
-                          />
-                          <Input
-                            value={editForm.project}
-                            onChange={(e) => setEditForm((prev) => ({ ...prev, project: e.target.value }))}
-                            placeholder="Project"
-                          />
-                          <Textarea
-                            value={editForm.caption}
-                            onChange={(e) => setEditForm((prev) => ({ ...prev, caption: e.target.value }))}
-                            placeholder="Caption"
-                            rows={2}
-                          />
-                          <div className="flex gap-2">
-                            <Button size="sm" onClick={() => handleSaveEdit(image.id)}>
-                              <Check className="w-4 h-4 mr-1" />
-                              Save
-                            </Button>
-                            <Button size="sm" variant="ghost" onClick={() => setEditingId(null)}>
-                              <X className="w-4 h-4 mr-1" />
-                              Cancel
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <>
-                          {image.project && (
-                            <p className="text-xs font-medium text-primary mb-1">
-                              {image.project}
-                            </p>
-                          )}
-                          <p className="text-sm font-medium line-clamp-1">{image.alt}</p>
-                          {image.caption && (
-                            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                              {image.caption}
-                            </p>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
             )}
           </div>
         </div>
