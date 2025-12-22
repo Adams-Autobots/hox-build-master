@@ -185,8 +185,8 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                 className={cn(
                   'transition-all duration-500',
                   isGridView
-                    ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4'
-                    : 'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[200px] md:auto-rows-[250px] gap-4'
+                    ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
+                    : 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[200px] md:auto-rows-[250px] gap-4'
                 )}
                 role="list"
                 aria-label={`${division} gallery images`}
