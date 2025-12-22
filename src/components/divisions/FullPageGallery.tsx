@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { X, ChevronLeft, ChevronRight, Expand, Grid3X3, Loader2 } from 'lucide-react';
 import { useGalleryImages, type Division, type GalleryImage } from '@/hooks/useGalleryImages';
 import { GalleryStructuredData } from '@/components/seo/GalleryStructuredData';
-
+import { DivisionNav } from './DivisionNav';
 interface StaticGalleryImage {
   src: string;
   alt: string;
@@ -109,6 +109,9 @@ export function FullPageGallery({ division, images: fallbackImages }: FullPageGa
 
   return (
     <>
+      {/* Division Navigation */}
+      <DivisionNav currentDivision={division} />
+
       {/* Schema.org Structured Data */}
       <GalleryStructuredData 
         division={division} 
