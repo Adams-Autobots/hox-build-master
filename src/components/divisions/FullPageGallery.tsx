@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import { X, ChevronLeft, ChevronRight, Expand, Loader2, ArrowRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Loader2, ArrowRight } from 'lucide-react';
 import { useGalleryImages, type Division, type GalleryImage } from '@/hooks/useGalleryImages';
 import { GalleryStructuredData } from '@/components/seo/GalleryStructuredData';
 import { DivisionNav } from './DivisionNav';
@@ -192,27 +192,6 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                       decoding="async"
                     />
 
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
-
-                    {/* Figcaption - visible on hover */}
-                    <figcaption className="absolute inset-0 flex flex-col justify-end p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                      {image.project && (
-                        <span className={cn('text-xs uppercase tracking-wider mb-1', divisionColors[division])}>
-                          {image.project}
-                        </span>
-                      )}
-                      {image.caption && (
-                        <p className="text-sm md:text-base font-medium text-foreground line-clamp-2">
-                          {image.caption}
-                        </p>
-                      )}
-                    </figcaption>
-
-                    {/* Expand Icon */}
-                    <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100" aria-hidden="true">
-                      <Expand className="w-4 h-4" />
-                    </div>
                   </motion.figure>
                 ))}
               </div>
@@ -303,25 +282,6 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl"
                   />
                   
-                  {(images[selectedIndex].caption || images[selectedIndex].project) && (
-                    <motion.figcaption
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="absolute -bottom-16 left-0 right-0 text-center"
-                    >
-                      {images[selectedIndex].project && (
-                        <span className={cn('text-sm uppercase tracking-wider', divisionColors[division])}>
-                          {images[selectedIndex].project}
-                        </span>
-                      )}
-                      {images[selectedIndex].caption && (
-                        <p className="text-lg text-muted-foreground mt-1">
-                          {images[selectedIndex].caption}
-                        </p>
-                      )}
-                    </motion.figcaption>
-                  )}
                 </motion.figure>
               </AnimatePresence>
             </div>
