@@ -4,10 +4,10 @@ import { Presentation, Calendar, ShoppingBag, Home } from 'lucide-react';
 import type { Division } from '@/hooks/useGalleryImages';
 
 const divisions: { key: Division; label: string; route: string; icon: typeof Presentation }[] = [
-  { key: 'exhibitions', label: 'Exhibitions', route: '/divisions/exhibitions', icon: Presentation },
-  { key: 'events', label: 'Events', route: '/divisions/events', icon: Calendar },
-  { key: 'retail', label: 'Retail', route: '/divisions/retail', icon: ShoppingBag },
-  { key: 'interiors', label: 'Interiors', route: '/divisions/interiors', icon: Home },
+  { key: 'exhibitions', label: 'Exhibitions', route: '/gallery/exhibitions', icon: Presentation },
+  { key: 'events', label: 'Events', route: '/gallery/events', icon: Calendar },
+  { key: 'retail', label: 'Retail', route: '/gallery/retail', icon: ShoppingBag },
+  { key: 'interiors', label: 'Interiors', route: '/gallery/interiors', icon: Home },
 ];
 
 const divisionColors: Record<Division, string> = {

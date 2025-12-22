@@ -14,6 +14,10 @@ import ExhibitionsPage from "./pages/divisions/ExhibitionsPage";
 import EventsPage from "./pages/divisions/EventsPage";
 import RetailPage from "./pages/divisions/RetailPage";
 import InteriorsPage from "./pages/divisions/InteriorsPage";
+import ExhibitionsGalleryPage from "./pages/gallery/ExhibitionsGalleryPage";
+import EventsGalleryPage from "./pages/gallery/EventsGalleryPage";
+import RetailGalleryPage from "./pages/gallery/RetailGalleryPage";
+import InteriorsGalleryPage from "./pages/gallery/InteriorsGalleryPage";
 import AuthPage from "./pages/AuthPage";
 import GalleryAdminPage from "./pages/admin/GalleryAdminPage";
 import NotFound from "./pages/NotFound";
@@ -38,6 +42,10 @@ const App = () => (
           <Route path="/divisions/events" element={<EventsPage />} />
           <Route path="/divisions/retail" element={<RetailPage />} />
           <Route path="/divisions/interiors" element={<InteriorsPage />} />
+          <Route path="/gallery/exhibitions" element={<ExhibitionsGalleryPage />} />
+          <Route path="/gallery/events" element={<EventsGalleryPage />} />
+          <Route path="/gallery/retail" element={<RetailGalleryPage />} />
+          <Route path="/gallery/interiors" element={<InteriorsGalleryPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/admin/gallery" element={<GalleryAdminPage />} />
           <Route path="*" element={<NotFound />} />
