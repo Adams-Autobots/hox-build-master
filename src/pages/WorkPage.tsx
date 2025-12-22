@@ -5,6 +5,21 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Layout } from '@/components/layout/Layout';
 import { useGalleryImages, Division } from '@/hooks/useGalleryImages';
 import { supabase } from '@/integrations/supabase/client';
+import { cn } from '@/lib/utils';
+
+const divisionHoverColors: Record<Division, string> = {
+  exhibitions: 'group-hover:text-[hsl(var(--hox-red))]',
+  events: 'group-hover:text-[hsl(var(--hox-blue))]',
+  retail: 'group-hover:text-[hsl(var(--hox-orange))]',
+  interiors: 'group-hover:text-[hsl(var(--hox-green))]',
+};
+
+const divisionLinkColors: Record<Division, string> = {
+  exhibitions: 'text-[hsl(var(--hox-red))]',
+  events: 'text-[hsl(var(--hox-blue))]',
+  retail: 'text-[hsl(var(--hox-orange))]',
+  interiors: 'text-[hsl(var(--hox-green))]',
+};
 
 const divisions: { key: Division; title: string; route: string }[] = [
   { key: 'exhibitions', title: 'Exhibitions', route: '/gallery/exhibitions' },
@@ -90,10 +105,16 @@ export default function WorkPage() {
                         to={division.route}
                         className="group flex items-center justify-between"
                       >
-                        <h2 className="text-lg md:text-xl font-bold hox-brand group-hover:text-primary transition-colors">
+                        <h2 className={cn(
+                          "text-lg md:text-xl font-bold hox-brand transition-colors",
+                          divisionHoverColors[division.key]
+                        )}>
                           {division.title}
                         </h2>
-                        <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <ArrowUpRight className={cn(
+                          "w-4 h-4 text-muted-foreground transition-colors",
+                          divisionHoverColors[division.key]
+                        )} />
                       </Link>
                     </div>
 
@@ -118,7 +139,10 @@ export default function WorkPage() {
                       {/* View All Link */}
                       <Link
                         to={division.route}
-                        className="text-sm text-primary font-medium hover:underline mt-2"
+                        className={cn(
+                          "text-sm font-medium hover:underline mt-2",
+                          divisionLinkColors[division.key]
+                        )}
                       >
                         View All →
                       </Link>
