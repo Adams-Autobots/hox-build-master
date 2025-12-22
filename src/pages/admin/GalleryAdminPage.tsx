@@ -101,18 +101,58 @@ export default function GalleryAdminPage() {
     }
   }, [user, fetchImages]);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
+  const validateImage = (file: File): Promise<{ valid: boolean; error?: string }> => {
+    return new Promise((resolve) => {
+      // Check file size (max 20MB before compression)
+      const maxSize = 20 * 1024 * 1024;
+      if (file.size > maxSize) {
+        resolve({ valid: false, error: `File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Max 20MB allowed.` });
+        return;
+      }
+
+      // Check dimensions
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(img.src);
+        if (img.width < 400 || img.height < 400) {
+          resolve({ valid: false, error: `Image too small (${img.width}×${img.height}). Minimum 400×400px required.` });
+        } else if (img.width > 8000 || img.height > 8000) {
+          resolve({ valid: false, error: `Image too large (${img.width}×${img.height}). Maximum 8000×8000px allowed.` });
+        } else {
+          resolve({ valid: true });
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(img.src);
+        resolve({ valid: false, error: 'Invalid image file. Please use JPG, PNG, or WebP.' });
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  const handleDrop = useCallback(async (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0 && files[0].type.startsWith('image/')) {
+      const validation = await validateImage(files[0]);
+      if (!validation.valid) {
+        toast({ title: 'Invalid Image', description: validation.error, variant: 'destructive' });
+        return;
+      }
       setNewImage((prev) => ({ ...prev, file: files[0] }));
     }
-  }, []);
+  }, [toast]);
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
+      const validation = await validateImage(files[0]);
+      if (!validation.valid) {
+        toast({ title: 'Invalid Image', description: validation.error, variant: 'destructive' });
+        e.target.value = '';
+        return;
+      }
       setNewImage((prev) => ({ ...prev, file: files[0] }));
     }
   };
