@@ -1,12 +1,14 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import imageCompression from 'browser-image-compression';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Progress } from '@/components/ui/progress';
 import {
   Select,
   SelectContent,
@@ -56,6 +58,7 @@ export default function GalleryAdminPage() {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [compressionProgress, setCompressionProgress] = useState(0);
   const [selectedDivision, setSelectedDivision] = useState<Division>('exhibitions');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState({ alt: '', caption: '', project: '' });
@@ -114,6 +117,27 @@ export default function GalleryAdminPage() {
     }
   };
 
+  const compressImage = async (file: File): Promise<File> => {
+    const options = {
+      maxSizeMB: 0.5,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+      fileType: 'image/webp' as const,
+      onProgress: (progress: number) => {
+        setCompressionProgress(progress);
+      },
+    };
+
+    try {
+      const compressedFile = await imageCompression(file, options);
+      console.log(`Compressed from ${(file.size / 1024).toFixed(0)}KB to ${(compressedFile.size / 1024).toFixed(0)}KB`);
+      return compressedFile;
+    } catch (error) {
+      console.error('Compression error:', error);
+      return file; // Return original if compression fails
+    }
+  };
+
   const handleUpload = async () => {
     if (!newImage.file || !newImage.alt) {
       toast({ title: 'Required', description: 'Please add an image and alt text', variant: 'destructive' });
@@ -121,15 +145,21 @@ export default function GalleryAdminPage() {
     }
 
     setUploading(true);
+    setCompressionProgress(0);
 
     try {
-      // Upload to storage
-      const fileExt = newImage.file.name.split('.').pop();
-      const fileName = `${newImage.division}/${Date.now()}.${fileExt}`;
+      // Compress image before upload
+      toast({ title: 'Optimizing', description: 'Compressing image...' });
+      const compressedFile = await compressImage(newImage.file);
+      
+      // Upload to storage (always use .webp extension for compressed files)
+      const fileName = `${newImage.division}/${Date.now()}.webp`;
 
       const { error: uploadError } = await supabase.storage
         .from('gallery-photos')
-        .upload(fileName, newImage.file);
+        .upload(fileName, compressedFile, {
+          contentType: 'image/webp',
+        });
 
       if (uploadError) throw uploadError;
 
@@ -160,13 +190,15 @@ export default function GalleryAdminPage() {
 
       if (insertError) throw insertError;
 
-      toast({ title: 'Success', description: 'Image uploaded successfully' });
+      const savings = ((1 - compressedFile.size / newImage.file.size) * 100).toFixed(0);
+      toast({ title: 'Success', description: `Uploaded! (${savings}% smaller)` });
       setNewImage({ file: null, alt: '', caption: '', project: '', division: selectedDivision });
       fetchImages();
     } catch (error: any) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
     } finally {
       setUploading(false);
+      setCompressionProgress(0);
     }
   };
 
@@ -290,7 +322,7 @@ export default function GalleryAdminPage() {
                       className="w-full h-32 object-cover rounded-lg"
                     />
                     <p className="text-sm text-muted-foreground truncate">
-                      {newImage.file.name}
+                      {newImage.file.name} ({(newImage.file.size / 1024).toFixed(0)}KB)
                     </p>
                   </div>
                 ) : (
@@ -298,6 +330,9 @@ export default function GalleryAdminPage() {
                     <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
                     <p className="text-sm text-muted-foreground">
                       Drag & drop or click to upload
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Auto-compressed to WebP
                     </p>
                   </>
                 )}
@@ -363,7 +398,7 @@ export default function GalleryAdminPage() {
                   {uploading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Uploading...
+                      {compressionProgress < 100 ? `Compressing ${compressionProgress}%` : 'Uploading...'}
                     </>
                   ) : (
                     <>
@@ -372,6 +407,9 @@ export default function GalleryAdminPage() {
                     </>
                   )}
                 </Button>
+                {uploading && (
+                  <Progress value={compressionProgress} className="h-1 mt-2" />
+                )}
               </div>
             </div>
           </div>
