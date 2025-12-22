@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowLeft } from 'lucide-react';
 import { Layout } from '@/components/layout/Layout';
 import { DivisionNav } from '@/components/divisions/DivisionNav';
 import { useGalleryImages, type Division } from '@/hooks/useGalleryImages';
@@ -56,8 +57,17 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
       {/* Division Navigation */}
       <DivisionNav currentDivision={division} />
 
-      <section className="pt-32 pb-16">
+      <section className="pt-28 pb-8">
         <div className="container mx-auto px-6 lg:px-12">
+          {/* Back Link */}
+          <Link 
+            to="/projects" 
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Projects
+          </Link>
+
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
             <span className="hox-brand">{divisionTitles[division]} </span>
             <span className={divisionColors[division]}>Gallery.</span>
