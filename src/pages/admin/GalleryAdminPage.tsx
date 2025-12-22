@@ -73,8 +73,6 @@ const divisions: { value: Division; label: string }[] = [
 
 interface EditFormState {
   alt: string;
-  caption: string;
-  project: string;
   title: string;
   seo_description: string;
   keywords: string;
@@ -182,23 +180,6 @@ function SortableImageCard({
               />
             </div>
             <div>
-              <Label className="text-xs text-muted-foreground">Project</Label>
-              <Input
-                value={editForm.project}
-                onChange={(e) => setEditForm((prev) => ({ ...prev, project: e.target.value }))}
-                placeholder="Project name"
-              />
-            </div>
-            <div>
-              <Label className="text-xs text-muted-foreground">Caption</Label>
-              <Textarea
-                value={editForm.caption}
-                onChange={(e) => setEditForm((prev) => ({ ...prev, caption: e.target.value }))}
-                placeholder="Visible caption"
-                rows={2}
-              />
-            </div>
-            <div>
               <Label className="text-xs text-muted-foreground">SEO Description</Label>
               <Textarea
                 value={editForm.seo_description}
@@ -233,17 +214,7 @@ function SortableImageCard({
                 {image.title}
               </p>
             )}
-            {image.project && (
-              <p className="text-xs text-muted-foreground mb-1">
-                {image.project}
-              </p>
-            )}
             <p className="text-sm font-medium line-clamp-1">{image.alt}</p>
-            {image.caption && (
-              <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                {image.caption}
-              </p>
-            )}
             {image.keywords && image.keywords.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-2">
                 {image.keywords.slice(0, 3).map((kw, i) => (
@@ -277,13 +248,12 @@ export default function GalleryAdminPage() {
   const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0, fileName: '' });
   const [selectedDivision, setSelectedDivision] = useState<Division>('exhibitions');
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState<EditFormState>({ alt: '', caption: '', project: '', title: '', seo_description: '', keywords: '' });
+  const [editForm, setEditForm] = useState<EditFormState>({ alt: '', title: '', seo_description: '', keywords: '' });
   const [dragOver, setDragOver] = useState(false);
 
   // Bulk upload state
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [bulkSettings, setBulkSettings] = useState({
-    project: '',
     division: 'exhibitions' as Division,
   });
 
@@ -482,8 +452,6 @@ export default function GalleryAdminPage() {
         const { error: insertError } = await supabase.from('gallery_images').insert({
           src: urlData.publicUrl,
           alt: altText,
-          caption: null,
-          project: bulkSettings.project || null,
           division: bulkSettings.division,
           display_order: nextOrder++,
         });
@@ -536,8 +504,6 @@ export default function GalleryAdminPage() {
     setEditingId(image.id);
     setEditForm({
       alt: image.alt,
-      caption: image.caption || '',
-      project: image.project || '',
       title: image.title || '',
       seo_description: image.seo_description || '',
       keywords: image.keywords ? image.keywords.join(', ') : '',
@@ -555,8 +521,6 @@ export default function GalleryAdminPage() {
         .from('gallery_images')
         .update({
           alt: editForm.alt,
-          caption: editForm.caption || null,
-          project: editForm.project || null,
           title: editForm.title || null,
           seo_description: editForm.seo_description || null,
           keywords: keywordsArray.length > 0 ? keywordsArray : null,
@@ -746,16 +710,6 @@ export default function GalleryAdminPage() {
                       ))}
                     </SelectContent>
                   </Select>
-                </div>
-
-                <div>
-                  <Label htmlFor="project">Project Name (optional)</Label>
-                  <Input
-                    id="project"
-                    value={bulkSettings.project}
-                    onChange={(e) => setBulkSettings((prev) => ({ ...prev, project: e.target.value }))}
-                    placeholder="Applied to all images"
-                  />
                 </div>
 
                 <Button
