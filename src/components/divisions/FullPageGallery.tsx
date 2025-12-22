@@ -1,8 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import { X, ChevronLeft, ChevronRight, Expand, Grid3X3, Loader2 } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Expand, Grid3X3, Loader2, ArrowRight } from 'lucide-react';
 import { useGalleryImages, type Division, type GalleryImage } from '@/hooks/useGalleryImages';
 import { GalleryStructuredData } from '@/components/seo/GalleryStructuredData';
 import { DivisionNav } from './DivisionNav';
@@ -16,6 +17,8 @@ interface StaticGalleryImage {
 interface FullPageGalleryProps {
   division: Division;
   images?: StaticGalleryImage[];
+  maxImages?: number;
+  showViewAll?: boolean;
 }
 
 const divisionColors: Record<Division, string> = {
@@ -32,13 +35,22 @@ const divisionBg: Record<Division, string> = {
   interiors: 'bg-[hsl(var(--hox-green))]',
 };
 
-export function FullPageGallery({ division, images: fallbackImages }: FullPageGalleryProps) {
+const divisionRoutes: Record<Division, string> = {
+  exhibitions: '/gallery/exhibitions',
+  events: '/gallery/events',
+  retail: '/gallery/retail',
+  interiors: '/gallery/interiors',
+};
+
+export function FullPageGallery({ division, images: fallbackImages, maxImages, showViewAll = false }: FullPageGalleryProps) {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isGridView, setIsGridView] = useState(false);
   
   const { data: dbImages, isLoading } = useGalleryImages(division);
-  const images = dbImages && dbImages.length > 0 ? dbImages : (fallbackImages || []);
+  const allImages = dbImages && dbImages.length > 0 ? dbImages : (fallbackImages || []);
+  const images = maxImages ? allImages.slice(0, maxImages) : allImages;
+  const hasMoreImages = maxImages && allImages.length > maxImages;
 
   const openLightbox = useCallback((index: number) => {
     setSelectedIndex(index);
@@ -168,71 +180,97 @@ export function FullPageGallery({ division, images: fallbackImages }: FullPageGa
 
           {/* Gallery Grid with Semantic HTML */}
           {!isLoading && images.length > 0 && (
-            <div
-              className={cn(
-                'transition-all duration-500',
-                isGridView
-                  ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
-                  : 'grid grid-cols-2 md:grid-cols-4 auto-rows-[200px] md:auto-rows-[250px] gap-4'
-              )}
-              role="list"
-              aria-label={`${division} gallery images`}
-            >
-              {images.map((image, index) => (
-                <motion.figure
-                  key={index}
+            <>
+              <div
+                className={cn(
+                  'transition-all duration-500',
+                  isGridView
+                    ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4'
+                    : 'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[200px] md:auto-rows-[250px] gap-4'
+                )}
+                role="list"
+                aria-label={`${division} gallery images`}
+              >
+                {images.map((image, index) => (
+                  <motion.figure
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ 
+                      opacity: isVisible ? 1 : 0, 
+                      y: isVisible ? 0 : 20 
+                    }}
+                    transition={{ 
+                      delay: 0.1 * (index % 6),
+                      duration: 0.5 
+                    }}
+                    className={cn(
+                      'group relative overflow-hidden rounded-lg cursor-pointer m-0',
+                      !isGridView && getGridClass(index)
+                    )}
+                    onClick={() => openLightbox(index)}
+                    role="listitem"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && openLightbox(index)}
+                    aria-label={`View ${image.alt} - ${image.project || division} project`}
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      title={('title' in image && (image as GalleryImage).title) || image.alt}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                      decoding="async"
+                    />
+
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
+
+                    {/* Figcaption - visible on hover */}
+                    <figcaption className="absolute inset-0 flex flex-col justify-end p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                      {image.project && (
+                        <span className={cn('text-xs uppercase tracking-wider mb-1', divisionColors[division])}>
+                          {image.project}
+                        </span>
+                      )}
+                      {image.caption && (
+                        <p className="text-sm md:text-base font-medium text-foreground line-clamp-2">
+                          {image.caption}
+                        </p>
+                      )}
+                    </figcaption>
+
+                    {/* Expand Icon */}
+                    <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100" aria-hidden="true">
+                      <Expand className="w-4 h-4" />
+                    </div>
+                  </motion.figure>
+                ))}
+              </div>
+
+              {/* View All Button */}
+              {showViewAll && hasMoreImages && (
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
-                  animate={{ 
-                    opacity: isVisible ? 1 : 0, 
-                    y: isVisible ? 0 : 20 
-                  }}
-                  transition={{ 
-                    delay: 0.1 * (index % 6),
-                    duration: 0.5 
-                  }}
-                  className={cn(
-                    'group relative overflow-hidden rounded-lg cursor-pointer m-0',
-                    !isGridView && getGridClass(index)
-                  )}
-                  onClick={() => openLightbox(index)}
-                  role="listitem"
-                  tabIndex={0}
-                  onKeyDown={(e) => e.key === 'Enter' && openLightbox(index)}
-                  aria-label={`View ${image.alt} - ${image.project || division} project`}
+                  animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+                  transition={{ delay: 0.5 }}
+                  className="flex justify-center mt-12"
                 >
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    title={('title' in image && (image as GalleryImage).title) || image.alt}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                    decoding="async"
-                  />
-
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
-
-                  {/* Figcaption - visible on hover */}
-                  <figcaption className="absolute inset-0 flex flex-col justify-end p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                    {image.project && (
-                      <span className={cn('text-xs uppercase tracking-wider mb-1', divisionColors[division])}>
-                        {image.project}
-                      </span>
+                  <Link
+                    to={divisionRoutes[division]}
+                    className={cn(
+                      'group inline-flex items-center gap-3 px-8 py-4 rounded-full border-2 transition-all duration-300 font-medium',
+                      division === 'exhibitions' && 'border-[hsl(var(--hox-red))] text-[hsl(var(--hox-red))] hover:bg-[hsl(var(--hox-red))] hover:text-white',
+                      division === 'events' && 'border-[hsl(var(--hox-blue))] text-[hsl(var(--hox-blue))] hover:bg-[hsl(var(--hox-blue))] hover:text-white',
+                      division === 'retail' && 'border-[hsl(var(--hox-orange))] text-[hsl(var(--hox-orange))] hover:bg-[hsl(var(--hox-orange))] hover:text-white',
+                      division === 'interiors' && 'border-[hsl(var(--hox-green))] text-[hsl(var(--hox-green))] hover:bg-[hsl(var(--hox-green))] hover:text-white',
                     )}
-                    {image.caption && (
-                      <p className="text-sm md:text-base font-medium text-foreground line-clamp-2">
-                        {image.caption}
-                      </p>
-                    )}
-                  </figcaption>
-
-                  {/* Expand Icon */}
-                  <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100" aria-hidden="true">
-                    <Expand className="w-4 h-4" />
-                  </div>
-                </motion.figure>
-              ))}
-            </div>
+                  >
+                    View All {allImages.length} Photos
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </motion.div>
+              )}
+            </>
           )}
         </div>
       </section>

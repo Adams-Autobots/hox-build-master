@@ -93,7 +93,7 @@ export default function EventsPage() {
 
       <ProcessTimeline division="events" />
 
-      <FullPageGallery division="events" images={galleryImages} />
+      <FullPageGallery division="events" images={galleryImages} maxImages={36} showViewAll />
 
       <DivisionFAQ division="events" />
       

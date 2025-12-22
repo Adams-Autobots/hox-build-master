@@ -93,7 +93,7 @@ export default function RetailPage() {
 
       <ProcessTimeline division="retail" />
 
-      <FullPageGallery division="retail" images={galleryImages} />
+      <FullPageGallery division="retail" images={galleryImages} maxImages={36} showViewAll />
 
       <DivisionFAQ division="retail" />
       
