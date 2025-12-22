@@ -4,10 +4,10 @@ import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const divisions = [
-  { name: 'exhibitions', path: '/divisions/exhibitions', color: 'hox-red' },
-  { name: 'events', path: '/divisions/events', color: 'hox-blue' },
-  { name: 'retail', path: '/divisions/retail', color: 'hox-orange' },
-  { name: 'interiors', path: '/divisions/interiors', color: 'hox-green' },
+  { name: 'Exhibitions', path: '/divisions/exhibitions', color: 'hox-red' },
+  { name: 'Events', path: '/divisions/events', color: 'hox-blue' },
+  { name: 'Retail', path: '/divisions/retail', color: 'hox-orange' },
+  { name: 'Interiors', path: '/divisions/interiors', color: 'hox-green' },
 ];
 
 const navItems = [
@@ -110,7 +110,7 @@ export function Header() {
                               division.color === 'hox-green' && 'bg-hox-green'
                             )}
                           />
-                          hox{division.name}
+                          {division.name}
                         </Link>
                       ))}
                     </div>
@@ -238,7 +238,7 @@ function MobileNav() {
                               division.color === 'hox-green' && 'bg-hox-green'
                             )}
                           />
-                          hox{division.name}.
+                          {division.name}
                         </Link>
                       ))}
                     </div>
