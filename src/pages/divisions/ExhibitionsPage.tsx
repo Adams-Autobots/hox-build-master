@@ -93,7 +93,7 @@ export default function ExhibitionsPage() {
 
       <ProcessTimeline division="exhibitions" />
 
-      <FullPageGallery division="exhibitions" images={galleryImages} maxImages={36} showViewAll />
+      <FullPageGallery division="exhibitions" images={galleryImages} maxImages={16} showViewAll />
 
       <DivisionFAQ division="exhibitions" />
       

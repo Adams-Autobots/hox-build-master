@@ -93,7 +93,7 @@ export default function InteriorsPage() {
 
       <ProcessTimeline division="interiors" />
 
-      <FullPageGallery division="interiors" images={galleryImages} maxImages={36} showViewAll />
+      <FullPageGallery division="interiors" images={galleryImages} maxImages={16} showViewAll />
 
       <DivisionFAQ division="interiors" />
       
