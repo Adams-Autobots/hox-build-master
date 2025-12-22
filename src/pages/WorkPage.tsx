@@ -1,23 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Loader2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Layout } from '@/components/layout/Layout';
-import { cn } from '@/lib/utils';
 import { useGalleryImages, Division } from '@/hooks/useGalleryImages';
 import { supabase } from '@/integrations/supabase/client';
 
-const categories: Array<'all' | Division> = ['all', 'exhibitions', 'events', 'retail', 'interiors'];
-
-const divisionRoutes: Record<Division, string> = {
-  exhibitions: '/divisions/exhibitions',
-  events: '/divisions/events',
-  retail: '/divisions/retail',
-  interiors: '/divisions/interiors',
-};
+const divisions: { key: Division; title: string; route: string }[] = [
+  { key: 'exhibitions', title: 'Exhibitions', route: '/divisions/exhibitions' },
+  { key: 'events', title: 'Events', route: '/divisions/events' },
+  { key: 'retail', title: 'Retail', route: '/divisions/retail' },
+  { key: 'interiors', title: 'Interiors', route: '/divisions/interiors' },
+];
 
 export default function WorkPage() {
-  const [activeCategory, setActiveCategory] = useState<'all' | Division>('all');
   const queryClient = useQueryClient();
 
   // Subscribe to realtime changes on gallery_images
@@ -31,8 +27,7 @@ export default function WorkPage() {
           schema: 'public',
           table: 'gallery_images',
         },
-        (payload) => {
-          // Invalidate all gallery queries when any change occurs
+        () => {
           queryClient.invalidateQueries({ queryKey: ['gallery-images'] });
         }
       )
@@ -51,18 +46,12 @@ export default function WorkPage() {
 
   const isLoading = loadingExhibitions || loadingEvents || loadingRetail || loadingInteriors;
 
-  // Combine all images - they're already sorted by display_order from the hook
-  const allProjects = [
-    ...exhibitionsImages,
-    ...eventsImages,
-    ...retailImages,
-    ...interiorsImages,
-  ];
-
-  // Filter by category, maintaining display_order within each division
-  const filteredProjects = activeCategory === 'all' 
-    ? allProjects 
-    : allProjects.filter(p => p.division === activeCategory);
+  const divisionImages: Record<Division, typeof exhibitionsImages> = {
+    exhibitions: exhibitionsImages,
+    events: eventsImages,
+    retail: retailImages,
+    interiors: interiorsImages,
+  };
 
   return (
     <Layout>
@@ -78,80 +67,67 @@ export default function WorkPage() {
         </div>
       </section>
 
-      <section className="pb-24 lg:pb-32">
-        <div className="container mx-auto px-6 lg:px-12">
-          {/* Filter */}
-          <div className="flex flex-wrap gap-3 mb-12">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={cn(
-                  'px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 hox-brand capitalize',
-                  activeCategory === cat
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-card border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30'
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Loading State */}
-          {isLoading && (
-            <div className="flex items-center justify-center py-24">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            </div>
-          )}
-
-          {/* Empty State */}
-          {!isLoading && filteredProjects.length === 0 && (
-            <div className="text-center py-24">
-              <p className="text-muted-foreground">No projects found in this category.</p>
-            </div>
-          )}
-
-          {/* Projects Grid */}
-          {!isLoading && filteredProjects.length > 0 && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProjects.map((project) => (
-                <Link
-                  key={project.id}
-                  to={divisionRoutes[project.division]}
-                  className="group relative overflow-hidden rounded-lg bg-card"
-                >
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img
-                      src={project.src}
-                      alt={project.alt}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-                  </div>
-                  <div className="absolute inset-0 flex flex-col justify-end p-6">
-                    <span className="text-xs font-medium uppercase tracking-wider text-primary mb-2">
-                      {project.division}
-                    </span>
-                    <h3 className="text-xl font-bold text-foreground hox-brand group-hover:text-primary transition-colors line-clamp-2">
-                      {project.title || project.alt}
-                    </h3>
-                    {project.seo_description && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                        {project.seo_description}
-                      </p>
-                    )}
-                  </div>
-                  <div className="absolute top-4 right-4 w-10 h-10 rounded-full border border-foreground/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all group-hover:bg-primary/10 group-hover:border-primary">
-                    <ArrowUpRight className="w-4 h-4 text-primary" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+      {/* Loading State */}
+      {isLoading && (
+        <div className="flex items-center justify-center py-24">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
-      </section>
+      )}
+
+      {/* Division Sections */}
+      {!isLoading && (
+        <section className="pb-24 lg:pb-32">
+          <div className="container mx-auto px-6 lg:px-12 space-y-20">
+            {divisions.map((division) => {
+              const images = divisionImages[division.key].slice(0, 4);
+              
+              if (images.length === 0) return null;
+
+              return (
+                <div key={division.key} className="group/section">
+                  {/* Section Header */}
+                  <div className="flex items-center justify-between mb-8">
+                    <h2 className="text-3xl md:text-4xl font-bold hox-brand">
+                      {division.title}
+                    </h2>
+                    <Link
+                      to={division.route}
+                      className="flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all duration-300"
+                    >
+                      View All
+                      <ArrowUpRight className="w-5 h-5" />
+                    </Link>
+                  </div>
+
+                  {/* Preview Grid - 4 images */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {images.map((image) => (
+                      <Link
+                        key={image.id}
+                        to={division.route}
+                        className="group relative overflow-hidden rounded-lg bg-card aspect-[4/3]"
+                      >
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <h3 className="text-sm font-semibold text-foreground line-clamp-2">
+                            {image.title || image.alt}
+                          </h3>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </Layout>
   );
 }
