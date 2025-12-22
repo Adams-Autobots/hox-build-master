@@ -39,33 +39,6 @@ export function DivisionNav({ currentDivision }: DivisionNavProps) {
 
   return (
     <>
-      {/* Desktop Navigation - Right Side */}
-      <nav 
-        className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-2"
-        aria-label="Division navigation"
-      >
-        {divisions.map((division) => {
-          const isActive = location.pathname === division.route;
-          
-          return (
-            <Link
-              key={division.key}
-              to={division.route}
-              className={cn(
-                'px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-300 text-right',
-                isActive 
-                  ? divisionActiveBg[division.key]
-                  : cn('bg-background/80 backdrop-blur-sm border-border/50 text-muted-foreground', divisionColors[division.key])
-              )}
-              aria-label={`Go to ${division.label}`}
-              aria-current={isActive ? 'page' : undefined}
-            >
-              {division.label}
-            </Link>
-          );
-        })}
-      </nav>
-
       {/* Mobile Navigation - Bottom */}
       <nav 
         className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-md border-t border-border"
