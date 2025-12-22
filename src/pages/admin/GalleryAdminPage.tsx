@@ -58,6 +58,10 @@ interface GalleryImage {
   project: string | null;
   division: string;
   display_order: number;
+  // SEO fields
+  title: string | null;
+  seo_description: string | null;
+  keywords: string[] | null;
 }
 
 const divisions: { value: Division; label: string }[] = [
@@ -67,13 +71,22 @@ const divisions: { value: Division; label: string }[] = [
   { value: 'interiors', label: 'Interiors' },
 ];
 
+interface EditFormState {
+  alt: string;
+  caption: string;
+  project: string;
+  title: string;
+  seo_description: string;
+  keywords: string;
+}
+
 interface SortableImageCardProps {
   image: GalleryImage;
   onEdit: (image: GalleryImage) => void;
   onDelete: (id: string, src: string) => void;
   isEditing: boolean;
-  editForm: { alt: string; caption: string; project: string };
-  setEditForm: React.Dispatch<React.SetStateAction<{ alt: string; caption: string; project: string }>>;
+  editForm: EditFormState;
+  setEditForm: React.Dispatch<React.SetStateAction<EditFormState>>;
   onSaveEdit: (id: string) => void;
   onCancelEdit: () => void;
 }
@@ -151,24 +164,58 @@ function SortableImageCard({
 
       <div className="p-4">
         {isEditing ? (
-          <div className="space-y-2">
-            <Input
-              value={editForm.alt}
-              onChange={(e) => setEditForm((prev) => ({ ...prev, alt: e.target.value }))}
-              placeholder="Alt text"
-            />
-            <Input
-              value={editForm.project}
-              onChange={(e) => setEditForm((prev) => ({ ...prev, project: e.target.value }))}
-              placeholder="Project"
-            />
-            <Textarea
-              value={editForm.caption}
-              onChange={(e) => setEditForm((prev) => ({ ...prev, caption: e.target.value }))}
-              placeholder="Caption"
-              rows={2}
-            />
-            <div className="flex gap-2">
+          <div className="space-y-3">
+            <div>
+              <Label className="text-xs text-muted-foreground">Alt Text (SEO)</Label>
+              <Input
+                value={editForm.alt}
+                onChange={(e) => setEditForm((prev) => ({ ...prev, alt: e.target.value }))}
+                placeholder="Descriptive alt text"
+              />
+            </div>
+            <div>
+              <Label className="text-xs text-muted-foreground">SEO Title</Label>
+              <Input
+                value={editForm.title}
+                onChange={(e) => setEditForm((prev) => ({ ...prev, title: e.target.value }))}
+                placeholder="Image title for search engines"
+              />
+            </div>
+            <div>
+              <Label className="text-xs text-muted-foreground">Project</Label>
+              <Input
+                value={editForm.project}
+                onChange={(e) => setEditForm((prev) => ({ ...prev, project: e.target.value }))}
+                placeholder="Project name"
+              />
+            </div>
+            <div>
+              <Label className="text-xs text-muted-foreground">Caption</Label>
+              <Textarea
+                value={editForm.caption}
+                onChange={(e) => setEditForm((prev) => ({ ...prev, caption: e.target.value }))}
+                placeholder="Visible caption"
+                rows={2}
+              />
+            </div>
+            <div>
+              <Label className="text-xs text-muted-foreground">SEO Description</Label>
+              <Textarea
+                value={editForm.seo_description}
+                onChange={(e) => setEditForm((prev) => ({ ...prev, seo_description: e.target.value }))}
+                placeholder="Longer description for structured data"
+                rows={2}
+              />
+            </div>
+            <div>
+              <Label className="text-xs text-muted-foreground">Keywords (comma-separated)</Label>
+              <Input
+                value={editForm.keywords}
+                onChange={(e) => setEditForm((prev) => ({ ...prev, keywords: e.target.value }))}
+                placeholder="exhibition, trade show, booth"
+              />
+            </div>
+            <div className="flex gap-2 pt-2">
               <Button size="sm" onClick={() => onSaveEdit(image.id)}>
                 <Check className="w-4 h-4 mr-1" />
                 Save
@@ -181,8 +228,13 @@ function SortableImageCard({
           </div>
         ) : (
           <>
+            {image.title && (
+              <p className="text-xs text-primary font-medium mb-1 truncate" title={image.title}>
+                {image.title}
+              </p>
+            )}
             {image.project && (
-              <p className="text-xs font-medium text-primary mb-1">
+              <p className="text-xs text-muted-foreground mb-1">
                 {image.project}
               </p>
             )}
@@ -191,6 +243,18 @@ function SortableImageCard({
               <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
                 {image.caption}
               </p>
+            )}
+            {image.keywords && image.keywords.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {image.keywords.slice(0, 3).map((kw, i) => (
+                  <span key={i} className="text-xs bg-muted px-1.5 py-0.5 rounded">
+                    {kw}
+                  </span>
+                ))}
+                {image.keywords.length > 3 && (
+                  <span className="text-xs text-muted-foreground">+{image.keywords.length - 3}</span>
+                )}
+              </div>
             )}
           </>
         )}
@@ -213,7 +277,7 @@ export default function GalleryAdminPage() {
   const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0, fileName: '' });
   const [selectedDivision, setSelectedDivision] = useState<Division>('exhibitions');
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState({ alt: '', caption: '', project: '' });
+  const [editForm, setEditForm] = useState<EditFormState>({ alt: '', caption: '', project: '', title: '', seo_description: '', keywords: '' });
   const [dragOver, setDragOver] = useState(false);
 
   // Bulk upload state
@@ -474,23 +538,34 @@ export default function GalleryAdminPage() {
       alt: image.alt,
       caption: image.caption || '',
       project: image.project || '',
+      title: image.title || '',
+      seo_description: image.seo_description || '',
+      keywords: image.keywords ? image.keywords.join(', ') : '',
     });
   };
 
   const handleSaveEdit = async (id: string) => {
     try {
+      const keywordsArray = editForm.keywords
+        .split(',')
+        .map(k => k.trim())
+        .filter(k => k.length > 0);
+
       const { error } = await supabase
         .from('gallery_images')
         .update({
           alt: editForm.alt,
           caption: editForm.caption || null,
           project: editForm.project || null,
+          title: editForm.title || null,
+          seo_description: editForm.seo_description || null,
+          keywords: keywordsArray.length > 0 ? keywordsArray : null,
         })
         .eq('id', id);
 
       if (error) throw error;
 
-      toast({ title: 'Updated', description: 'Image metadata saved' });
+      toast({ title: 'Updated', description: 'Image SEO data saved' });
       setEditingId(null);
       fetchImages();
     } catch (error: any) {

@@ -22,8 +22,11 @@ export type Database = {
           display_order: number | null
           division: string
           id: string
+          keywords: string[] | null
           project: string | null
+          seo_description: string | null
           src: string
+          title: string | null
         }
         Insert: {
           alt: string
@@ -32,8 +35,11 @@ export type Database = {
           display_order?: number | null
           division: string
           id?: string
+          keywords?: string[] | null
           project?: string | null
+          seo_description?: string | null
           src: string
+          title?: string | null
         }
         Update: {
           alt?: string
@@ -42,8 +48,11 @@ export type Database = {
           display_order?: number | null
           division?: string
           id?: string
+          keywords?: string[] | null
           project?: string | null
+          seo_description?: string | null
           src?: string
+          title?: string | null
         }
         Relationships: []
       }

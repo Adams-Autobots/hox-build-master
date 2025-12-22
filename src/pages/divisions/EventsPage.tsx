@@ -5,6 +5,8 @@ import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
+import { DivisionMeta } from '@/components/seo/DivisionMeta';
+import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Calendar, Users, Sparkles, Settings } from 'lucide-react';
 import heroEvents from '@/assets/hero-events.jpg';
 
@@ -64,8 +66,16 @@ const galleryImages = [
 ];
 
 export default function EventsPage() {
+  const { data: galleryImagesData } = useGalleryImages('events');
+  
   return (
     <Layout>
+      <DivisionMeta
+        division="events"
+        title="Event Production & Stage Design | HOX Dubai"
+        description="End-to-end event production from corporate galas to large-scale festivals. Stage design, technical production, and immersive experiences in UAE."
+        images={galleryImagesData}
+      />
       <DivisionHero
         division="events"
         tagline="hoxevents."

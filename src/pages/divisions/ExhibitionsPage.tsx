@@ -5,6 +5,8 @@ import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
+import { DivisionMeta } from '@/components/seo/DivisionMeta';
+import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Boxes, Hammer, Lightbulb, Truck } from 'lucide-react';
 import heroExhibitions from '@/assets/hero-exhibitions.jpg';
 
@@ -64,8 +66,16 @@ const galleryImages = [
 ];
 
 export default function ExhibitionsPage() {
+  const { data: galleryImagesData } = useGalleryImages('exhibitions');
+  
   return (
     <Layout>
+      <DivisionMeta
+        division="exhibitions"
+        title="Exhibition Stand Design & Build | HOX Dubai"
+        description="Custom exhibition stands engineered for impact. Double-decker builds, pavilions, and bespoke architecture for trade shows and expos in UAE."
+        images={galleryImagesData}
+      />
       <DivisionHero
         division="exhibitions"
         tagline="hoxexhibitions."
