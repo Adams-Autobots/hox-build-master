@@ -25,14 +25,15 @@ export default function WorkPage() {
 
   const isLoading = loadingExhibitions || loadingEvents || loadingRetail || loadingInteriors;
 
-  // Combine all images with division info
+  // Combine all images - they're already sorted by display_order from the hook
   const allProjects = [
-    ...exhibitionsImages.map(img => ({ ...img, division: 'exhibitions' as Division })),
-    ...eventsImages.map(img => ({ ...img, division: 'events' as Division })),
-    ...retailImages.map(img => ({ ...img, division: 'retail' as Division })),
-    ...interiorsImages.map(img => ({ ...img, division: 'interiors' as Division })),
+    ...exhibitionsImages,
+    ...eventsImages,
+    ...retailImages,
+    ...interiorsImages,
   ];
 
+  // Filter by category, maintaining display_order within each division
   const filteredProjects = activeCategory === 'all' 
     ? allProjects 
     : allProjects.filter(p => p.division === activeCategory);
