@@ -11,6 +11,10 @@ export interface GalleryImage {
   project?: string;
   division: Division;
   display_order: number;
+  // SEO fields
+  title?: string;
+  seo_description?: string;
+  keywords?: string[];
 }
 
 export function useGalleryImages(division: Division) {
@@ -36,6 +40,9 @@ export function useGalleryImages(division: Division) {
         project: img.project || undefined,
         division: img.division as Division,
         display_order: img.display_order || 0,
+        title: img.title || undefined,
+        seo_description: img.seo_description || undefined,
+        keywords: img.keywords || undefined,
       }));
     },
   });

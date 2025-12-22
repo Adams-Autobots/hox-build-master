@@ -5,6 +5,8 @@ import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
+import { DivisionMeta } from '@/components/seo/DivisionMeta';
+import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Building2, Sofa, Ruler, Gem } from 'lucide-react';
 import heroInteriors from '@/assets/hero-interiors.jpg';
 
@@ -64,8 +66,16 @@ const galleryImages = [
 ];
 
 export default function InteriorsPage() {
+  const { data: galleryImagesData } = useGalleryImages('interiors');
+  
   return (
     <Layout>
+      <DivisionMeta
+        division="interiors"
+        title="Interior Design & Fit-out | HOX Dubai"
+        description="Commercial and residential interior fit-outs with bespoke joinery and premium finishes. Offices, restaurants, and luxury homes in UAE."
+        images={galleryImagesData}
+      />
       <DivisionHero
         division="interiors"
         tagline="hoxinteriors."

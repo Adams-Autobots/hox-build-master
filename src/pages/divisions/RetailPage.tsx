@@ -5,6 +5,8 @@ import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
+import { DivisionMeta } from '@/components/seo/DivisionMeta';
+import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Store, Palette, Package, Wrench } from 'lucide-react';
 import heroRetail from '@/assets/hero-retail.jpg';
 
@@ -64,8 +66,16 @@ const galleryImages = [
 ];
 
 export default function RetailPage() {
+  const { data: galleryImagesData } = useGalleryImages('retail');
+  
   return (
     <Layout>
+      <DivisionMeta
+        division="retail"
+        title="Retail Store Design & Fit-out | HOX Dubai"
+        description="Turnkey retail builds from flagship stores to pop-up kiosks. Visual merchandising, custom fixtures, and multi-location rollouts in UAE."
+        images={galleryImagesData}
+      />
       <DivisionHero
         division="retail"
         tagline="hoxretail."
