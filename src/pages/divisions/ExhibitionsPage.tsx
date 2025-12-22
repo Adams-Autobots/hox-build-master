@@ -1,6 +1,6 @@
 import { Layout } from '@/components/layout/Layout';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
-import { FeaturedCaseStudies } from '@/components/divisions/FeaturedCaseStudies';
+
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
 import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
@@ -10,26 +10,6 @@ import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Boxes, Hammer, Lightbulb, Truck } from 'lucide-react';
 import heroExhibitions from '@/assets/hero-exhibitions.jpg';
 
-const caseStudies = [
-  {
-    id: 'expo-2020-pavilion',
-    title: 'expo 2020 country pavilion',
-    location: 'dubai, uae',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 'gitex-technology',
-    title: 'gitex technology stand',
-    location: 'dubai world trade centre',
-    image: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&auto=format&fit=crop',
-  },
-  {
-    id: 'automotive-launch',
-    title: 'automotive brand launch',
-    location: 'abu dhabi, uae',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop',
-  },
-];
 
 const capabilities = [
   {
@@ -97,10 +77,6 @@ export default function ExhibitionsPage() {
 
       <DivisionFAQ division="exhibitions" />
       
-      <FeaturedCaseStudies
-        division="exhibitions"
-        caseStudies={caseStudies}
-      />
     </Layout>
   );
 }
