@@ -2,11 +2,10 @@ import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import { X, ChevronLeft, ChevronRight, Expand, Grid3X3 } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Expand, Grid3X3, Loader2 } from 'lucide-react';
+import { useGalleryImages, type Division, type GalleryImage } from '@/hooks/useGalleryImages';
 
-type Division = 'exhibitions' | 'events' | 'retail' | 'interiors';
-
-interface GalleryImage {
+interface StaticGalleryImage {
   src: string;
   alt: string;
   caption?: string;
@@ -15,7 +14,7 @@ interface GalleryImage {
 
 interface FullPageGalleryProps {
   division: Division;
-  images: GalleryImage[];
+  images?: StaticGalleryImage[]; // Optional fallback images
 }
 
 const divisionColors: Record<Division, string> = {
@@ -32,10 +31,14 @@ const divisionBg: Record<Division, string> = {
   interiors: 'bg-[hsl(var(--hox-green))]',
 };
 
-export function FullPageGallery({ division, images }: FullPageGalleryProps) {
+export function FullPageGallery({ division, images: fallbackImages }: FullPageGalleryProps) {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isGridView, setIsGridView] = useState(false);
+  
+  // Fetch images from database, fallback to static images
+  const { data: dbImages, isLoading } = useGalleryImages(division);
+  const images = dbImages && dbImages.length > 0 ? dbImages : (fallbackImages || []);
 
   const openLightbox = useCallback((index: number) => {
     setSelectedIndex(index);
@@ -134,7 +137,15 @@ export function FullPageGallery({ division, images }: FullPageGalleryProps) {
             </motion.button>
           </div>
 
+          {/* Loading State */}
+          {isLoading && (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+            </div>
+          )}
+
           {/* Gallery Grid */}
+          {!isLoading && images.length > 0 && (
           <div
             className={cn(
               'transition-all duration-500',
@@ -193,6 +204,7 @@ export function FullPageGallery({ division, images }: FullPageGalleryProps) {
               </motion.div>
             ))}
           </div>
+          )}
         </div>
       </section>
 
