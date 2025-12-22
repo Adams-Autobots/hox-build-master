@@ -74,57 +74,59 @@ export default function WorkPage() {
         </div>
       )}
 
-      {/* Division Sections */}
+      {/* Division Columns */}
       {!isLoading && (
         <section className="pb-24 lg:pb-32">
-          <div className="container mx-auto px-6 lg:px-12 space-y-20">
-            {divisions.map((division) => {
-              const images = divisionImages[division.key].slice(0, 4);
-              
-              if (images.length === 0) return null;
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+              {divisions.map((division) => {
+                const images = divisionImages[division.key].slice(0, 4);
 
-              return (
-                <div key={division.key} className="group/section">
-                  {/* Section Header */}
-                  <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-3xl md:text-4xl font-bold hox-brand">
-                      {division.title}
-                    </h2>
-                    <Link
-                      to={division.route}
-                      className="flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all duration-300"
-                    >
-                      View All
-                      <ArrowUpRight className="w-5 h-5" />
-                    </Link>
-                  </div>
-
-                  {/* Preview Grid - 4 images vertical */}
-                  <div className="grid grid-cols-1 gap-4 max-w-3xl">
-                    {images.map((image) => (
+                return (
+                  <div key={division.key} className="flex flex-col">
+                    {/* Column Header */}
+                    <div className="mb-4">
                       <Link
-                        key={image.id}
                         to={division.route}
-                        className="group relative overflow-hidden rounded-lg bg-card aspect-[16/9]"
+                        className="group flex items-center justify-between"
                       >
-                        <img
-                          src={image.src}
-                          alt={image.alt}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <h3 className="text-lg font-semibold text-foreground line-clamp-2">
-                            {image.title || image.alt}
-                          </h3>
-                        </div>
+                        <h2 className="text-lg md:text-xl font-bold hox-brand group-hover:text-primary transition-colors">
+                          {division.title}
+                        </h2>
+                        <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
                       </Link>
-                    ))}
+                    </div>
+
+                    {/* Stacked Photos */}
+                    <div className="flex flex-col gap-3">
+                      {images.map((image) => (
+                        <Link
+                          key={image.id}
+                          to={division.route}
+                          className="group relative overflow-hidden rounded-lg bg-card aspect-[4/3]"
+                        >
+                          <img
+                            src={image.src}
+                            alt={image.alt}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </Link>
+                      ))}
+                      
+                      {/* View All Link */}
+                      <Link
+                        to={division.route}
+                        className="text-sm text-primary font-medium hover:underline mt-2"
+                      >
+                        View All →
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </section>
       )}
