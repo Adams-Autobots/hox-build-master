@@ -105,7 +105,7 @@ export function DivisionHero({
           {/* Dark overlay for text readability */}
           <div className={cn(
             "absolute inset-0",
-            division === 'retail' ? "bg-background/40" : "bg-background/60"
+            division === 'retail' ? "bg-background/40" : "bg-background/50"
           )} />
         </div>
       )}
