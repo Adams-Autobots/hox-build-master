@@ -9,6 +9,7 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages';
 import { Home, Store, Building2, Hammer } from 'lucide-react';
 import heroInteriors from '@/assets/hero-interiors.jpg';
+import heroInteriorsVideo from '@/assets/hero-interiors-video.mp4';
 import { useMemo } from 'react';
 
 const capabilityTitles = [
@@ -56,6 +57,8 @@ export default function InteriorsPage() {
         description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
         ctaText="Request interiors proposal"
         heroImage={heroInteriors}
+        heroVideo={heroInteriorsVideo}
+        cropLeft
       />
       
       <CapabilitiesGrid
