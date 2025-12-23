@@ -22,6 +22,13 @@ const divisionRoutes: Record<string, string> = {
   interiors: '/gallery/interiors',
 };
 
+const divisionColors: Record<string, string> = {
+  exhibitions: 'bg-amber-500 text-white',
+  events: 'bg-rose-500 text-white',
+  retail: 'bg-emerald-500 text-white',
+  interiors: 'bg-sky-500 text-white',
+};
+
 // Fisher-Yates shuffle algorithm
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -126,8 +133,7 @@ export function ProjectsSection() {
                     alt={image.alt}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="absolute bottom-4 left-4 text-white text-sm font-medium capitalize opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className={`absolute bottom-3 left-3 px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full ${divisionColors[image.division] || 'bg-primary text-primary-foreground'}`}>
                     {image.division}
                   </span>
                 </div>
