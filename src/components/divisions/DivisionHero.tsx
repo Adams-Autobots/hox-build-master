@@ -86,20 +86,21 @@ export function DivisionHero({
               const video = e.currentTarget;
               const direction = video.dataset.direction || 'forward';
               
-              // When playing forward and near end, switch to reverse
-              if (direction === 'forward' && video.currentTime >= video.duration - 0.1) {
+              // When playing forward and near end, switch to reverse immediately
+              if (direction === 'forward' && video.currentTime >= video.duration - 0.05) {
                 video.dataset.direction = 'reverse';
                 video.pause();
                 let lastTime = performance.now();
                 const reversePlay = (currentTime: number) => {
-                  const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
+                  const deltaTime = (currentTime - lastTime) / 1000;
                   lastTime = currentTime;
                   
-                  if (video.currentTime > 0.1) {
-                    video.currentTime = Math.max(0, video.currentTime - deltaTime); // Match forward playback speed
+                  if (video.currentTime > 0.05) {
+                    video.currentTime = Math.max(0, video.currentTime - deltaTime);
                     requestAnimationFrame(reversePlay);
                   } else {
                     video.dataset.direction = 'forward';
+                    video.currentTime = 0;
                     video.play();
                   }
                 };
