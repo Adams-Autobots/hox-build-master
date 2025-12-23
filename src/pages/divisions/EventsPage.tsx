@@ -9,7 +9,7 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages';
 import { Heart, Users, Theater, Palette } from 'lucide-react';
 import heroEvents from '@/assets/hero-events.jpg';
-import heroEventsVideo from '@/assets/hero-events-video.mp4';
+import heroEventsVideo from '@/assets/hero-events-video-v2.mp4';
 import { useMemo } from 'react';
 
 const capabilityTitles = [

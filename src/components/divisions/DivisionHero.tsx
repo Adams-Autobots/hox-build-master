@@ -66,6 +66,7 @@ export function DivisionHero({
       {heroVideo && (
         <div className="absolute inset-0 z-0 overflow-hidden">
           <video
+            key={heroVideo}
             src={heroVideo}
             autoPlay
             muted
