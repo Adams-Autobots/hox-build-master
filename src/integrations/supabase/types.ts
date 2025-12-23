@@ -22,6 +22,7 @@ export type Database = {
           display_order: number | null
           division: string
           id: string
+          is_featured: boolean
           keywords: string[] | null
           project: string | null
           seo_description: string | null
@@ -35,6 +36,7 @@ export type Database = {
           display_order?: number | null
           division: string
           id?: string
+          is_featured?: boolean
           keywords?: string[] | null
           project?: string | null
           seo_description?: string | null
@@ -48,6 +50,7 @@ export type Database = {
           display_order?: number | null
           division?: string
           id?: string
+          is_featured?: boolean
           keywords?: string[] | null
           project?: string | null
           seo_description?: string | null

@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useMemo } from 'react';
 
 interface GalleryImage {
   id: string;
@@ -21,26 +22,43 @@ const divisionRoutes: Record<string, string> = {
   interiors: '/gallery/interiors',
 };
 
+// Fisher-Yates shuffle algorithm
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export function ProjectsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
-  const { data: images, isLoading } = useQuery({
+  const { data: allFeaturedImages, isLoading } = useQuery({
     queryKey: ['featured-gallery-images'],
     queryFn: async (): Promise<GalleryImage[]> => {
       const { data, error } = await supabase
         .from('gallery_images')
         .select('id, src, alt, division')
-        .order('display_order', { ascending: true })
-        .limit(6);
+        .eq('is_featured', true)
+        .order('display_order', { ascending: true });
 
       if (error) {
-        console.error('Error fetching gallery images:', error);
+        console.error('Error fetching featured gallery images:', error);
         throw error;
       }
 
       return data || [];
     },
   });
+
+  // Shuffle and pick 6 random featured images (memoized per render cycle)
+  const images = useMemo(() => {
+    if (!allFeaturedImages || allFeaturedImages.length === 0) return [];
+    const shuffled = shuffleArray(allFeaturedImages);
+    return shuffled.slice(0, 6);
+  }, [allFeaturedImages]);
 
   return (
     <section ref={ref} className="py-16 lg:py-20 bg-card relative overflow-hidden">
