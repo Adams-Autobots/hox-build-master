@@ -7,7 +7,7 @@ import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages } from '@/hooks/useGalleryImages';
-import { Heart, Users, Volume2, Theater, Palette } from 'lucide-react';
+import { Heart, Users, Theater, Palette } from 'lucide-react';
 import heroEvents from '@/assets/hero-events.jpg';
 
 
@@ -23,12 +23,6 @@ const capabilities = [
     title: 'Corporate Events',
     description: 'Conferences, galas, product launches and team events',
     backgroundImage: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Volume2,
-    title: 'Light and Sound',
-    description: 'Professional audio-visual and lighting solutions',
-    backgroundImage: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop',
   },
   {
     icon: Theater,
