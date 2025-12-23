@@ -71,10 +71,8 @@ export function DivisionHero({
             muted
             playsInline
             className={cn(
-              "absolute object-cover",
-              division === 'retail' 
-                ? "w-[105%] h-[105%] -left-[2.5%] top-0" 
-                : "w-full h-full inset-0"
+              "absolute inset-0 w-full h-full object-cover",
+              division === 'retail' && "scale-[1.15] origin-top"
             )}
             style={{ 
               minWidth: '100%', 
