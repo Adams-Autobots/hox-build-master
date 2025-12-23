@@ -70,10 +70,8 @@ export function DivisionHero({
             autoPlay
             muted
             playsInline
-            className={cn(
-              "min-h-full min-w-full object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-              cropLeft ? "object-center" : "object-center"
-            )}
+            className="w-full h-full object-cover absolute inset-0"
+            style={{ minWidth: '100%', minHeight: '100%' }}
             onTimeUpdate={(e) => {
               const video = e.currentTarget;
               const direction = video.dataset.direction || 'forward';
