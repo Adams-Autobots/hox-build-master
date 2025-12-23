@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useVideoLoop } from '@/hooks/useVideoLoop';
 
 interface DivisionHeroProps {
   division: 'exhibitions' | 'events' | 'retail' | 'interiors';
@@ -59,6 +60,7 @@ export function DivisionHero({
   cropLeft = false,
 }: DivisionHeroProps) {
   const config = divisionConfig[division];
+  const videoLoop = useVideoLoop();
 
   return (
     <section className="relative min-h-[80vh] flex items-center pt-32 pb-24 overflow-hidden">
@@ -82,37 +84,7 @@ export function DivisionHero({
               minHeight: '100%',
               objectPosition: division === 'retail' ? 'center top' : division === 'interiors' ? 'center top' : 'center center'
             }}
-            onLoadedMetadata={(e) => {
-              const video = e.currentTarget;
-              video.dataset.direction = 'forward';
-            }}
-            onTimeUpdate={(e) => {
-              const video = e.currentTarget;
-              const direction = video.dataset.direction || 'forward';
-              
-              if (direction === 'forward' && video.currentTime >= video.duration - 0.01) {
-                video.dataset.direction = 'reverse';
-                video.pause();
-                const playbackRate = 1;
-                let lastTime = performance.now();
-                
-                const reversePlay = (currentTime: number) => {
-                  const deltaTime = ((currentTime - lastTime) / 1000) * playbackRate;
-                  lastTime = currentTime;
-                  const newTime = video.currentTime - deltaTime;
-                  
-                  if (newTime > 0.01) {
-                    video.currentTime = newTime;
-                    requestAnimationFrame(reversePlay);
-                  } else {
-                    video.currentTime = 0.01;
-                    video.dataset.direction = 'forward';
-                    video.play();
-                  }
-                };
-                requestAnimationFrame(reversePlay);
-              }
-            }}
+            {...videoLoop}
           />
           {/* Dark overlay for text readability */}
           <div className={cn(
