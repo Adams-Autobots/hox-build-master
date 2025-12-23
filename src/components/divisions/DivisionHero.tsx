@@ -70,6 +70,10 @@ export function DivisionHero({
             loop
             playsInline
             className="w-full h-[115%] object-cover object-top"
+            onLoadedMetadata={(e) => {
+              const video = e.currentTarget;
+              video.currentTime = 0.5; // Skip black frame at start
+            }}
           />
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-background/60" />
