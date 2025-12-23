@@ -78,7 +78,7 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
           
           <h2
             className={cn(
-              'text-2xl md:text-3xl lg:text-4xl font-bold leading-tight transition-all duration-700 delay-150',
+              'text-3xl md:text-4xl lg:text-5xl font-bold leading-tight transition-all duration-700 delay-150',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
