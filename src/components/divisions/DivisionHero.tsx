@@ -96,7 +96,10 @@ export function DivisionHero({
             }}
           />
           {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-background/60" />
+          <div className={cn(
+            "absolute inset-0",
+            division === 'retail' ? "bg-background/40" : "bg-background/60"
+          )} />
         </div>
       )}
 
