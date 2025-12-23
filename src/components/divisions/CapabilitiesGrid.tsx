@@ -141,12 +141,9 @@ function CapabilityCard({ capability, index, iconColor, accentColor }: Capabilit
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
-        <h3 className="text-xl lg:text-2xl font-bold mb-2 text-white hox-brand">
+        <h3 className="text-xl lg:text-2xl font-bold text-white hox-brand">
           {capability.title}
         </h3>
-        <p className="text-sm text-white/80 leading-relaxed line-clamp-3">
-          {capability.description}
-        </p>
       </div>
 
       {/* Hover Border Glow */}
