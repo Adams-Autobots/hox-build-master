@@ -23,10 +23,10 @@ const divisionRoutes: Record<string, string> = {
 };
 
 const divisionColors: Record<string, string> = {
-  exhibitions: 'bg-amber-500 text-white',
-  events: 'bg-rose-500 text-white',
-  retail: 'bg-emerald-500 text-white',
-  interiors: 'bg-sky-500 text-white',
+  exhibitions: 'bg-[hsl(var(--hox-red))] text-white',
+  events: 'bg-[hsl(var(--hox-blue))] text-white',
+  retail: 'bg-[hsl(var(--hox-orange))] text-white',
+  interiors: 'bg-[hsl(var(--hox-green))] text-white',
 };
 
 // Fisher-Yates shuffle algorithm
