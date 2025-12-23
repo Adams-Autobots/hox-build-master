@@ -71,11 +71,8 @@ export function DivisionHero({
             playsInline
             className="w-full h-[115%] object-cover object-top"
           />
-          {/* Dark overlay with division-colored glow */}
-          <div className={cn(
-            "absolute inset-0 bg-background/60",
-            division === 'events' && "bg-gradient-to-t from-hox-blue/30 via-background/50 to-background/60"
-          )} />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-background/60" />
         </div>
       )}
 
