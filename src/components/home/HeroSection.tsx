@@ -37,9 +37,39 @@ export function HeroSection() {
           src={heroVideo}
           autoPlay
           muted
-          loop
           playsInline
           className="w-full h-full object-cover scale-x-[-1]"
+          onLoadedMetadata={(e) => {
+            const video = e.currentTarget;
+            video.dataset.direction = 'forward';
+          }}
+          onTimeUpdate={(e) => {
+            const video = e.currentTarget;
+            const direction = video.dataset.direction || 'forward';
+            
+            if (direction === 'forward' && video.currentTime >= video.duration - 0.01) {
+              video.dataset.direction = 'reverse';
+              video.pause();
+              const playbackRate = 1;
+              let lastTime = performance.now();
+              
+              const reversePlay = (currentTime: number) => {
+                const deltaTime = ((currentTime - lastTime) / 1000) * playbackRate;
+                lastTime = currentTime;
+                const newTime = video.currentTime - deltaTime;
+                
+                if (newTime > 0.01) {
+                  video.currentTime = newTime;
+                  requestAnimationFrame(reversePlay);
+                } else {
+                  video.currentTime = 0.01;
+                  video.dataset.direction = 'forward';
+                  video.play();
+                }
+              };
+              requestAnimationFrame(reversePlay);
+            }
+          }}
         />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/50" />
