@@ -16,21 +16,25 @@ const capabilities = [
     icon: Home,
     title: 'residential',
     description: 'Luxury home interiors with premium finishes, custom layouts, and attention to every detail.',
+    backgroundImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&auto=format&fit=crop',
   },
   {
     icon: Store,
     title: 'retail interiors',
     description: 'Branded retail environments that enhance customer experience and drive engagement.',
+    backgroundImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop',
   },
   {
     icon: Building2,
     title: 'commercial',
     description: 'Offices, F&B venues, and hospitality spaces built to brand specifications and functional needs.',
+    backgroundImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&auto=format&fit=crop',
   },
   {
     icon: Hammer,
     title: 'bespoke joinery',
     description: 'Precision-crafted furniture, cabinetry, and millwork tailored to your exact requirements.',
+    backgroundImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop',
   },
 ];
 
