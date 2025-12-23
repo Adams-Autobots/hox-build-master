@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 interface Capability {
   icon: LucideIcon;
   title: string;
-  description: string;
+  description?: string;
   backgroundImage?: string;
   backgroundVideo?: string;
 }

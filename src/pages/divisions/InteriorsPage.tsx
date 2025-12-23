@@ -9,33 +9,13 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Home, Store, Building2, Hammer } from 'lucide-react';
 import heroInteriors from '@/assets/hero-interiors.jpg';
+import { useMemo } from 'react';
 
-
-const capabilities = [
-  {
-    icon: Home,
-    title: 'Residential Fit-outs',
-    description: 'Villas, apartments, single rooms and refurbishments',
-    backgroundImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Building2,
-    title: 'Commercial Projects',
-    description: 'Offices, hospitality and corporate environments',
-    backgroundImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Store,
-    title: 'Retail Turnkey',
-    description: 'Store design and brand rollouts',
-    backgroundImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Hammer,
-    title: 'Bespoke Joinery',
-    description: 'One offs, feature pieces and custom cabinets',
-    backgroundImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop',
-  },
+const capabilityTitles = [
+  { icon: Home, title: 'Residential Fit-outs' },
+  { icon: Building2, title: 'Commercial Projects' },
+  { icon: Store, title: 'Retail Turnkey' },
+  { icon: Hammer, title: 'Bespoke Joinery' },
 ];
 
 const galleryImages = [
@@ -51,6 +31,13 @@ const galleryImages = [
 
 export default function InteriorsPage() {
   const { data: galleryImagesData } = useGalleryImages('interiors');
+  
+  const capabilities = useMemo(() => {
+    return capabilityTitles.map((cap, index) => ({
+      ...cap,
+      backgroundImage: galleryImagesData?.[index]?.src || '',
+    }));
+  }, [galleryImagesData]);
   
   return (
     <Layout>

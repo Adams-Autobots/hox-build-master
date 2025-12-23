@@ -9,33 +9,13 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Boxes, Hammer, Lightbulb, Truck } from 'lucide-react';
 import heroExhibitions from '@/assets/hero-exhibitions.jpg';
+import { useMemo } from 'react';
 
-
-const capabilities = [
-  {
-    icon: Boxes,
-    title: 'Custom Stands',
-    description: 'Bespoke exhibition stands designed and built to your specifications',
-    backgroundImage: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Hammer,
-    title: 'National Pavilions',
-    description: 'Large-scale country pavilions for world expos and trade fairs',
-    backgroundImage: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Shell Scheme',
-    description: 'Modular booth solutions with custom branding and finishes',
-    backgroundImage: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Truck,
-    title: 'Full Show Contracting',
-    description: 'Complete exhibition management from setup to teardown',
-    backgroundImage: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop',
-  },
+const capabilityTitles = [
+  { icon: Boxes, title: 'Custom Stands' },
+  { icon: Hammer, title: 'National Pavilions' },
+  { icon: Lightbulb, title: 'Shell Scheme' },
+  { icon: Truck, title: 'Full Show Contracting' },
 ];
 
 const galleryImages = [
@@ -51,6 +31,13 @@ const galleryImages = [
 
 export default function ExhibitionsPage() {
   const { data: galleryImagesData } = useGalleryImages('exhibitions');
+  
+  const capabilities = useMemo(() => {
+    return capabilityTitles.map((cap, index) => ({
+      ...cap,
+      backgroundImage: galleryImagesData?.[index]?.src || '',
+    }));
+  }, [galleryImagesData]);
   
   return (
     <Layout>
