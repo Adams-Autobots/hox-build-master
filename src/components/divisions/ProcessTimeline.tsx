@@ -61,13 +61,13 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="py-16 lg:py-20 bg-card">
+    <section ref={ref} className="py-12 lg:py-16 bg-card">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="max-w-3xl mb-16">
+        <div className="max-w-3xl mb-10">
           <span
             className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6 transition-all duration-700',
+              'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-4 transition-all duration-700',
               divisionColors[division],
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
@@ -78,7 +78,7 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
           
           <h2
             className={cn(
-              'text-3xl md:text-4xl lg:text-5xl font-bold leading-tight transition-all duration-700 delay-150',
+              'text-2xl md:text-3xl lg:text-4xl font-bold leading-tight transition-all duration-700 delay-150',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
@@ -87,71 +87,63 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
           </h2>
         </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical Line */}
-          <div 
-            className={cn(
-              'absolute left-8 lg:left-1/2 top-0 bottom-0 w-px bg-border transition-all duration-1000 origin-top',
-              isVisible ? 'scale-y-100' : 'scale-y-0'
-            )}
-          />
+        {/* Horizontal Card Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+          {processSteps.map((step, index) => {
+            const Icon = step.icon;
 
-          {/* Steps */}
-          <div className="space-y-12 lg:space-y-16">
-            {processSteps.map((step, index) => {
-              const Icon = step.icon;
-              const isEven = index % 2 === 0;
-
-              return (
-                <div
-                  key={step.title}
-                  className={cn(
-                    'relative grid lg:grid-cols-2 gap-8 items-center transition-all duration-700',
-                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  )}
-                  style={{ transitionDelay: `${300 + index * 150}ms` }}
-                >
-                  {/* Content - alternates sides on desktop */}
-                  <div
+            return (
+              <div
+                key={step.title}
+                className={cn(
+                  'relative group transition-all duration-700',
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                )}
+                style={{ transitionDelay: `${200 + index * 100}ms` }}
+              >
+                {/* Connecting line (hidden on first card and mobile) */}
+                {index > 0 && (
+                  <div 
                     className={cn(
-                      'lg:pr-16 pl-20 lg:pl-0',
-                      isEven ? 'lg:text-right lg:pr-16' : 'lg:order-2 lg:pl-16'
+                      'hidden lg:block absolute -left-3 lg:-left-3 top-6 w-6 h-px bg-border'
                     )}
-                  >
-                    <h3 className="text-2xl font-bold mb-3">
-                      <span className={cn('mr-2', divisionColors[division])}>0{index + 1}.</span>
-                      {step.title}
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
+                  />
+                )}
 
-                  {/* Icon Node */}
-                  <div
-                    className={cn(
-                      'absolute left-0 lg:left-1/2 lg:-translate-x-1/2 flex items-center justify-center',
-                      isEven ? '' : 'lg:order-1'
-                    )}
-                  >
+                {/* Card */}
+                <div className={cn(
+                  'p-4 rounded-lg border border-border/50 bg-background/50 h-full',
+                  'hover:border-border transition-colors duration-300'
+                )}>
+                  {/* Icon & Step Number */}
+                  <div className="flex items-center gap-3 mb-3">
                     <div
                       className={cn(
-                        'w-16 h-16 rounded-full border-2 flex items-center justify-center bg-background transition-all duration-500',
+                        'w-10 h-10 rounded-full border flex items-center justify-center flex-shrink-0',
                         divisionBorders[division],
-                        'group-hover:scale-110'
+                        divisionBg[division]
                       )}
                     >
-                      <Icon className={cn('w-6 h-6', divisionColors[division])} />
+                      <Icon className={cn('w-4 h-4', divisionColors[division])} />
                     </div>
+                    <span className={cn('text-xs font-medium', divisionColors[division])}>
+                      0{index + 1}
+                    </span>
                   </div>
 
-                  {/* Empty space for alternating layout */}
-                  <div className={cn('hidden lg:block', isEven ? 'lg:order-2' : 'lg:order-1')} />
+                  {/* Title */}
+                  <h3 className="text-base font-semibold mb-2 capitalize">
+                    {step.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {step.description}
+                  </p>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
