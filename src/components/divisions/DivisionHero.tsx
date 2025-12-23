@@ -13,6 +13,7 @@ interface DivisionHeroProps {
   ctaText: string;
   heroImage?: string;
   heroVideo?: string;
+  cropLeft?: boolean;
 }
 
 const divisionConfig = {
@@ -55,6 +56,7 @@ export function DivisionHero({
   ctaText,
   heroImage,
   heroVideo,
+  cropLeft = false,
 }: DivisionHeroProps) {
   const config = divisionConfig[division];
 
@@ -68,7 +70,10 @@ export function DivisionHero({
             autoPlay
             muted
             playsInline
-            className="w-full h-[115%] object-cover object-top"
+            className={cn(
+              "h-[115%] object-cover",
+              cropLeft ? "w-[120%] -ml-[10%] object-center" : "w-full object-top"
+            )}
             onTimeUpdate={(e) => {
               const video = e.currentTarget;
               const direction = video.dataset.direction || 'forward';
