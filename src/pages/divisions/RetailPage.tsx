@@ -9,6 +9,7 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages';
 import { Store, Palette, Package, Wrench } from 'lucide-react';
 import heroRetail from '@/assets/hero-retail.jpg';
+import heroRetailVideo from '@/assets/hero-retail-video.mp4';
 import { useMemo } from 'react';
 
 const capabilityTitles = [
@@ -56,6 +57,7 @@ export default function RetailPage() {
         description="We build retail environments that drive foot traffic and conversions. From flagship stores to pop-up activations, every detail is designed to sell."
         ctaText="Request retail proposal"
         heroImage={heroRetail}
+        heroVideo={heroRetailVideo}
       />
       
       <CapabilitiesGrid
