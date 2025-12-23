@@ -6,7 +6,7 @@ import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { DivisionMeta } from '@/components/seo/DivisionMeta';
-import { useGalleryImages } from '@/hooks/useGalleryImages';
+import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages';
 import { Store, Palette, Package, Wrench } from 'lucide-react';
 import heroRetail from '@/assets/hero-retail.jpg';
 import { useMemo } from 'react';
@@ -31,13 +31,14 @@ const galleryImages = [
 
 export default function RetailPage() {
   const { data: galleryImagesData } = useGalleryImages('retail');
+  const { data: capabilityImagesData } = useCapabilityImages('retail');
   
   const capabilities = useMemo(() => {
     return capabilityTitles.map((cap, index) => ({
       ...cap,
-      backgroundImage: galleryImagesData?.[index]?.src || '',
+      backgroundImage: capabilityImagesData?.[index]?.src || '',
     }));
-  }, [galleryImagesData]);
+  }, [capabilityImagesData]);
   
   return (
     <Layout>

@@ -17,6 +17,7 @@ export type Database = {
       gallery_images: {
         Row: {
           alt: string
+          capability_index: number | null
           caption: string | null
           created_at: string
           display_order: number | null
@@ -31,6 +32,7 @@ export type Database = {
         }
         Insert: {
           alt: string
+          capability_index?: number | null
           caption?: string | null
           created_at?: string
           display_order?: number | null
@@ -45,6 +47,7 @@ export type Database = {
         }
         Update: {
           alt?: string
+          capability_index?: number | null
           caption?: string | null
           created_at?: string
           display_order?: number | null

@@ -30,6 +30,7 @@ import {
   GripVertical,
   Save,
   Star,
+  LayoutGrid,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -61,6 +62,7 @@ interface GalleryImage {
   division: string;
   display_order: number;
   is_featured: boolean;
+  capability_index: number | null;
   // SEO fields
   title: string | null;
   seo_description: string | null;
@@ -86,6 +88,7 @@ interface SortableImageCardProps {
   onEdit: (image: GalleryImage) => void;
   onDelete: (id: string, src: string) => void;
   onToggleFeatured: (id: string, isFeatured: boolean) => void;
+  onSetCapability: (id: string, capabilityIndex: number | null) => void;
   isEditing: boolean;
   editForm: EditFormState;
   setEditForm: React.Dispatch<React.SetStateAction<EditFormState>>;
@@ -98,6 +101,7 @@ function SortableImageCard({
   onEdit,
   onDelete,
   onToggleFeatured,
+  onSetCapability,
   isEditing,
   editForm,
   setEditForm,
@@ -143,6 +147,21 @@ function SortableImageCard({
           className="w-full h-full object-cover"
         />
         <div className="absolute top-2 right-2 flex gap-1">
+          <Select
+            value={image.capability_index?.toString() ?? 'none'}
+            onValueChange={(v) => onSetCapability(image.id, v === 'none' ? null : parseInt(v))}
+          >
+            <SelectTrigger className="w-8 h-8 p-0 bg-background/80 backdrop-blur-sm border-0" title="Set as capability card background">
+              <LayoutGrid className={cn("w-4 h-4 mx-auto", image.capability_index !== null && "text-primary")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">Not a card</SelectItem>
+              <SelectItem value="0">Card 1</SelectItem>
+              <SelectItem value="1">Card 2</SelectItem>
+              <SelectItem value="2">Card 3</SelectItem>
+              <SelectItem value="3">Card 4</SelectItem>
+            </SelectContent>
+          </Select>
           <Button
             size="icon"
             variant={image.is_featured ? "default" : "secondary"}
@@ -173,6 +192,11 @@ function SortableImageCard({
           <span className="px-2 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-medium">
             #{image.display_order}
           </span>
+          {image.capability_index !== null && (
+            <span className="px-2 py-1 bg-primary/90 backdrop-blur-sm rounded text-xs font-medium text-primary-foreground">
+              Card {image.capability_index + 1}
+            </span>
+          )}
           {image.is_featured && (
             <span className="px-2 py-1 bg-yellow-500/90 backdrop-blur-sm rounded text-xs font-medium text-black">
               Featured
@@ -547,6 +571,36 @@ export default function GalleryAdminPage() {
     }
   };
 
+  const handleSetCapability = async (id: string, capabilityIndex: number | null) => {
+    try {
+      // If setting a capability index, first clear it from any other image in this division
+      if (capabilityIndex !== null) {
+        await supabase
+          .from('gallery_images')
+          .update({ capability_index: null })
+          .eq('division', selectedDivision)
+          .eq('capability_index', capabilityIndex);
+      }
+
+      const { error } = await supabase
+        .from('gallery_images')
+        .update({ capability_index: capabilityIndex })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      const capLabels = ['Card 1', 'Card 2', 'Card 3', 'Card 4'];
+      toast({ 
+        title: capabilityIndex !== null ? `Set as ${capLabels[capabilityIndex]}` : 'Removed from capability cards',
+        description: capabilityIndex !== null ? 'This image will appear on the capability card' : 'Image is now a regular gallery image'
+      });
+      queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
+      fetchImages();
+    } catch (error: any) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    }
+  };
+
   const handleEdit = (image: GalleryImage) => {
     setEditingId(image.id);
     setEditForm({
@@ -865,6 +919,7 @@ export default function GalleryAdminPage() {
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                         onToggleFeatured={handleToggleFeatured}
+                        onSetCapability={handleSetCapability}
                         isEditing={editingId === image.id}
                         editForm={editForm}
                         setEditForm={setEditForm}
