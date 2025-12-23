@@ -6,7 +6,7 @@ import { ProcessTimeline } from '@/components/divisions/ProcessTimeline';
 import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { DivisionMeta } from '@/components/seo/DivisionMeta';
-import { useGalleryImages } from '@/hooks/useGalleryImages';
+import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages';
 import { Heart, Users, Theater, Palette } from 'lucide-react';
 import heroEvents from '@/assets/hero-events.jpg';
 import { useMemo } from 'react';
@@ -31,13 +31,14 @@ const galleryImages = [
 
 export default function EventsPage() {
   const { data: galleryImagesData } = useGalleryImages('events');
+  const { data: capabilityImagesData } = useCapabilityImages('events');
   
   const capabilities = useMemo(() => {
     return capabilityTitles.map((cap, index) => ({
       ...cap,
-      backgroundImage: galleryImagesData?.[index]?.src || '',
+      backgroundImage: capabilityImagesData?.[index]?.src || '',
     }));
-  }, [galleryImagesData]);
+  }, [capabilityImagesData]);
   
   return (
     <Layout>
