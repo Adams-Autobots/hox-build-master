@@ -35,7 +35,7 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
     <section className="py-16 lg:py-20 bg-card">
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
-          className="text-center mb-16"
+          className="mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -44,9 +44,8 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
           <span className={cn('inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-4', iconColor)}>
             <span className="w-8 h-px bg-current" />
             Capabilities
-            <span className="w-8 h-px bg-current" />
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold"><span className="hox-brand">What we </span><span className={iconColor}>Deliver.</span></h2>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold"><span className="hox-brand">What we </span><span className={iconColor}>Deliver.</span></h2>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
