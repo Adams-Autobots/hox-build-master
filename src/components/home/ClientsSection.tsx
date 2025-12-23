@@ -27,21 +27,20 @@ export function ClientsSection() {
     <section ref={ref} className="py-16 lg:py-20 bg-card relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="text-center mb-16 lg:mb-24">
+        <div className="mb-12 lg:mb-16">
           <span
             className={cn(
-              'inline-flex items-center justify-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
+              'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
             <span className="w-8 h-px bg-primary" />
             Trusted across the UAE
-            <span className="w-8 h-px bg-primary" />
           </span>
 
           <h2
             className={cn(
-              'text-4xl md:text-5xl font-bold transition-all duration-700 delay-150',
+              'text-3xl md:text-4xl lg:text-5xl font-bold transition-all duration-700 delay-150',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
