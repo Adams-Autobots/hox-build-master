@@ -7,30 +7,30 @@ import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages } from '@/hooks/useGalleryImages';
-import { Building2, Sofa, Ruler, Gem } from 'lucide-react';
+import { Home, Store, Building2, Hammer } from 'lucide-react';
 import heroInteriors from '@/assets/hero-interiors.jpg';
 
 
 const capabilities = [
   {
+    icon: Home,
+    title: 'residential',
+    description: 'Luxury home interiors with premium finishes, custom layouts, and attention to every detail.',
+  },
+  {
+    icon: Store,
+    title: 'retail interiors',
+    description: 'Branded retail environments that enhance customer experience and drive engagement.',
+  },
+  {
     icon: Building2,
-    title: 'commercial interiors',
-    description: 'Offices, F&B venues, and hospitality spaces built to brand specifications.',
+    title: 'commercial',
+    description: 'Offices, F&B venues, and hospitality spaces built to brand specifications and functional needs.',
   },
   {
-    icon: Sofa,
-    title: 'residential fit-outs',
-    description: 'Luxury home interiors with bespoke joinery and premium finishes.',
-  },
-  {
-    icon: Ruler,
-    title: 'custom millwork',
-    description: 'Precision-crafted furniture, cabinetry, and architectural elements.',
-  },
-  {
-    icon: Gem,
-    title: 'premium materials',
-    description: 'Access to rare materials, artisan finishes, and exclusive surfaces.',
+    icon: Hammer,
+    title: 'bespoke joinery',
+    description: 'Precision-crafted furniture, cabinetry, and millwork tailored to your exact requirements.',
   },
 ];
 
