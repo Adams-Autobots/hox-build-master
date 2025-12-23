@@ -7,6 +7,7 @@ import { X, ChevronLeft, ChevronRight, Loader2, ArrowRight } from 'lucide-react'
 import { useGalleryImages, type Division, type GalleryImage } from '@/hooks/useGalleryImages';
 import { GalleryStructuredData } from '@/components/seo/GalleryStructuredData';
 import { DivisionNav } from './DivisionNav';
+import { LazyImage } from '@/components/ui/LazyImage';
 interface StaticGalleryImage {
   src: string;
   alt: string;
@@ -183,13 +184,12 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                     onKeyDown={(e) => e.key === 'Enter' && openLightbox(index)}
                     aria-label={`View ${image.alt} - ${image.project || division} project`}
                   >
-                    <img
+                    <LazyImage
                       src={image.src}
                       alt={image.alt}
                       title={('title' in image && (image as GalleryImage).title) || image.alt}
+                      containerClassName="w-full h-full"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      loading="lazy"
-                      decoding="async"
                     />
 
                   </motion.figure>
