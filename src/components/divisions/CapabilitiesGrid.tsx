@@ -141,7 +141,6 @@ function CapabilityCard({ capability, index, iconColor, accentColor }: Capabilit
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
-        <capability.icon className={cn('w-10 h-10 mb-4 transition-transform duration-300 group-hover:scale-110', iconColor)} />
         <h3 className="text-xl lg:text-2xl font-bold mb-2 text-white hox-brand">
           {capability.title}
         </h3>
