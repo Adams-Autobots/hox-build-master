@@ -60,11 +60,35 @@ export function ProjectsSection() {
     },
   });
 
-  // Shuffle and pick 6 random featured images (memoized per render cycle)
+  // Pick specific distribution: 2 exhibitions, 2 events, 1 retail, 1 interiors
   const images = useMemo(() => {
     if (!allFeaturedImages || allFeaturedImages.length === 0) return [];
-    const shuffled = shuffleArray(allFeaturedImages);
-    return shuffled.slice(0, 6);
+    
+    const byDivision: Record<string, GalleryImage[]> = {
+      exhibitions: [],
+      events: [],
+      retail: [],
+      interiors: [],
+    };
+    
+    allFeaturedImages.forEach((img) => {
+      if (byDivision[img.division]) {
+        byDivision[img.division].push(img);
+      }
+    });
+    
+    // Shuffle each division's images
+    Object.keys(byDivision).forEach((key) => {
+      byDivision[key] = shuffleArray(byDivision[key]);
+    });
+    
+    // Pick: 2 exhibitions, 2 events, 1 retail, 1 interiors
+    return [
+      ...byDivision.exhibitions.slice(0, 2),
+      ...byDivision.events.slice(0, 2),
+      ...byDivision.retail.slice(0, 1),
+      ...byDivision.interiors.slice(0, 1),
+    ];
   }, [allFeaturedImages]);
 
   return (
