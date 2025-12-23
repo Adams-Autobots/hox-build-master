@@ -7,34 +7,40 @@ import { FullPageGallery } from '@/components/divisions/FullPageGallery';
 import { DivisionFAQ } from '@/components/divisions/DivisionFAQ';
 import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages } from '@/hooks/useGalleryImages';
-import { Calendar, Users, Sparkles, Settings } from 'lucide-react';
+import { Heart, Users, Volume2, Theater, Palette } from 'lucide-react';
 import heroEvents from '@/assets/hero-events.jpg';
 
 
 const capabilities = [
   {
-    icon: Calendar,
-    title: 'event production',
-    description: 'End-to-end event builds from concept to execution for corporate and public events.',
-    backgroundImage: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Sparkles,
-    title: 'stage & set design',
-    description: 'Custom stage builds, scenic elements, and immersive environments that wow.',
-    backgroundImage: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop',
+    icon: Heart,
+    title: 'Wedding Production',
+    description: 'Complete wedding planning and production services',
+    backgroundImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop',
   },
   {
     icon: Users,
-    title: 'large-scale venues',
-    description: 'From intimate gatherings to 10,000+ attendee events—we scale seamlessly.',
-    backgroundImage: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=800&auto=format&fit=crop',
+    title: 'Corporate Events',
+    description: 'Conferences, galas, product launches and team events',
+    backgroundImage: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
   },
   {
-    icon: Settings,
-    title: 'technical production',
-    description: 'Audio, video, lighting, and rigging expertise for flawless technical delivery.',
+    icon: Volume2,
+    title: 'Light and Sound',
+    description: 'Professional audio-visual and lighting solutions',
     backgroundImage: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop',
+  },
+  {
+    icon: Theater,
+    title: 'Stage and Set',
+    description: 'Custom stage builds and scenic design',
+    backgroundImage: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop',
+  },
+  {
+    icon: Palette,
+    title: 'Branding and Décor',
+    description: 'Event styling, theming and branded environments',
+    backgroundImage: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=800&auto=format&fit=crop',
   },
 ];
 
