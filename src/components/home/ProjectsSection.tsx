@@ -151,15 +151,12 @@ export function ProjectsSection() {
                 )}
                 style={{ transitionDelay: `${300 + index * 100}ms` } as React.CSSProperties}
               >
-                <div className="aspect-[4/3] overflow-hidden relative">
+                <div className="aspect-[4/3] overflow-hidden">
                   <img
                     src={image.src}
                     alt={image.alt}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <span className={`absolute bottom-3 left-3 px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full ${divisionColors[image.division] || 'bg-primary text-primary-foreground'}`}>
-                    {image.division}
-                  </span>
                 </div>
               </Link>
             ))
