@@ -73,13 +73,13 @@ export function DivisionHero({
             className={cn(
               "absolute object-cover",
               division === 'retail' 
-                ? "w-[110%] h-[110%] -left-[5%] -top-[2%]" 
+                ? "w-[105%] h-[105%] -left-[2.5%] top-0" 
                 : "w-full h-full inset-0"
             )}
             style={{ 
               minWidth: '100%', 
               minHeight: '100%',
-              objectPosition: division === 'retail' ? 'center center' : 'center center'
+              objectPosition: division === 'retail' ? 'center top' : 'center center'
             }}
             onTimeUpdate={(e) => {
               const video = e.currentTarget;
