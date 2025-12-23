@@ -71,8 +71,8 @@ export function DivisionHero({
             muted
             playsInline
             className={cn(
-              "h-[115%] object-cover",
-              cropLeft ? "w-[120%] -ml-[10%] object-center" : "w-full object-top"
+              "min-h-full min-w-full object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+              cropLeft ? "object-center" : "object-center"
             )}
             onTimeUpdate={(e) => {
               const video = e.currentTarget;
