@@ -9,33 +9,13 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages } from '@/hooks/useGalleryImages';
 import { Heart, Users, Theater, Palette } from 'lucide-react';
 import heroEvents from '@/assets/hero-events.jpg';
+import { useMemo } from 'react';
 
-
-const capabilities = [
-  {
-    icon: Heart,
-    title: 'Wedding Production',
-    description: 'Complete wedding planning and production services',
-    backgroundImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Users,
-    title: 'Corporate Events',
-    description: 'Conferences, galas, product launches and team events',
-    backgroundImage: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Theater,
-    title: 'Stage and Set',
-    description: 'Custom stage builds and scenic design',
-    backgroundImage: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop',
-  },
-  {
-    icon: Palette,
-    title: 'Branding and Décor',
-    description: 'Event styling, theming and branded environments',
-    backgroundImage: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=800&auto=format&fit=crop',
-  },
+const capabilityTitles = [
+  { icon: Heart, title: 'Wedding Production' },
+  { icon: Users, title: 'Corporate Events' },
+  { icon: Theater, title: 'Stage and Set' },
+  { icon: Palette, title: 'Branding and Décor' },
 ];
 
 const galleryImages = [
@@ -51,6 +31,13 @@ const galleryImages = [
 
 export default function EventsPage() {
   const { data: galleryImagesData } = useGalleryImages('events');
+  
+  const capabilities = useMemo(() => {
+    return capabilityTitles.map((cap, index) => ({
+      ...cap,
+      backgroundImage: galleryImagesData?.[index]?.src || '',
+    }));
+  }, [galleryImagesData]);
   
   return (
     <Layout>
