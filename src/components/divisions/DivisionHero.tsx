@@ -79,8 +79,8 @@ export function DivisionHero({
                 video.pause();
                 const reversePlay = () => {
                   if (video.currentTime > 0.1) {
-                    video.currentTime -= 0.05;
-                    requestAnimationFrame(reversePlay);
+                    video.currentTime -= 0.033; // ~30fps for smooth playback
+                    setTimeout(reversePlay, 33); // Match typical video frame rate
                   } else {
                     video.dataset.direction = 'forward';
                     video.play();
