@@ -6,6 +6,7 @@ import { Layout } from '@/components/layout/Layout';
 import { DivisionNav } from '@/components/divisions/DivisionNav';
 import { useGalleryImages, type Division } from '@/hooks/useGalleryImages';
 import { supabase } from '@/integrations/supabase/client';
+import { LazyImage } from '@/components/ui/LazyImage';
 import { cn } from '@/lib/utils';
 
 const divisionColors: Record<Division, string> = {
@@ -106,11 +107,11 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
                   )}
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <img
+                  <LazyImage
                     src={image.src}
                     alt={image.alt}
+                    containerClassName="w-full h-full"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    loading="lazy"
                   />
                 </div>
               ))}
