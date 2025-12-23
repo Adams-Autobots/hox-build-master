@@ -73,7 +73,8 @@ export function DivisionHero({
             playsInline
             className={cn(
               "absolute inset-0 w-full h-full object-cover",
-              division === 'retail' && "scale-[1.15] origin-top"
+              division === 'retail' && "scale-[1.15] origin-top",
+              division === 'exhibitions' && "scale-[1.10]"
             )}
             style={{ 
               minWidth: '100%', 
