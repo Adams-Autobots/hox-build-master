@@ -12,6 +12,7 @@ interface DivisionHeroProps {
   description: string;
   ctaText: string;
   heroImage?: string;
+  heroVideo?: string;
 }
 
 const divisionConfig = {
@@ -53,13 +54,30 @@ export function DivisionHero({
   description,
   ctaText,
   heroImage,
+  heroVideo,
 }: DivisionHeroProps) {
   const config = divisionConfig[division];
 
   return (
     <section className="relative min-h-[80vh] flex items-center pt-32 pb-24 overflow-hidden">
+      {/* Hero Background Video */}
+      {heroVideo && (
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <video
+            src={heroVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-[115%] object-cover object-top"
+          />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-background/60" />
+        </div>
+      )}
+
       {/* Hero Background Image */}
-      {heroImage && (
+      {heroImage && !heroVideo && (
         <div className="absolute inset-0 z-0">
           <img
             src={heroImage}
