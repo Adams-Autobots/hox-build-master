@@ -74,12 +74,13 @@ export function DivisionHero({
             className={cn(
               "absolute inset-0 w-full h-full object-cover",
               division === 'retail' && "scale-[1.15] origin-top",
-              division === 'exhibitions' && "scale-[1.10]"
+              division === 'exhibitions' && "scale-[1.10]",
+              division === 'interiors' && "scale-[1.15] origin-top"
             )}
             style={{ 
               minWidth: '100%', 
               minHeight: '100%',
-              objectPosition: division === 'retail' ? 'center top' : 'center center'
+              objectPosition: division === 'retail' ? 'center top' : division === 'interiors' ? 'center top' : 'center center'
             }}
             onTimeUpdate={(e) => {
               const video = e.currentTarget;
