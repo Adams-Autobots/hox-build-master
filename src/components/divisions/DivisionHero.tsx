@@ -72,7 +72,7 @@ export function DivisionHero({
             className="w-full h-[115%] object-cover object-top"
             onLoadedMetadata={(e) => {
               const video = e.currentTarget;
-              video.currentTime = 0.5; // Skip black frame at start
+              video.currentTime = 1.2; // Skip black frame at start
             }}
           />
           {/* Dark overlay for text readability */}
