@@ -29,13 +29,6 @@ const divisionColors: Record<string, string> = {
   interiors: 'bg-[hsl(var(--hox-green)/0.85)] text-white backdrop-blur-sm',
 };
 
-const divisionCounts: Record<string, number> = {
-  exhibitions: 2,
-  events: 4,
-  retail: 1,
-  interiors: 1,
-};
-
 // Fisher-Yates shuffle algorithm
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -67,27 +60,11 @@ export function ProjectsSection() {
     },
   });
 
-  // Select specific counts from each division and shuffle the final result
+  // Shuffle and pick 6 random featured images (memoized per render cycle)
   const images = useMemo(() => {
     if (!allFeaturedImages || allFeaturedImages.length === 0) return [];
-    
-    // Group images by division
-    const byDivision: Record<string, GalleryImage[]> = {};
-    allFeaturedImages.forEach(img => {
-      if (!byDivision[img.division]) byDivision[img.division] = [];
-      byDivision[img.division].push(img);
-    });
-    
-    // Pick specified count from each division
-    const selected: GalleryImage[] = [];
-    Object.entries(divisionCounts).forEach(([division, count]) => {
-      const divisionImages = byDivision[division] || [];
-      const shuffled = shuffleArray(divisionImages);
-      selected.push(...shuffled.slice(0, count));
-    });
-    
-    // Shuffle the final selection
-    return shuffleArray(selected);
+    const shuffled = shuffleArray(allFeaturedImages);
+    return shuffled.slice(0, 6);
   }, [allFeaturedImages]);
 
   return (
@@ -136,7 +113,7 @@ export function ProjectsSection() {
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {isLoading ? (
-            Array.from({ length: 8 }).map((_, index) => (
+            Array.from({ length: 6 }).map((_, index) => (
               <Skeleton key={index} className="aspect-[4/3] rounded-lg" />
             ))
           ) : (
