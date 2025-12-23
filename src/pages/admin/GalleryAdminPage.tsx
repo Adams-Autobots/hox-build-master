@@ -29,6 +29,7 @@ import {
   Image as ImageIcon,
   GripVertical,
   Save,
+  Star,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -59,6 +60,7 @@ interface GalleryImage {
   project: string | null;
   division: string;
   display_order: number;
+  is_featured: boolean;
   // SEO fields
   title: string | null;
   seo_description: string | null;
@@ -83,6 +85,7 @@ interface SortableImageCardProps {
   image: GalleryImage;
   onEdit: (image: GalleryImage) => void;
   onDelete: (id: string, src: string) => void;
+  onToggleFeatured: (id: string, isFeatured: boolean) => void;
   isEditing: boolean;
   editForm: EditFormState;
   setEditForm: React.Dispatch<React.SetStateAction<EditFormState>>;
@@ -94,6 +97,7 @@ function SortableImageCard({
   image,
   onEdit,
   onDelete,
+  onToggleFeatured,
   isEditing,
   editForm,
   setEditForm,
@@ -141,6 +145,15 @@ function SortableImageCard({
         <div className="absolute top-2 right-2 flex gap-1">
           <Button
             size="icon"
+            variant={image.is_featured ? "default" : "secondary"}
+            className={cn("w-8 h-8", image.is_featured && "bg-yellow-500 hover:bg-yellow-600")}
+            onClick={() => onToggleFeatured(image.id, !image.is_featured)}
+            title={image.is_featured ? "Remove from featured" : "Add to featured"}
+          >
+            <Star className={cn("w-4 h-4", image.is_featured && "fill-current")} />
+          </Button>
+          <Button
+            size="icon"
             variant="secondary"
             className="w-8 h-8"
             onClick={() => onEdit(image)}
@@ -156,8 +169,15 @@ function SortableImageCard({
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
-        <div className="absolute bottom-2 left-2 px-2 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-medium">
-          #{image.display_order}
+        <div className="absolute bottom-2 left-2 flex items-center gap-2">
+          <span className="px-2 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-medium">
+            #{image.display_order}
+          </span>
+          {image.is_featured && (
+            <span className="px-2 py-1 bg-yellow-500/90 backdrop-blur-sm rounded text-xs font-medium text-black">
+              Featured
+            </span>
+          )}
         </div>
       </div>
 
@@ -500,6 +520,27 @@ export default function GalleryAdminPage() {
       toast({ title: 'Deleted', description: 'Image removed' });
       // Invalidate React Query cache for this division
       queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
+      queryClient.invalidateQueries({ queryKey: ['featured-gallery-images'] });
+      fetchImages();
+    } catch (error: any) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    }
+  };
+
+  const handleToggleFeatured = async (id: string, isFeatured: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('gallery_images')
+        .update({ is_featured: isFeatured })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({ 
+        title: isFeatured ? 'Added to Featured' : 'Removed from Featured', 
+        description: isFeatured ? 'Image will appear on home page' : 'Image removed from home page' 
+      });
+      queryClient.invalidateQueries({ queryKey: ['featured-gallery-images'] });
       fetchImages();
     } catch (error: any) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
@@ -539,6 +580,7 @@ export default function GalleryAdminPage() {
       setEditingId(null);
       // Invalidate React Query cache for this division
       queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
+      queryClient.invalidateQueries({ queryKey: ['featured-gallery-images'] });
       fetchImages();
     } catch (error: any) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
@@ -822,6 +864,7 @@ export default function GalleryAdminPage() {
                         image={image}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
+                        onToggleFeatured={handleToggleFeatured}
                         isEditing={editingId === image.id}
                         editForm={editForm}
                         setEditForm={setEditForm}
