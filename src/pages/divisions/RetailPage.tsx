@@ -16,21 +16,25 @@ const capabilities = [
     icon: Store,
     title: 'store fit-outs',
     description: 'Complete retail builds from shell to fully operational stores, delivered turnkey.',
+    backgroundImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop',
   },
   {
     icon: Palette,
     title: 'visual merchandising',
     description: 'Display systems, signage, and fixtures that elevate brand presence in-store.',
+    backgroundImage: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=800&auto=format&fit=crop',
   },
   {
     icon: Package,
     title: 'pop-up & kiosks',
     description: 'Fast-deploy retail solutions for seasonal campaigns and brand activations.',
+    backgroundImage: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&auto=format&fit=crop',
   },
   {
     icon: Wrench,
     title: 'rollout programs',
     description: 'Multi-location retail rollouts with consistent quality and tight timelines.',
+    backgroundImage: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=800&auto=format&fit=crop',
   },
 ];
 

@@ -16,21 +16,25 @@ const capabilities = [
     icon: Calendar,
     title: 'event production',
     description: 'End-to-end event builds from concept to execution for corporate and public events.',
+    backgroundImage: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop',
   },
   {
     icon: Sparkles,
     title: 'stage & set design',
     description: 'Custom stage builds, scenic elements, and immersive environments that wow.',
+    backgroundImage: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop',
   },
   {
     icon: Users,
     title: 'large-scale venues',
     description: 'From intimate gatherings to 10,000+ attendee events—we scale seamlessly.',
+    backgroundImage: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=800&auto=format&fit=crop',
   },
   {
     icon: Settings,
     title: 'technical production',
     description: 'Audio, video, lighting, and rigging expertise for flawless technical delivery.',
+    backgroundImage: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop',
   },
 ];
 

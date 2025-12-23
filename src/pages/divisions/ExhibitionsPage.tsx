@@ -16,21 +16,25 @@ const capabilities = [
     icon: Boxes,
     title: 'custom structures',
     description: 'Double-decker builds, pavilions, and bespoke exhibition architecture engineered for impact.',
+    backgroundImage: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&auto=format&fit=crop',
   },
   {
     icon: Hammer,
     title: 'in-house fabrication',
     description: 'Metal, carpentry, acrylic, and composite materials all manufactured under one roof.',
+    backgroundImage: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&auto=format&fit=crop',
   },
   {
     icon: Lightbulb,
     title: 'integrated AV & lighting',
     description: 'Complete technical solutions including LED walls, projection mapping, and smart lighting.',
+    backgroundImage: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&auto=format&fit=crop',
   },
   {
     icon: Truck,
     title: 'full logistics',
     description: 'From transport to installation and dismantle—seamless project delivery every time.',
+    backgroundImage: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop',
   },
 ];
 
