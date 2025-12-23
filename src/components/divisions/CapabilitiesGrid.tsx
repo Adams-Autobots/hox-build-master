@@ -131,7 +131,7 @@ function CapabilityCard({ capability, index, iconColor, accentColor }: Capabilit
       )}
 
       {/* Dark Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20 transition-opacity duration-300 group-hover:from-black/80 group-hover:via-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent transition-opacity duration-300 group-hover:from-black/60 group-hover:via-black/25" />
 
       {/* Accent Line */}
       <div className={cn(
