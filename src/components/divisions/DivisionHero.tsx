@@ -69,10 +69,6 @@ export function DivisionHero({
             muted
             playsInline
             className="w-full h-[115%] object-cover object-top"
-            onLoadedMetadata={(e) => {
-              const video = e.currentTarget;
-              video.currentTime = 2; // Skip black frame at start
-            }}
             onTimeUpdate={(e) => {
               const video = e.currentTarget;
               const direction = video.dataset.direction || 'forward';
@@ -82,7 +78,7 @@ export function DivisionHero({
                 video.dataset.direction = 'reverse';
                 video.pause();
                 const reversePlay = () => {
-                  if (video.currentTime > 2) {
+                  if (video.currentTime > 0.1) {
                     video.currentTime -= 0.05;
                     requestAnimationFrame(reversePlay);
                   } else {
