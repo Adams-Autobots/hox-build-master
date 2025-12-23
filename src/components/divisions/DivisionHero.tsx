@@ -82,25 +82,31 @@ export function DivisionHero({
               minHeight: '100%',
               objectPosition: division === 'retail' ? 'center top' : division === 'interiors' ? 'center top' : 'center center'
             }}
+            onLoadedMetadata={(e) => {
+              const video = e.currentTarget;
+              video.dataset.direction = 'forward';
+            }}
             onTimeUpdate={(e) => {
               const video = e.currentTarget;
               const direction = video.dataset.direction || 'forward';
               
-              // When playing forward and near end, switch to reverse immediately
-              if (direction === 'forward' && video.currentTime >= video.duration - 0.05) {
+              if (direction === 'forward' && video.currentTime >= video.duration - 0.01) {
                 video.dataset.direction = 'reverse';
                 video.pause();
+                const playbackRate = 1;
                 let lastTime = performance.now();
+                
                 const reversePlay = (currentTime: number) => {
-                  const deltaTime = (currentTime - lastTime) / 1000;
+                  const deltaTime = ((currentTime - lastTime) / 1000) * playbackRate;
                   lastTime = currentTime;
+                  const newTime = video.currentTime - deltaTime;
                   
-                  if (video.currentTime > 0.05) {
-                    video.currentTime = Math.max(0, video.currentTime - deltaTime);
+                  if (newTime > 0.01) {
+                    video.currentTime = newTime;
                     requestAnimationFrame(reversePlay);
                   } else {
+                    video.currentTime = 0.01;
                     video.dataset.direction = 'forward';
-                    video.currentTime = 0;
                     video.play();
                   }
                 };
