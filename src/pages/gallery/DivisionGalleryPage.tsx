@@ -112,17 +112,6 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <h3 className="text-lg font-semibold text-foreground line-clamp-2">
-                      {image.title || image.alt}
-                    </h3>
-                    {image.seo_description && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                        {image.seo_description}
-                      </p>
-                    )}
-                  </div>
                 </div>
               ))}
             </div>
