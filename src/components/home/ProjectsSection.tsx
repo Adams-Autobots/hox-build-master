@@ -1,63 +1,46 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { TiltCard } from '@/components/ui/TiltCard';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const projects = [
-  {
-    id: 1,
-    title: 'Mercedes-Benz Pavilion',
-    location: 'Dubai',
-    category: 'Exhibition',
-    description: 'Premium exhibition build with integrated lighting, structural engineering, and brand storytelling.',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
-  },
-  {
-    id: 2,
-    title: 'Samsung Experience Booth',
-    location: 'GITEX Dubai',
-    category: 'Exhibition',
-    description: 'Interactive technology showcase with custom fabrication and immersive displays.',
-    image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=800&q=80',
-  },
-  {
-    id: 3,
-    title: 'Emaar Lifestyle Showroom',
-    location: 'Downtown Dubai',
-    category: 'Retail',
-    description: 'High-end retail environment with bespoke joinery and premium finishes.',
-    image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80',
-  },
-  {
-    id: 4,
-    title: 'Expo 2020 Activation',
-    location: 'Dubai',
-    category: 'Events',
-    description: 'Large-scale event activation with structural builds and experiential zones.',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80',
-  },
-  {
-    id: 5,
-    title: 'Luxury Villa Interior',
-    location: 'Palm Jumeirah',
-    category: 'Interiors',
-    description: 'Complete residential fit-out with custom joinery and architectural detailing.',
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
-  },
-  {
-    id: 6,
-    title: 'Retail Kiosk Deployment',
-    location: 'Dubai Mall',
-    category: 'Retail',
-    description: 'Scalable retail kiosk system for premium brand activation.',
-    image: 'https://images.unsplash.com/photo-1567958451986-2de427a4a0be?w=800&q=80',
-  },
-];
+interface GalleryImage {
+  id: string;
+  src: string;
+  alt: string;
+  division: string;
+}
+
+const divisionRoutes: Record<string, string> = {
+  exhibitions: '/gallery/exhibitions',
+  events: '/gallery/events',
+  retail: '/gallery/retail',
+  interiors: '/gallery/interiors',
+};
 
 export function ProjectsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
+
+  const { data: images, isLoading } = useQuery({
+    queryKey: ['featured-gallery-images'],
+    queryFn: async (): Promise<GalleryImage[]> => {
+      const { data, error } = await supabase
+        .from('gallery_images')
+        .select('id, src, alt, division')
+        .order('display_order', { ascending: true })
+        .limit(6);
+
+      if (error) {
+        console.error('Error fetching gallery images:', error);
+        throw error;
+      }
+
+      return data || [];
+    },
+  });
 
   return (
     <section ref={ref} className="py-16 lg:py-20 bg-card relative overflow-hidden">
@@ -102,64 +85,33 @@ export function ProjectsSection() {
           </Button>
         </div>
 
-        {/* Projects Grid with 3D Tilt */}
+        {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {projects.map((project, index) => (
-            <TiltCard
-              key={project.id}
-              className={cn(
-                'transition-all duration-500',
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              )}
-              style={{ transitionDelay: `${300 + index * 100}ms` } as React.CSSProperties}
-              tiltAmount={8}
-            >
+          {isLoading ? (
+            Array.from({ length: 6 }).map((_, index) => (
+              <Skeleton key={index} className="aspect-[4/3] rounded-lg" />
+            ))
+          ) : (
+            images?.map((image, index) => (
               <Link
-                to={`/projects`}
-                className="group relative overflow-hidden rounded-lg bg-background block"
-                data-cursor="view"
+                key={image.id}
+                to={divisionRoutes[image.division] || '/projects'}
+                className={cn(
+                  'group relative overflow-hidden rounded-lg bg-background block transition-all duration-500',
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                )}
+                style={{ transitionDelay: `${300 + index * 100}ms` } as React.CSSProperties}
               >
-                {/* Image */}
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={project.image}
-                    alt={project.title}
+                    src={image.src}
+                    alt={image.alt}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-                </div>
-
-                {/* Content */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
-                  {/* Category Badge */}
-                  <span className="inline-flex self-start px-3 py-1 mb-4 text-xs font-medium uppercase tracking-wider text-primary bg-primary/10 rounded-full border border-primary/20">
-                    {project.category}
-                  </span>
-
-                  {/* Title */}
-                  <h3 className="text-xl lg:text-2xl font-bold text-foreground mb-2 hox-brand group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h3>
-
-                  {/* Location */}
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {project.location}
-                  </p>
-
-                  {/* Description - Hidden by default, shown on hover */}
-                  <p className="text-sm text-muted-foreground line-clamp-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                    {project.description}
-                  </p>
-
-                  {/* Arrow Indicator */}
-                  <div className="absolute top-6 right-6 w-10 h-10 rounded-full border border-foreground/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:border-primary group-hover:bg-primary/10">
-                    <ArrowUpRight className="w-4 h-4 text-primary" />
-                  </div>
                 </div>
               </Link>
-            </TiltCard>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </section>
