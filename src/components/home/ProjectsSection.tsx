@@ -60,7 +60,7 @@ export function ProjectsSection() {
     },
   });
 
-  // Pick specific distribution: 2 exhibitions, 2 events, 1 retail, 1 interiors
+  // Pick specific distribution: 4 exhibitions, 3 events, 2 retail, 3 interiors (12 total)
   const images = useMemo(() => {
     if (!allFeaturedImages || allFeaturedImages.length === 0) return [];
     
@@ -82,12 +82,12 @@ export function ProjectsSection() {
       byDivision[key] = shuffleArray(byDivision[key]);
     });
     
-    // Pick: 2 exhibitions, 2 events, 1 retail, 1 interiors
+    // Pick: 4 exhibitions, 3 events, 2 retail, 3 interiors
     return [
-      ...byDivision.exhibitions.slice(0, 2),
-      ...byDivision.events.slice(0, 2),
-      ...byDivision.retail.slice(0, 1),
-      ...byDivision.interiors.slice(0, 1),
+      ...byDivision.exhibitions.slice(0, 4),
+      ...byDivision.events.slice(0, 3),
+      ...byDivision.retail.slice(0, 2),
+      ...byDivision.interiors.slice(0, 3),
     ];
   }, [allFeaturedImages]);
 
@@ -134,10 +134,10 @@ export function ProjectsSection() {
           </Button>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* Projects Grid - 2x6 on mobile, 4x3 on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           {isLoading ? (
-            Array.from({ length: 6 }).map((_, index) => (
+            Array.from({ length: 12 }).map((_, index) => (
               <Skeleton key={index} className="aspect-[4/3] rounded-lg" />
             ))
           ) : (
