@@ -28,7 +28,6 @@ import {
   ArrowLeft,
   Image as ImageIcon,
   GripVertical,
-  Save,
   Star,
   LayoutGrid,
 } from 'lucide-react';
@@ -287,8 +286,6 @@ export default function GalleryAdminPage() {
 
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [localImages, setLocalImages] = useState<GalleryImage[]>([]);
-  const [hasOrderChanges, setHasOrderChanges] = useState(false);
-  const [savingOrder, setSavingOrder] = useState(false);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0, fileName: '' });
@@ -318,7 +315,6 @@ export default function GalleryAdminPage() {
   // Sync local images with fetched data
   useEffect(() => {
     setLocalImages(images);
-    setHasOrderChanges(false);
   }, [images]);
 
   useEffect(() => {
@@ -641,50 +637,34 @@ export default function GalleryAdminPage() {
     }
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      setLocalImages((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        const newItems = arrayMove(items, oldIndex, newIndex);
-        // Update display_order based on new positions
-        return newItems.map((item, index) => ({
-          ...item,
-          display_order: index,
-        }));
-      });
-      setHasOrderChanges(true);
-    }
-  };
-
-  const handleSaveOrder = async () => {
-    setSavingOrder(true);
-    try {
-      const updates = localImages.map((image, index) => ({
-        id: image.id,
+      const oldIndex = localImages.findIndex((item) => item.id === active.id);
+      const newIndex = localImages.findIndex((item) => item.id === over.id);
+      const newItems = arrayMove(localImages, oldIndex, newIndex).map((item, index) => ({
+        ...item,
         display_order: index,
       }));
 
-      for (const update of updates) {
-        const { error } = await supabase
-          .from('gallery_images')
-          .update({ display_order: update.display_order })
-          .eq('id', update.id);
+      setLocalImages(newItems);
 
-        if (error) throw error;
+      // Auto-save to database
+      try {
+        for (const item of newItems) {
+          const { error } = await supabase
+            .from('gallery_images')
+            .update({ display_order: item.display_order })
+            .eq('id', item.id);
+
+          if (error) throw error;
+        }
+        toast({ title: 'Order saved' });
+        queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
+      } catch (error: any) {
+        toast({ title: 'Error', description: error.message, variant: 'destructive' });
       }
-
-      toast({ title: 'Success', description: 'Display order saved' });
-      setHasOrderChanges(false);
-      // Invalidate React Query cache for this division so other pages sync
-      queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
-      fetchImages();
-    } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-    } finally {
-      setSavingOrder(false);
     }
   };
 
@@ -849,25 +829,6 @@ export default function GalleryAdminPage() {
                 <h2 className="text-lg font-semibold">
                   {divisions.find((d) => d.value === selectedDivision)?.label} Gallery
                 </h2>
-                {hasOrderChanges && (
-                  <Button
-                    size="sm"
-                    onClick={handleSaveOrder}
-                    disabled={savingOrder}
-                  >
-                    {savingOrder ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        <Save className="w-4 h-4 mr-2" />
-                        Save Order
-                      </>
-                    )}
-                  </Button>
-                )}
               </div>
               <Select
                 value={selectedDivision}
@@ -885,12 +846,6 @@ export default function GalleryAdminPage() {
                 </SelectContent>
               </Select>
             </div>
-
-            {hasOrderChanges && (
-              <p className="text-sm text-muted-foreground mb-4">
-                Drag images to reorder, then click "Save Order" to apply changes.
-              </p>
-            )}
 
             {loading ? (
               <div className="flex items-center justify-center py-20">
