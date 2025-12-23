@@ -115,20 +115,17 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
                   'p-4 rounded-lg border border-border/50 bg-background/50 h-full',
                   'hover:border-border transition-colors duration-300'
                 )}>
-                  {/* Icon & Step Number */}
-                  <div className="flex items-center gap-3 mb-3">
+                  {/* Icon */}
+                  <div className="mb-3">
                     <div
                       className={cn(
-                        'w-10 h-10 rounded-full border flex items-center justify-center flex-shrink-0',
+                        'w-10 h-10 rounded-full border flex items-center justify-center',
                         divisionBorders[division],
                         divisionBg[division]
                       )}
                     >
                       <Icon className={cn('w-4 h-4', divisionColors[division])} />
                     </div>
-                    <span className={cn('text-xs font-medium', divisionColors[division])}>
-                      0{index + 1}
-                    </span>
                   </div>
 
                   {/* Title */}
