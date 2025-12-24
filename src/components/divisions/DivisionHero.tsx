@@ -70,8 +70,6 @@ export function DivisionHero({
           <video
             key={heroVideo}
             src={heroVideo}
-            poster={heroImage}
-            preload="auto"
             autoPlay
             muted
             playsInline
