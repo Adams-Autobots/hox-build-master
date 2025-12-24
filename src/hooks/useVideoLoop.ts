@@ -1,58 +1,111 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 
 interface UseVideoLoopOptions {
-  playbackRate?: number;
+  forwardRate?: number;
+  reverseRate?: number;
+  endBuffer?: number;
+  startBuffer?: number;
 }
 
 export function useVideoLoop(options: UseVideoLoopOptions = {}) {
-  const { playbackRate = 1 } = options;
-  const isReversingRef = useRef(false);
+  const { 
+    forwardRate = 1, 
+    reverseRate = 1, 
+    endBuffer = 0.15, 
+    startBuffer = 0.05 
+  } = options;
+  
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const directionRef = useRef<'forward' | 'reverse'>('forward');
   const animationFrameRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number>(0);
+
+  const cancelAnimation = useCallback(() => {
+    if (animationFrameRef.current !== null) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+  }, []);
+
+  const startReversePlayback = useCallback((video: HTMLVideoElement) => {
+    if (directionRef.current === 'reverse') return;
+    
+    directionRef.current = 'reverse';
+    video.pause();
+    lastTimeRef.current = performance.now();
+    
+    const reverseStep = (currentTime: number) => {
+      const deltaTime = ((currentTime - lastTimeRef.current) / 1000) * reverseRate;
+      lastTimeRef.current = currentTime;
+      
+      const newTime = video.currentTime - deltaTime;
+      
+      if (newTime > startBuffer) {
+        video.currentTime = newTime;
+        animationFrameRef.current = requestAnimationFrame(reverseStep);
+      } else {
+        // Reached start - switch to forward
+        video.currentTime = startBuffer;
+        directionRef.current = 'forward';
+        animationFrameRef.current = null;
+        video.playbackRate = forwardRate;
+        video.play().catch(() => {});
+      }
+    };
+    
+    animationFrameRef.current = requestAnimationFrame(reverseStep);
+  }, [reverseRate, startBuffer, forwardRate]);
+
+  const startForwardWatcher = useCallback((video: HTMLVideoElement) => {
+    cancelAnimation();
+    
+    const watchForward = () => {
+      if (directionRef.current === 'forward' && video.currentTime >= video.duration - endBuffer) {
+        startReversePlayback(video);
+        return;
+      }
+      
+      if (directionRef.current === 'forward') {
+        animationFrameRef.current = requestAnimationFrame(watchForward);
+      }
+    };
+    
+    animationFrameRef.current = requestAnimationFrame(watchForward);
+  }, [cancelAnimation, endBuffer, startReversePlayback]);
 
   const handleLoadedMetadata = useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;
-    video.dataset.direction = 'forward';
-    isReversingRef.current = false;
-  }, []);
+    videoRef.current = video;
+    directionRef.current = 'forward';
+    video.playbackRate = forwardRate;
+  }, [forwardRate]);
 
-  const handleTimeUpdate = useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
+  const handlePlay = useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;
-    const direction = video.dataset.direction || 'forward';
-    
-    // Only trigger reverse when going forward and near the end
-    // Use a larger threshold to catch it earlier and prevent any pause
-    if (direction === 'forward' && video.currentTime >= video.duration - 0.1 && !isReversingRef.current) {
-      isReversingRef.current = true;
-      video.dataset.direction = 'reverse';
-      
-      // Don't pause - immediately start reversing
-      let lastTime = performance.now();
-      
-      const reversePlay = (currentTime: number) => {
-        const deltaTime = ((currentTime - lastTime) / 1000) * playbackRate;
-        lastTime = currentTime;
-        const newTime = video.currentTime - deltaTime;
-        
-        if (newTime > 0.05) {
-          video.currentTime = newTime;
-          animationFrameRef.current = requestAnimationFrame(reversePlay);
-        } else {
-          // Reached the beginning - switch back to forward
-          video.currentTime = 0.05;
-          video.dataset.direction = 'forward';
-          isReversingRef.current = false;
-          animationFrameRef.current = null;
-          // Resume forward playback
-          video.play();
-        }
-      };
-      
-      animationFrameRef.current = requestAnimationFrame(reversePlay);
+    if (directionRef.current === 'forward') {
+      startForwardWatcher(video);
     }
-  }, [playbackRate]);
+  }, [startForwardWatcher]);
+
+  const handleEnded = useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
+    // Fallback if watcher missed it
+    const video = e.currentTarget;
+    if (directionRef.current === 'forward') {
+      video.currentTime = video.duration - endBuffer;
+      startReversePlayback(video);
+    }
+  }, [endBuffer, startReversePlayback]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cancelAnimation();
+    };
+  }, [cancelAnimation]);
 
   return {
     onLoadedMetadata: handleLoadedMetadata,
-    onTimeUpdate: handleTimeUpdate,
+    onPlay: handlePlay,
+    onEnded: handleEnded,
   };
 }
