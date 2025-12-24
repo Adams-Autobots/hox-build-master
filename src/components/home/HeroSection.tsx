@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import heroVideo from '@/assets/hero-video.mp4';
+import heroPoster from '@/assets/hero-exhibitions.jpg';
 import { useVideoLoop } from '@/hooks/useVideoLoop';
 
 const heroWords = [
@@ -37,6 +38,8 @@ export function HeroSection() {
       >
         <video
           src={heroVideo}
+          poster={heroPoster}
+          preload="auto"
           autoPlay
           muted
           playsInline
