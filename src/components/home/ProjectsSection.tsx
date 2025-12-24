@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -117,21 +116,6 @@ export function ProjectsSection() {
               <span className="text-primary">Define us.</span>
             </h2>
           </div>
-
-          <Button
-            variant="outline"
-            size="lg"
-            asChild
-            className={cn(
-              'transition-all duration-700 delay-300',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            )}
-          >
-            <Link to="/projects" className="group">
-              View all work
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </Button>
         </div>
 
         {/* Projects Grid - 2x6 on mobile, 4x3 on desktop */}
@@ -161,6 +145,23 @@ export function ProjectsSection() {
               </Link>
             ))
           )}
+        </div>
+
+        {/* View All Link */}
+        <div
+          className={cn(
+            'flex justify-center mt-12 transition-all duration-700',
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          )}
+          style={{ transitionDelay: '800ms' }}
+        >
+          <Link
+            to="/projects"
+            className="group inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors duration-300"
+          >
+            View all work
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>
