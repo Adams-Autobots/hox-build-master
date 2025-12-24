@@ -2,11 +2,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import type { Division } from '@/hooks/useGalleryImages';
 
-const divisions: { key: Division; label: string; shortLabel: string; route: string }[] = [
-  { key: 'exhibitions', label: 'Exhibitions', shortLabel: 'Exh', route: '/gallery/exhibitions' },
-  { key: 'events', label: 'Events', shortLabel: 'Eve', route: '/gallery/events' },
-  { key: 'retail', label: 'Retail', shortLabel: 'Ret', route: '/gallery/retail' },
-  { key: 'interiors', label: 'Interiors', shortLabel: 'Int', route: '/gallery/interiors' },
+const divisions: { key: Division; label: string; route: string }[] = [
+  { key: 'exhibitions', label: 'Exhibitions', route: '/divisions/exhibitions' },
+  { key: 'events', label: 'Events', route: '/divisions/events' },
+  { key: 'retail', label: 'Retail', route: '/divisions/retail' },
+  { key: 'interiors', label: 'Interiors', route: '/divisions/interiors' },
 ];
 
 const divisionColors: Record<Division, string> = {
@@ -39,9 +39,9 @@ export function DivisionNav({ currentDivision }: DivisionNavProps) {
 
   return (
     <>
-      {/* Mobile Navigation - Bottom */}
+      {/* Division Navigation - Bottom */}
       <nav 
-        className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-md border-t border-border"
+        className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border"
         aria-label="Division navigation"
       >
         <div className="flex justify-around items-center py-3 px-2">
@@ -54,9 +54,7 @@ export function DivisionNav({ currentDivision }: DivisionNavProps) {
                 to={division.route}
                 className={cn(
                   'flex flex-col items-center gap-1 px-3 py-1 rounded-lg transition-all duration-300',
-                  isActive 
-                    ? divisionActiveText[division.key]
-                    : 'text-muted-foreground'
+                  divisionActiveText[division.key]
                 )}
                 aria-label={`Go to ${division.label}`}
                 aria-current={isActive ? 'page' : undefined}
