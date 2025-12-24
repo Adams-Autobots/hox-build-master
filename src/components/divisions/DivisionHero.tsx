@@ -3,7 +3,6 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useVideoLoop } from '@/hooks/useVideoLoop';
 
 interface DivisionHeroProps {
   division: 'exhibitions' | 'events' | 'retail' | 'interiors';
@@ -60,7 +59,6 @@ export function DivisionHero({
   cropLeft = false,
 }: DivisionHeroProps) {
   const config = divisionConfig[division];
-  const videoLoop = useVideoLoop();
 
   return (
     <section className="relative min-h-[80vh] flex items-center pt-32 pb-24 overflow-hidden">
@@ -72,6 +70,7 @@ export function DivisionHero({
             src={heroVideo}
             autoPlay
             muted
+            loop
             playsInline
             className={cn(
               "absolute inset-0 w-full h-full object-cover",
@@ -84,7 +83,6 @@ export function DivisionHero({
               minHeight: '100%',
               objectPosition: division === 'retail' ? 'center top' : division === 'interiors' ? 'center top' : 'center center'
             }}
-            {...videoLoop}
           />
           {/* Dark overlay for text readability */}
           <div className={cn(
