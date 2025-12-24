@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import heroVideo from '@/assets/hero-video.mp4';
-import { useVideoLoop } from '@/hooks/useVideoLoop';
 
 const heroWords = [
   { word: 'Exhibitions', color: 'hsl(var(--hox-red))' },
@@ -16,7 +14,6 @@ const heroWords = [
 export function HeroSection() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const { scrollY } = useScroll();
-  const videoLoop = useVideoLoop();
   
   // Video fades out as user scrolls (starts at 60% of viewport, fully faded at 120%)
   const videoOpacity = useTransform(scrollY, [0, window.innerHeight * 0.6, window.innerHeight * 1.2], [1, 1, 0]);
@@ -39,9 +36,9 @@ export function HeroSection() {
           src={heroVideo}
           autoPlay
           muted
+          loop
           playsInline
           className="w-full h-full object-cover scale-x-[-1]"
-          {...videoLoop}
         />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/50" />
