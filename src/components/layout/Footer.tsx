@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import { Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 
 const divisions = [
-  { name: 'hoxexhibitions.', path: '/divisions/exhibitions' },
-  { name: 'hoxevents.', path: '/divisions/events' },
-  { name: 'hoxretail.', path: '/divisions/retail' },
-  { name: 'hoxinteriors.', path: '/divisions/interiors' },
+  { name: 'Exhibitions.', path: '/divisions/exhibitions' },
+  { name: 'Events.', path: '/divisions/events' },
+  { name: 'Retail.', path: '/divisions/retail' },
+  { name: 'Interiors.', path: '/divisions/interiors' },
 ];
 
 const quickLinks = [
