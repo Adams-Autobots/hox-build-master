@@ -53,7 +53,8 @@ export function DivisionNav({ currentDivision }: DivisionNavProps) {
                 key={division.key}
                 to={division.route}
                 className={cn(
-                  'flex flex-col items-center gap-1 px-3 py-1 rounded-lg transition-all duration-300',
+                  'flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-all duration-300',
+                  'hover:scale-110 hover:bg-background/50 active:scale-95',
                   divisionActiveText[division.key]
                 )}
                 aria-label={`Go to ${division.label}`}
