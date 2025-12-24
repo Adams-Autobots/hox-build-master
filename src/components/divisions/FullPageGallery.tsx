@@ -206,7 +206,13 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                 >
                   <Link
                     to={divisionRoutes[division]}
-                    className="group inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors duration-300"
+                    className={cn(
+                      'group inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase text-muted-foreground transition-colors duration-300',
+                      division === 'exhibitions' && 'hover:text-[hsl(var(--hox-red))]',
+                      division === 'events' && 'hover:text-[hsl(var(--hox-blue))]',
+                      division === 'retail' && 'hover:text-[hsl(var(--hox-orange))]',
+                      division === 'interiors' && 'hover:text-[hsl(var(--hox-green))]'
+                    )}
                   >
                     View all photos
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
