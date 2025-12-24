@@ -196,7 +196,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                 ))}
               </div>
 
-              {/* View All Button */}
+              {/* View All Link */}
               {showViewAll && hasMoreImages && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -206,16 +206,10 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                 >
                   <Link
                     to={divisionRoutes[division]}
-                    className={cn(
-                      'group inline-flex items-center gap-3 px-8 py-4 rounded-full border-2 transition-all duration-300 font-medium',
-                      division === 'exhibitions' && 'border-[hsl(var(--hox-red))] text-[hsl(var(--hox-red))] hover:bg-[hsl(var(--hox-red))] hover:text-white',
-                      division === 'events' && 'border-[hsl(var(--hox-blue))] text-[hsl(var(--hox-blue))] hover:bg-[hsl(var(--hox-blue))] hover:text-white',
-                      division === 'retail' && 'border-[hsl(var(--hox-orange))] text-[hsl(var(--hox-orange))] hover:bg-[hsl(var(--hox-orange))] hover:text-white',
-                      division === 'interiors' && 'border-[hsl(var(--hox-green))] text-[hsl(var(--hox-green))] hover:bg-[hsl(var(--hox-green))] hover:text-white',
-                    )}
+                    className="group inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors duration-300"
                   >
-                    View All Photos
-                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                    View all photos
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </motion.div>
               )}
