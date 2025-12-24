@@ -9,9 +9,9 @@ export function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'fixed bottom-6 right-6 z-50',
+        'fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6',
         'flex items-center justify-center',
-        'w-14 h-14 rounded-full',
+        'w-11 h-11 sm:w-14 sm:h-14 rounded-full',
         'bg-[#25D366] text-white',
         'shadow-lg shadow-[#25D366]/30',
         'hover:shadow-xl hover:shadow-[#25D366]/40',
