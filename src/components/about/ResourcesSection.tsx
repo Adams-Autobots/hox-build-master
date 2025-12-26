@@ -18,7 +18,7 @@ const resources = [
     image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&h=600&fit=crop'
   },
   {
-    title: 'Design & Project Management',
+    title: 'Design & Execution',
     description: 'From detailed drawings and 3D visualisations to hands-on project management, our in-house team ensures every project is clearly planned and seamlessly delivered.',
     image: 'https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?w=800&h=600&fit=crop'
   }
