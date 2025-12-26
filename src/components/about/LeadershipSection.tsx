@@ -159,7 +159,7 @@ export function LeadershipSection() {
       </section>
 
       {/* Team Stats */}
-      <section className="py-12 bg-card border-y border-border">
+      <section className="py-12 bg-background border-y border-border">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {stats.map((stat, index) => (

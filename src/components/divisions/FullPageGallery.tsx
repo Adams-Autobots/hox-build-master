@@ -121,7 +121,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
         pageUrl={typeof window !== 'undefined' ? window.location.href : ''}
       />
 
-      <section ref={ref} className="py-16 lg:py-20 bg-background" aria-label={`${division} project gallery`}>
+      <section ref={ref} className="py-16 lg:py-20 bg-card" aria-label={`${division} project gallery`}>
         <div className="container mx-auto px-6 lg:px-12">
           {/* Section Header */}
           <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
