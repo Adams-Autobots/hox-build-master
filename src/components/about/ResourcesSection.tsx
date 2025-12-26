@@ -42,6 +42,12 @@ export function ResourcesSection() {
             <span className="hox-brand">Our </span>
             <span className="text-primary">Skills.</span>
           </h2>
+          <p className={cn(
+            'mt-6 text-lg text-muted-foreground max-w-3xl leading-relaxed transition-all duration-700 delay-100',
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          )}>
+            We have a team diverse in skills, knowledge and backgrounds. We are based in the UAE, and have completed projects across the GCC. We have been lucky to have executed over 3000+ projects, large and small for some of the biggest names on the globe.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
