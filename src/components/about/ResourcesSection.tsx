@@ -30,7 +30,7 @@ export function ResourcesSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="py-16 lg:py-24">
+    <section ref={ref} className="py-12 lg:py-16">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="mb-12">
           <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6">
