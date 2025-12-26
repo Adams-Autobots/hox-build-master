@@ -1,5 +1,7 @@
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
+import skillDecorFinishes from '@/assets/skill-decor-finishes.jpg';
+import skillDesignConcept from '@/assets/skill-design-concept.jpg';
 
 const skills = [
   {
@@ -15,12 +17,12 @@ const skills = [
   {
     title: 'Decor & Detailing',
     description: 'Our interior designers and projects team are the best, and our attention to detail is unparalleled.',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop'
+    image: skillDecorFinishes
   },
   {
     title: 'Design & Concept Development',
     description: 'Original and creative, our team brings your space to life, and gets the fullest potential from your project.',
-    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop'
+    image: skillDesignConcept
   }
 ];
 
