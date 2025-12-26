@@ -44,7 +44,7 @@ export function ResourcesSection() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {resources.map((resource, index) => (
             <div
               key={resource.title}
