@@ -19,7 +19,7 @@ const resources = [
   },
   {
     title: 'Design & Project Management',
-    description: 'Our in-house team of designers and project managers transform ideas into clear, build-ready solutions. With detailed drawings, 3D visualisations and hands-on coordination, we ensure every project runs smoothly from concept to completion.',
+    description: 'From detailed drawings and 3D visualisations to hands-on project management, our in-house team ensures every project is clearly planned and seamlessly delivered.',
     image: 'https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?w=800&h=600&fit=crop'
   }
 ];
