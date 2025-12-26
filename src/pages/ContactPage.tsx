@@ -28,7 +28,7 @@ export default function ContactPage() {
 
   return (
     <Layout>
-      <section className="pt-32 pb-24 lg:pb-32">
+      <section className="pt-32 pb-24 lg:pb-32 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
             {/* Left Column - Info */}

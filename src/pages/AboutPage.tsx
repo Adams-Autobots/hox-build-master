@@ -17,7 +17,7 @@ export default function AboutPage() {
 
   return (
     <Layout>
-      <section className="pt-32 pb-16 lg:pb-24">
+      <section className="pt-32 pb-12 lg:pb-16 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-4xl">
             <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6">

@@ -61,7 +61,7 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="py-12 lg:py-16 bg-card">
+    <section ref={ref} className="py-12 lg:py-16 bg-background">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="max-w-3xl mb-10">
