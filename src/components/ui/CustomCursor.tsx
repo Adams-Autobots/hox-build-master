@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
-// Division color mapping
+// Division color mapping (with transparency)
 const DIVISION_COLORS: Record<string, string> = {
-  exhibitions: 'hsl(357, 85%, 52%)', // hox-red
-  events: 'hsl(196, 100%, 47%)',     // hox-blue
-  retail: 'hsl(36, 89%, 61%)',       // hox-orange
-  interiors: 'hsl(87, 53%, 51%)',    // hox-green
+  exhibitions: 'hsla(357, 85%, 52%, 0.7)', // hox-red
+  events: 'hsla(196, 100%, 47%, 0.7)',     // hox-blue
+  retail: 'hsla(36, 89%, 61%, 0.7)',       // hox-orange
+  interiors: 'hsla(87, 53%, 51%, 0.7)',    // hox-green
 };
 
 export function CustomCursor() {
