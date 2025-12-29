@@ -151,7 +151,7 @@ function SortableImageCard({
             variant={image.is_division_hero ? "default" : "secondary"}
             className={cn("w-8 h-8", image.is_division_hero && "bg-emerald-500 hover:bg-emerald-600")}
             onClick={() => onSetDivisionHero(image.id)}
-            title={image.is_division_hero ? "Currently set as division hero" : "Set as division hero image"}
+            title={image.is_division_hero ? "Click to remove from hero slideshow" : "Add to hero slideshow (max 5)"}
           >
             <Home className={cn("w-4 h-4", image.is_division_hero && "fill-current")} />
           </Button>
@@ -187,7 +187,7 @@ function SortableImageCard({
           </span>
           {image.is_division_hero && (
             <span className="px-2 py-1 bg-emerald-500/90 backdrop-blur-sm rounded text-xs font-medium text-white">
-              Hero
+              Slideshow
             </span>
           )}
           {image.is_featured && (
@@ -563,26 +563,50 @@ export default function GalleryAdminPage() {
 
   const handleSetDivisionHero = async (id: string) => {
     try {
-      // First clear is_division_hero from any other image in this division
-      await supabase
-        .from('gallery_images')
-        .update({ is_division_hero: false })
-        .eq('division', selectedDivision)
-        .eq('is_division_hero', true);
+      // Check if this image is already a division hero (toggle off)
+      const image = localImages.find(img => img.id === id);
+      if (image?.is_division_hero) {
+        // Toggle off - remove from hero slideshow
+        const { error } = await supabase
+          .from('gallery_images')
+          .update({ is_division_hero: false })
+          .eq('id', id);
 
-      // Set the selected image as division hero
-      const { error } = await supabase
-        .from('gallery_images')
-        .update({ is_division_hero: true })
-        .eq('id', id);
+        if (error) throw error;
 
-      if (error) throw error;
+        toast({ 
+          title: 'Removed from Hero Slideshow',
+          description: 'Image removed from home page division card slideshow'
+        });
+      } else {
+        // Check how many heroes exist for this division
+        const heroCount = localImages.filter(img => img.is_division_hero).length;
+        
+        if (heroCount >= 5) {
+          toast({ 
+            title: 'Maximum Heroes Reached',
+            description: 'You can only have 5 hero images per division. Remove one first.',
+            variant: 'destructive'
+          });
+          return;
+        }
 
-      toast({ 
-        title: 'Set as Division Hero',
-        description: 'This image will appear on the home page division card'
-      });
+        // Add to hero slideshow
+        const { error } = await supabase
+          .from('gallery_images')
+          .update({ is_division_hero: true })
+          .eq('id', id);
+
+        if (error) throw error;
+
+        toast({ 
+          title: 'Added to Hero Slideshow',
+          description: `Image ${heroCount + 1}/5 for home page division card`
+        });
+      }
+      
       queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
+      queryClient.invalidateQueries({ queryKey: ['division-hero-images'] });
       fetchImages();
     } catch (error: any) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
