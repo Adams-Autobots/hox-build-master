@@ -60,13 +60,14 @@ export function CoverflowGallery() {
     },
   });
 
-  // Get 9 images for 3x3 grid
-  const images = shuffleArray(allFeaturedImages || []).slice(0, 9);
+  // Use all featured images, shuffled
+  const allImages = shuffleArray(allFeaturedImages || []);
   
-  // Split into 3 columns
-  const leftColumn = images.slice(0, 3);
-  const centerColumn = images.slice(3, 6);
-  const rightColumn = images.slice(6, 9);
+  // Split into 3 columns evenly
+  const columnSize = Math.ceil(allImages.length / 3);
+  const leftColumn = allImages.slice(0, columnSize);
+  const centerColumn = allImages.slice(columnSize, columnSize * 2);
+  const rightColumn = allImages.slice(columnSize * 2);
 
   const ImageCard = ({ image }: { image: GalleryImage }) => (
     <div
