@@ -126,6 +126,7 @@ export function CustomCursor() {
               style={{
                 border: `${style.borderWidth}px solid ${colorWithOpacity}`,
                 backgroundColor: 'transparent',
+                boxShadow: index === 0 ? `0 0 20px 4px ${colorWithOpacity}` : 'none',
               }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
             />
