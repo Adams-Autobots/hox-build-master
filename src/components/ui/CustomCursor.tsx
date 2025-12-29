@@ -9,17 +9,47 @@ const DIVISION_COLORS: Record<string, string> = {
   interiors: 'hsla(87, 53%, 51%, 0.7)',    // hox-green
 };
 
+// Spring configurations for each ring - slower = more lag/trail
+const RING_CONFIGS = [
+  { damping: 25, stiffness: 400 },  // Main ring (fastest)
+  { damping: 30, stiffness: 200 },  // Trail ring 1
+  { damping: 35, stiffness: 120 },  // Trail ring 2  
+  { damping: 40, stiffness: 80 },   // Trail ring 3 (slowest)
+];
+
+// Ring visual properties
+const RING_STYLES = [
+  { opacity: 0.9, borderWidth: 1.5 },
+  { opacity: 0.5, borderWidth: 1 },
+  { opacity: 0.35, borderWidth: 1 },
+  { opacity: 0.2, borderWidth: 1 },
+];
+
 export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [cursorColor, setCursorColor] = useState<string | null>(null);
   
+  // Base cursor position
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   
-  const springConfig = { damping: 25, stiffness: 400 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
+  // Create springs for each ring with different configs
+  const ring0X = useSpring(cursorX, RING_CONFIGS[0]);
+  const ring0Y = useSpring(cursorY, RING_CONFIGS[0]);
+  const ring1X = useSpring(cursorX, RING_CONFIGS[1]);
+  const ring1Y = useSpring(cursorY, RING_CONFIGS[1]);
+  const ring2X = useSpring(cursorX, RING_CONFIGS[2]);
+  const ring2Y = useSpring(cursorY, RING_CONFIGS[2]);
+  const ring3X = useSpring(cursorX, RING_CONFIGS[3]);
+  const ring3Y = useSpring(cursorY, RING_CONFIGS[3]);
+
+  const ringPositions = [
+    { x: ring0X, y: ring0Y },
+    { x: ring1X, y: ring1Y },
+    { x: ring2X, y: ring2Y },
+    { x: ring3X, y: ring3Y },
+  ];
 
   const onMouseMove = useCallback((e: MouseEvent) => {
     cursorX.set(e.clientX);
@@ -68,29 +98,40 @@ export function CustomCursor() {
     return null;
   }
 
+  const baseColor = cursorColor || 'hsla(357, 85%, 52%, 1)';
+
   return (
-    <motion.div
-      className="pointer-events-none fixed top-0 left-0 z-[9999]"
-      style={{
-        x: cursorXSpring,
-        y: cursorYSpring,
-        mixBlendMode: cursorColor ? 'normal' : 'difference',
-      }}
-    >
-      <motion.div
-        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
-        animate={{
-          width: isHovering ? 56 : 44,
-          height: isHovering ? 56 : 44,
-          opacity: isVisible ? 1 : 0,
-          borderColor: cursorColor || 'hsla(357, 85%, 52%, 0.9)',
-        }}
-        style={{
-          border: '1.5px solid',
-          backgroundColor: 'transparent',
-        }}
-        transition={{ duration: 0.2, ease: 'easeOut' }}
-      />
-    </motion.div>
+    <>
+      {ringPositions.map((pos, index) => {
+        const style = RING_STYLES[index];
+        const colorWithOpacity = baseColor.replace(/[\d.]+\)$/, `${style.opacity})`);
+        
+        return (
+          <motion.div
+            key={index}
+            className="pointer-events-none fixed top-0 left-0 z-[9999]"
+            style={{
+              x: pos.x,
+              y: pos.y,
+              mixBlendMode: cursorColor ? 'normal' : 'difference',
+            }}
+          >
+            <motion.div
+              className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
+              animate={{
+                width: isHovering ? 56 : 44,
+                height: isHovering ? 56 : 44,
+                opacity: isVisible ? style.opacity : 0,
+              }}
+              style={{
+                border: `${style.borderWidth}px solid ${colorWithOpacity}`,
+                backgroundColor: 'transparent',
+              }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+            />
+          </motion.div>
+        );
+      })}
+    </>
   );
 }
