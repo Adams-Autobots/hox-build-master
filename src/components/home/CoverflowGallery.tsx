@@ -5,6 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 interface GalleryImage {
   id: string;
@@ -247,6 +249,16 @@ export function CoverflowGallery() {
             </motion.div>
           </div>
         </div>
+      </div>
+      {/* View Full Gallery Link */}
+      <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-8 z-20">
+        <Link 
+          to="/projects" 
+          className="group inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
+        >
+          <span className="text-sm font-medium tracking-wide">View full gallery</span>
+          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
       </div>
     </section>
   );
