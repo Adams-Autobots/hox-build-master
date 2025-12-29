@@ -108,22 +108,25 @@ export function DivisionsSection() {
               {/* Content */}
               <div className="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end">
                 {/* Division Name */}
-                <div className="flex items-center gap-2 mb-1">
-                  <span
-                    className={cn(
-                      'w-2 h-2 rounded-full transition-all duration-500 group-hover:scale-125',
-                      `bg-${division.accentColor}`
-                    )}
-                  />
-                  <span className="text-lg lg:text-xl font-bold text-white hox-brand group-hover:text-white transition-colors">
-                    {division.displayName}
-                  </span>
-                </div>
+                <h3 className="text-lg lg:text-xl font-bold text-white hox-brand mb-1">
+                  {division.displayName}
+                </h3>
 
                 {/* Headline */}
-                <p className="text-xs text-white/60 line-clamp-1 group-hover:text-white/80 transition-colors">
+                <p className="text-xs text-white/60 line-clamp-1 mb-3">
                   {division.headline}
                 </p>
+
+                {/* Explore Button */}
+                <div
+                  className={cn(
+                    'inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider transition-all duration-300',
+                    `text-${division.accentColor} group-hover:gap-2`
+                  )}
+                >
+                  <span>Explore</span>
+                  <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+                </div>
               </div>
             </Link>
           ))}
