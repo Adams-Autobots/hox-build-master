@@ -225,22 +225,6 @@ function DivisionCard({
           <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
         </div>
 
-        {/* Slideshow Indicators */}
-        {images.length > 1 && (
-          <div className="flex gap-1 mt-3">
-            {images.map((_, dotIndex) => (
-              <div
-                key={dotIndex}
-                className={cn(
-                  'h-0.5 rounded-full transition-all duration-300',
-                  dotIndex === activeIndex 
-                    ? `w-4 bg-${division.accentColor}` 
-                    : 'w-2 bg-white/40'
-                )}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </Link>
   );
