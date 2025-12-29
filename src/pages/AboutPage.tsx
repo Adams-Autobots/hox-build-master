@@ -3,6 +3,7 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { LeadershipSection } from '@/components/about/LeadershipSection';
 import { ResourcesSection } from '@/components/about/ResourcesSection';
+import { TestimonialsSection } from '@/components/about/TestimonialsSection';
 
 
 export default function AboutPage() {
@@ -64,6 +65,7 @@ export default function AboutPage() {
 
       <ResourcesSection />
       <LeadershipSection />
+      <TestimonialsSection />
     </Layout>
   );
 }
