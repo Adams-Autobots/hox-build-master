@@ -142,7 +142,7 @@ export function TestimonialsSection() {
             >
               <Quote className="w-10 h-10 text-primary/20 mb-6 transition-colors duration-300 group-hover:text-primary/40" />
               
-              <blockquote className="text-muted-foreground italic leading-relaxed mb-6 text-sm md:text-base">
+              <blockquote className="text-muted-foreground italic leading-loose mb-6 text-sm md:text-base whitespace-pre-line">
                 "{testimonial.quote}"
               </blockquote>
               
