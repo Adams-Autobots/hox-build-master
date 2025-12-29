@@ -2,23 +2,32 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
-// Gallery images (position #1 from each division's gallery)
-const GALLERY_IMAGES = {
+// Fallback images (hardcoded from gallery position #1)
+const FALLBACK_IMAGES = {
   exhibitions: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/exhibitions/1766404973821-1.webp',
   events: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/events/1766407761536-1.webp',
   retail: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/retail/1766408061889-0.webp',
   interiors: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/interiors/1766407431653-18.webp',
 };
 
-const divisions = [
+type DivisionName = 'exhibitions' | 'events' | 'retail' | 'interiors';
+
+const divisions: {
+  name: DivisionName;
+  displayName: string;
+  headline: string;
+  path: string;
+  accentColor: string;
+}[] = [
   {
     name: 'exhibitions',
     displayName: 'Exhibitions.',
     headline: 'Exhibition builds with impact.',
     path: '/divisions/exhibitions',
     accentColor: 'hox-red',
-    image: GALLERY_IMAGES.exhibitions,
   },
   {
     name: 'events',
@@ -26,7 +35,6 @@ const divisions = [
     headline: 'Events that come alive.',
     path: '/divisions/events',
     accentColor: 'hox-blue',
-    image: GALLERY_IMAGES.events,
   },
   {
     name: 'retail',
@@ -34,7 +42,6 @@ const divisions = [
     headline: 'Retail fabrication, redefined.',
     path: '/divisions/retail',
     accentColor: 'hox-orange',
-    image: GALLERY_IMAGES.retail,
   },
   {
     name: 'interiors',
@@ -42,12 +49,35 @@ const divisions = [
     headline: 'Interiors that elevate space.',
     path: '/divisions/interiors',
     accentColor: 'hox-green',
-    image: GALLERY_IMAGES.interiors,
   },
 ];
 
 export function DivisionsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
+
+  // Fetch division hero images from database
+  const { data: heroImages } = useQuery({
+    queryKey: ['division-hero-images'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('gallery_images')
+        .select('src, division')
+        .eq('is_division_hero', true);
+
+      if (error) throw error;
+
+      // Convert to a map for easy lookup
+      const imageMap: Record<string, string> = {};
+      data?.forEach((img) => {
+        imageMap[img.division] = img.src;
+      });
+      return imageMap;
+    },
+  });
+
+  const getImage = (divisionName: DivisionName): string => {
+    return heroImages?.[divisionName] || FALLBACK_IMAGES[divisionName];
+  };
 
   return (
     <section ref={ref} className="py-16 lg:py-20 bg-background relative">
@@ -92,7 +122,7 @@ export function DivisionsSection() {
             >
               {/* Background Image */}
               <img
-                src={division.image}
+                src={getImage(division.name)}
                 alt={division.headline}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />

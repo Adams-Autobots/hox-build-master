@@ -23,6 +23,7 @@ export type Database = {
           display_order: number | null
           division: string
           id: string
+          is_division_hero: boolean
           is_featured: boolean
           keywords: string[] | null
           project: string | null
@@ -38,6 +39,7 @@ export type Database = {
           display_order?: number | null
           division: string
           id?: string
+          is_division_hero?: boolean
           is_featured?: boolean
           keywords?: string[] | null
           project?: string | null
@@ -53,6 +55,7 @@ export type Database = {
           display_order?: number | null
           division?: string
           id?: string
+          is_division_hero?: boolean
           is_featured?: boolean
           keywords?: string[] | null
           project?: string | null
