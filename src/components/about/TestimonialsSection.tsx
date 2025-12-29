@@ -114,24 +114,11 @@ export function TestimonialsSection() {
             <div
               key={index}
               className={cn(
-                'relative flex-shrink-0 w-[calc(100%-24px)] md:w-[calc(50%-12px)] p-8 rounded-xl bg-card border border-border transition-all duration-500 group hover:border-primary/30 snap-start overflow-hidden',
+                'relative flex-shrink-0 w-[calc(100%-24px)] md:w-[calc(50%-12px)] p-8 rounded-xl bg-card border border-border transition-all duration-500 group hover:border-primary/30 snap-start',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
               style={{ transitionDelay: `${200 + index * 100}ms` }}
             >
-              {/* Subtle diagonal lines pattern */}
-              <div 
-                className="absolute inset-0 opacity-[0.03] pointer-events-none"
-                style={{
-                  backgroundImage: `repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 10px,
-                    currentColor 10px,
-                    currentColor 11px
-                  )`
-                }}
-              />
               <Quote className="w-10 h-10 text-primary/20 mb-6 transition-colors duration-300 group-hover:text-primary/40" />
               
               <blockquote className="text-muted-foreground italic leading-relaxed mb-6 text-sm md:text-base">
