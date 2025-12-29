@@ -43,34 +43,35 @@ export default function EventsPage() {
   
   return (
     <Layout>
-      <DivisionMeta
-        division="events"
-        title="Event Production & Stage Design | HOX Dubai"
-        description="End-to-end event production from corporate galas to large-scale festivals. Stage design, technical production, and immersive experiences in UAE."
-        images={galleryImagesData}
-      />
-      <DivisionHero
-        division="events"
-        tagline="hoxevents."
-        headline="Events built"
-        highlightText="To be remembered."
-        description="From corporate galas to product launches, we create immersive event experiences that leave lasting impressions. Precision production meets creative excellence."
-        ctaText="Request event proposal"
-        heroImage={heroEvents}
-        heroVideo={heroEventsVideo}
-      />
-      
-      <CapabilitiesGrid
-        division="events"
-        capabilities={capabilities}
-      />
+      <div data-division="events">
+        <DivisionMeta
+          division="events"
+          title="Event Production & Stage Design | HOX Dubai"
+          description="End-to-end event production from corporate galas to large-scale festivals. Stage design, technical production, and immersive experiences in UAE."
+          images={galleryImagesData}
+        />
+        <DivisionHero
+          division="events"
+          tagline="hoxevents."
+          headline="Events built"
+          highlightText="To be remembered."
+          description="From corporate galas to product launches, we create immersive event experiences that leave lasting impressions. Precision production meets creative excellence."
+          ctaText="Request event proposal"
+          heroImage={heroEvents}
+          heroVideo={heroEventsVideo}
+        />
+        
+        <CapabilitiesGrid
+          division="events"
+          capabilities={capabilities}
+        />
 
-      <ProcessTimeline division="events" />
+        <ProcessTimeline division="events" />
 
-      <FullPageGallery division="events" images={galleryImages} maxImages={16} showViewAll />
+        <FullPageGallery division="events" images={galleryImages} maxImages={16} showViewAll />
 
-      <DivisionFAQ division="events" />
-      
+        <DivisionFAQ division="events" />
+      </div>
     </Layout>
   );
 }
