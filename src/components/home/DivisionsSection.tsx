@@ -7,7 +7,7 @@ import heroExhibitions from '@/assets/hero-exhibitions.jpg';
 import heroEvents from '@/assets/hero-events.jpg';
 import heroRetail from '@/assets/hero-retail.jpg';
 
-const INTERIORS_GALLERY_IMAGE = 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/interiors/1766407392543-0.webp';
+const INTERIORS_GALLERY_IMAGE = 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/interiors/1766407431653-18.webp';
 
 const divisions = [
   {
