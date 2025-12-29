@@ -11,36 +11,32 @@ import heroInteriors from '@/assets/hero-interiors.jpg';
 const divisions = [
   {
     name: 'exhibitions',
-    fullName: 'hoxexhibitions.',
+    displayName: 'Exhibitions.',
     headline: 'Exhibition builds with impact.',
-    description: 'From exhibition stands to large-scale pavilions, we engineer spaces that attract, engage, and convert.',
     path: '/divisions/exhibitions',
     accentColor: 'hox-red',
     image: heroExhibitions,
   },
   {
     name: 'events',
-    fullName: 'hoxevents.',
+    displayName: 'Events.',
     headline: 'Events that come alive.',
-    description: 'Stage design, live experiences, product launches — we build the physical worlds your audience remembers.',
     path: '/divisions/events',
     accentColor: 'hox-blue',
     image: heroEvents,
   },
   {
     name: 'retail',
-    fullName: 'hoxretail.',
+    displayName: 'Retail.',
     headline: 'Retail fabrication, redefined.',
-    description: 'POP displays, mall activations, kiosks, store environments — crafted with precision and durability.',
     path: '/divisions/retail',
     accentColor: 'hox-orange',
     image: heroRetail,
   },
   {
     name: 'interiors',
-    fullName: 'hoxinteriors.',
+    displayName: 'Interiors.',
     headline: 'Interiors that elevate space.',
-    description: 'Commercial, residential, and hospitality fit-outs with in-house joinery and turnkey delivery.',
     path: '/divisions/interiors',
     accentColor: 'hox-green',
     image: heroInteriors,
@@ -111,34 +107,23 @@ export function DivisionsSection() {
 
               {/* Content */}
               <div className="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end">
-                {/* Division Indicator */}
-                <div className="flex items-center gap-2 mb-2">
+                {/* Division Name */}
+                <div className="flex items-center gap-2 mb-1">
                   <span
                     className={cn(
                       'w-2 h-2 rounded-full transition-all duration-500 group-hover:scale-125',
                       `bg-${division.accentColor}`
                     )}
                   />
-                  <span className="text-xs text-white/70 hox-brand group-hover:text-white transition-colors">
-                    {division.fullName}
+                  <span className="text-lg lg:text-xl font-bold text-white hox-brand group-hover:text-white transition-colors">
+                    {division.displayName}
                   </span>
                 </div>
 
                 {/* Headline */}
-                <h3 className="text-base lg:text-lg font-bold mb-1 hox-brand text-white line-clamp-2">
+                <p className="text-xs text-white/60 line-clamp-1 group-hover:text-white/80 transition-colors">
                   {division.headline}
-                </h3>
-
-                {/* CTA */}
-                <div
-                  className={cn(
-                    'flex items-center gap-1 text-xs font-medium uppercase tracking-wider transition-colors mt-2',
-                    `text-${division.accentColor}`
-                  )}
-                >
-                  <span className="hidden sm:inline">explore</span>
-                  <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
-                </div>
+                </p>
               </div>
             </Link>
           ))}
