@@ -60,11 +60,11 @@ export function CoverflowGallery() {
     },
   });
 
-  // Use all featured images, shuffled
-  const allImages = shuffleArray(allFeaturedImages || []);
+  // Limit to 12 featured images for cleaner scroll experience
+  const allImages = shuffleArray(allFeaturedImages || []).slice(0, 12);
   
-  // Split into 3 columns evenly
-  const columnSize = Math.ceil(allImages.length / 3);
+  // Split into 3 columns (4 each)
+  const columnSize = 4;
   const leftColumn = allImages.slice(0, columnSize);
   const centerColumn = allImages.slice(columnSize, columnSize * 2);
   const rightColumn = allImages.slice(columnSize * 2);
