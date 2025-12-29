@@ -19,10 +19,10 @@ const RING_CONFIGS = [
 
 // Ring visual properties
 const RING_STYLES = [
-  { opacity: 0.9, borderWidth: 1.5 },
-  { opacity: 0.5, borderWidth: 1 },
-  { opacity: 0.35, borderWidth: 1 },
-  { opacity: 0.2, borderWidth: 1 },
+  { opacity: 0.9, borderWidth: 1.5, scale: 1 },
+  { opacity: 0.5, borderWidth: 1, scale: 0.85 },
+  { opacity: 0.35, borderWidth: 1, scale: 0.7 },
+  { opacity: 0.2, borderWidth: 1, scale: 0.55 },
 ];
 
 export function CustomCursor() {
@@ -119,8 +119,8 @@ export function CustomCursor() {
             <motion.div
               className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
               animate={{
-                width: isHovering ? 56 : 44,
-                height: isHovering ? 56 : 44,
+                width: (isHovering ? 56 : 44) * style.scale,
+                height: (isHovering ? 56 : 44) * style.scale,
                 opacity: isVisible ? style.opacity : 0,
               }}
               style={{
