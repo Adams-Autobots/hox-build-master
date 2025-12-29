@@ -35,7 +35,7 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
   const accentColor = divisionAccentColors[division];
 
   return (
-    <section className="py-16 lg:py-20 bg-card">
+    <section className="py-16 lg:py-20 bg-card" data-division={division}>
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
           className="mb-12"
@@ -59,6 +59,7 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
               index={index}
               iconColor={iconColor}
               accentColor={accentColor}
+              division={division}
             />
           ))}
         </div>
@@ -72,9 +73,10 @@ interface CapabilityCardProps {
   index: number;
   iconColor: string;
   accentColor: string;
+  division: 'exhibitions' | 'events' | 'retail' | 'interiors';
 }
 
-function CapabilityCard({ capability, index, iconColor, accentColor }: CapabilityCardProps) {
+function CapabilityCard({ capability, index, iconColor, accentColor, division }: CapabilityCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -95,6 +97,7 @@ function CapabilityCard({ capability, index, iconColor, accentColor }: Capabilit
 
   return (
     <motion.div
+      data-division={division}
       className="relative aspect-[3/4] rounded-xl overflow-hidden group cursor-pointer"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
