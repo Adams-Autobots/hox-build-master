@@ -77,11 +77,12 @@ export function CustomCursor() {
         mixBlendMode: cursorColor ? 'normal' : 'difference',
       }}
     >
+      {/* Outer ring */}
       <motion.div
-        className="relative -translate-x-1/2 -translate-y-1/2 rounded-full"
+        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
         animate={{
-          width: isHovering ? 56 : 44,
-          height: isHovering ? 56 : 44,
+          width: isHovering ? 64 : 44,
+          height: isHovering ? 64 : 44,
           opacity: isVisible ? 1 : 0,
           borderColor: cursorColor || 'hsla(357, 85%, 52%, 0.9)',
         }}
@@ -90,6 +91,36 @@ export function CustomCursor() {
           backgroundColor: 'transparent',
         }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
+      />
+      {/* Middle ring - appears on hover */}
+      <motion.div
+        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
+        animate={{
+          width: isHovering ? 44 : 20,
+          height: isHovering ? 44 : 20,
+          opacity: isHovering && isVisible ? 0.7 : 0,
+          borderColor: cursorColor || 'hsla(357, 85%, 52%, 0.7)',
+        }}
+        style={{
+          border: '1px solid',
+          backgroundColor: 'transparent',
+        }}
+        transition={{ duration: 0.25, ease: 'easeOut', delay: 0.02 }}
+      />
+      {/* Inner ring - appears on hover */}
+      <motion.div
+        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
+        animate={{
+          width: isHovering ? 24 : 8,
+          height: isHovering ? 24 : 8,
+          opacity: isHovering && isVisible ? 0.5 : 0,
+          borderColor: cursorColor || 'hsla(357, 85%, 52%, 0.5)',
+        }}
+        style={{
+          border: '1px solid',
+          backgroundColor: 'transparent',
+        }}
+        transition={{ duration: 0.3, ease: 'easeOut', delay: 0.04 }}
       />
     </motion.div>
   );
