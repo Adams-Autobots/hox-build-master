@@ -85,6 +85,16 @@
     font-feature-settings: "cv11", "ss01";
   }
 
+  /* Custom cursor - hide default on non-touch devices */
+  @media (hover: hover) and (pointer: fine) {
+    body {
+      cursor: none;
+    }
+    a, button, [role="button"], input, textarea, select, [data-magnetic] {
+      cursor: none;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight;
   }
