@@ -3,6 +3,11 @@ import { ArrowRight } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 
+import heroExhibitions from '@/assets/hero-exhibitions.jpg';
+import heroEvents from '@/assets/hero-events.jpg';
+import heroRetail from '@/assets/hero-retail.jpg';
+import heroInteriors from '@/assets/hero-interiors.jpg';
+
 const divisions = [
   {
     name: 'exhibitions',
@@ -10,9 +15,8 @@ const divisions = [
     headline: 'Exhibition builds with impact.',
     description: 'From exhibition stands to large-scale pavilions, we engineer spaces that attract, engage, and convert.',
     path: '/divisions/exhibitions',
-    colorClass: 'division-exhibitions',
     accentColor: 'hox-red',
-    gradient: 'from-hox-red/20 via-hox-red/5 to-transparent',
+    image: heroExhibitions,
   },
   {
     name: 'events',
@@ -20,9 +24,8 @@ const divisions = [
     headline: 'Events that come alive.',
     description: 'Stage design, live experiences, product launches — we build the physical worlds your audience remembers.',
     path: '/divisions/events',
-    colorClass: 'division-events',
     accentColor: 'hox-blue',
-    gradient: 'from-hox-blue/20 via-hox-blue/5 to-transparent',
+    image: heroEvents,
   },
   {
     name: 'retail',
@@ -30,9 +33,8 @@ const divisions = [
     headline: 'Retail fabrication, redefined.',
     description: 'POP displays, mall activations, kiosks, store environments — crafted with precision and durability.',
     path: '/divisions/retail',
-    colorClass: 'division-retail',
     accentColor: 'hox-orange',
-    gradient: 'from-hox-orange/20 via-hox-orange/5 to-transparent',
+    image: heroRetail,
   },
   {
     name: 'interiors',
@@ -40,9 +42,8 @@ const divisions = [
     headline: 'Interiors that elevate space.',
     description: 'Commercial, residential, and hospitality fit-outs with in-house joinery and turnkey delivery.',
     path: '/divisions/interiors',
-    colorClass: 'division-interiors',
     accentColor: 'hox-green',
-    gradient: 'from-hox-green/20 via-hox-green/5 to-transparent',
+    image: heroInteriors,
   },
 ];
 
@@ -84,50 +85,52 @@ export function DivisionsSection() {
               key={division.name}
               to={division.path}
               className={cn(
-                'group relative p-8 lg:p-10 rounded-lg bg-card border border-border overflow-hidden transition-all duration-500',
-                'hover:border-transparent hover:scale-[1.02]',
-                division.colorClass,
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
-                index === 4 && 'md:col-span-2 lg:col-span-1'
+                'group relative aspect-[4/3] rounded-lg overflow-hidden transition-all duration-500',
+                'hover:-translate-y-2',
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
               style={{ transitionDelay: `${300 + index * 100}ms` }}
             >
-              {/* Background Gradient on Hover */}
+              {/* Background Image */}
+              <img
+                src={division.image}
+                alt={division.headline}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+
+              {/* Dark Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-500 group-hover:from-black/70 group-hover:via-black/30" />
+
+              {/* Accent Line (bottom) */}
               <div
                 className={cn(
-                  'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500',
-                  division.gradient
+                  'absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500',
+                  `bg-${division.accentColor}`
                 )}
               />
 
-              {/* Glow Effect */}
-              <div
-                className={cn(
-                  'absolute -inset-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl',
-                  `bg-${division.accentColor}/20`
-                )}
-              />
-
-              <div className="relative">
+              {/* Content */}
+              <div className="absolute inset-0 p-8 lg:p-10 flex flex-col justify-end">
                 {/* Division Indicator */}
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-3 mb-4">
                   <span
                     className={cn(
-                      'w-3 h-3 rounded-full transition-all duration-500 group-hover:scale-150',
+                      'w-3 h-3 rounded-full transition-all duration-500 group-hover:scale-125',
                       `bg-${division.accentColor}`
                     )}
                   />
-                  <span className="text-sm text-muted-foreground hox-brand group-hover:text-foreground transition-colors">
+                  <span className="text-sm text-white/70 hox-brand group-hover:text-white transition-colors">
                     {division.fullName}
                   </span>
                 </div>
 
-                {/* Content */}
-                <h3 className="text-2xl font-bold mb-4 hox-brand text-foreground">
+                {/* Headline */}
+                <h3 className="text-2xl lg:text-3xl font-bold mb-3 hox-brand text-white">
                   {division.headline}
                 </h3>
 
-                <p className="text-muted-foreground mb-8 leading-relaxed line-clamp-3">
+                {/* Description */}
+                <p className="text-white/70 mb-6 leading-relaxed line-clamp-2 group-hover:text-white/90 transition-colors">
                   {division.description}
                 </p>
 
