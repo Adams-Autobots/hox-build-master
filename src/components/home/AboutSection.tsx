@@ -53,9 +53,7 @@ export function AboutSection() {
 
             <div className={cn('space-y-6 transition-all duration-700 delay-300', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')}>
               <p className="text-lg text-muted-foreground leading-relaxed">For 17+ years, HOX has partnered with leading developers, global brands, and ambitious creatives to deliver complex builds with speed, precision, and reliability.</p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                In-house capabilities mean full control — from design to fabrication to installation.
-              </p>
+              
             </div>
           </div>
 
