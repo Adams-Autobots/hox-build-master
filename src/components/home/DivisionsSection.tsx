@@ -3,11 +3,13 @@ import { ArrowRight } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 
-import heroExhibitions from '@/assets/hero-exhibitions.jpg';
-import heroEvents from '@/assets/hero-events.jpg';
-import heroRetail from '@/assets/hero-retail.jpg';
-
-const INTERIORS_GALLERY_IMAGE = 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/interiors/1766407431653-18.webp';
+// Gallery images (position #1 from each division's gallery)
+const GALLERY_IMAGES = {
+  exhibitions: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/exhibitions/1766404973821-1.webp',
+  events: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/events/1766407761536-1.webp',
+  retail: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/retail/1766408061889-0.webp',
+  interiors: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/interiors/1766407431653-18.webp',
+};
 
 const divisions = [
   {
@@ -16,7 +18,7 @@ const divisions = [
     headline: 'Exhibition builds with impact.',
     path: '/divisions/exhibitions',
     accentColor: 'hox-red',
-    image: heroExhibitions,
+    image: GALLERY_IMAGES.exhibitions,
   },
   {
     name: 'events',
@@ -24,7 +26,7 @@ const divisions = [
     headline: 'Events that come alive.',
     path: '/divisions/events',
     accentColor: 'hox-blue',
-    image: heroEvents,
+    image: GALLERY_IMAGES.events,
   },
   {
     name: 'retail',
@@ -32,7 +34,7 @@ const divisions = [
     headline: 'Retail fabrication, redefined.',
     path: '/divisions/retail',
     accentColor: 'hox-orange',
-    image: heroRetail,
+    image: GALLERY_IMAGES.retail,
   },
   {
     name: 'interiors',
@@ -40,7 +42,7 @@ const divisions = [
     headline: 'Interiors that elevate space.',
     path: '/divisions/interiors',
     accentColor: 'hox-green',
-    image: INTERIORS_GALLERY_IMAGE,
+    image: GALLERY_IMAGES.interiors,
   },
 ];
 
