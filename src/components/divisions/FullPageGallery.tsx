@@ -168,6 +168,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                 {images.map((image, index) => (
                   <motion.figure
                     key={index}
+                    data-division={division}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ 
                       opacity: isVisible ? 1 : 0, 
