@@ -51,7 +51,7 @@ export function TestimonialsSection() {
     }
   }, [checkScrollability]);
 
-  // Auto-scroll functionality
+  // Auto-scroll continuous loop
   useEffect(() => {
     if (isPaused) return;
 
@@ -61,12 +61,13 @@ export function TestimonialsSection() {
         const isAtEnd = scrollLeft >= scrollWidth - clientWidth - 10;
         
         if (isAtEnd) {
-          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+          // Reset to start instantly, then continue scrolling
+          scrollRef.current.scrollTo({ left: 0, behavior: 'auto' });
         } else {
           scroll('right');
         }
       }
-    }, 5000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [isPaused, scroll]);
