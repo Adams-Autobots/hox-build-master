@@ -75,14 +75,14 @@ export function DivisionsSection() {
         </div>
 
         {/* Divisions Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {divisions.map((division, index) => (
             <Link
               key={division.name}
               to={division.path}
               className={cn(
-                'group relative aspect-[3/4] rounded-lg overflow-hidden transition-all duration-500',
-                'hover:-translate-y-2',
+                'group relative aspect-[3/4] rounded-2xl overflow-hidden transition-all duration-500',
+                'hover:-translate-y-1',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
               style={{ transitionDelay: `${300 + index * 100}ms` }}
@@ -95,7 +95,7 @@ export function DivisionsSection() {
               />
 
               {/* Dark Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-500 group-hover:from-black/70 group-hover:via-black/30" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
               {/* Accent Line (bottom) */}
               <div
@@ -106,22 +106,17 @@ export function DivisionsSection() {
               />
 
               {/* Content */}
-              <div className="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end">
+              <div className="absolute inset-0 p-5 lg:p-6 flex flex-col justify-end">
                 {/* Division Name */}
-                <h3 className="text-lg lg:text-xl font-bold text-white hox-brand mb-1">
+                <h3 className="text-xl lg:text-2xl font-bold text-white hox-brand leading-tight">
                   {division.displayName}
                 </h3>
 
-                {/* Headline */}
-                <p className="text-xs text-white/60 line-clamp-1 mb-3">
-                  {division.headline}
-                </p>
-
-                {/* Explore Button */}
+                {/* Explore Link */}
                 <div
                   className={cn(
-                    'inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider transition-all duration-300',
-                    `text-${division.accentColor} group-hover:gap-2`
+                    'flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300',
+                    `text-${division.accentColor}`
                   )}
                 >
                   <span>Explore</span>
