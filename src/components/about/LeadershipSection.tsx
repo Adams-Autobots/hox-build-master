@@ -46,12 +46,6 @@ const leadership: TeamMember[] = [
   },
 ];
 
-const stats = [
-  { value: '200+', label: 'Team Members' },
-  { value: '12,000', label: 'sqm Facility' },
-  { value: '50+', label: 'Active Projects' },
-  { value: '15+', label: 'Nationalities' },
-];
 
 export function LeadershipSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
@@ -158,30 +152,6 @@ export function LeadershipSection() {
         </div>
       </section>
 
-      {/* Team Stats */}
-      <section className="py-12 bg-background border-y border-border">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            {stats.map((stat, index) => (
-              <div
-                key={stat.label}
-                className={cn(
-                  'text-center transition-all duration-500',
-                  teamVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                )}
-                style={{ transitionDelay: `${600 + index * 100}ms` }}
-              >
-                <span className="block text-4xl md:text-5xl font-bold text-primary mb-2">
-                  {stat.value}
-                </span>
-                <span className="text-sm text-muted-foreground uppercase tracking-wider">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 }
