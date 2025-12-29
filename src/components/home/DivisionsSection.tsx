@@ -79,13 +79,13 @@ export function DivisionsSection() {
         </div>
 
         {/* Divisions Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {divisions.map((division, index) => (
             <Link
               key={division.name}
               to={division.path}
               className={cn(
-                'group relative aspect-[4/3] rounded-lg overflow-hidden transition-all duration-500',
+                'group relative aspect-[3/4] rounded-lg overflow-hidden transition-all duration-500',
                 'hover:-translate-y-2',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
@@ -110,39 +110,34 @@ export function DivisionsSection() {
               />
 
               {/* Content */}
-              <div className="absolute inset-0 p-8 lg:p-10 flex flex-col justify-end">
+              <div className="absolute inset-0 p-4 lg:p-6 flex flex-col justify-end">
                 {/* Division Indicator */}
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-2 mb-2">
                   <span
                     className={cn(
-                      'w-3 h-3 rounded-full transition-all duration-500 group-hover:scale-125',
+                      'w-2 h-2 rounded-full transition-all duration-500 group-hover:scale-125',
                       `bg-${division.accentColor}`
                     )}
                   />
-                  <span className="text-sm text-white/70 hox-brand group-hover:text-white transition-colors">
+                  <span className="text-xs text-white/70 hox-brand group-hover:text-white transition-colors">
                     {division.fullName}
                   </span>
                 </div>
 
                 {/* Headline */}
-                <h3 className="text-2xl lg:text-3xl font-bold mb-3 hox-brand text-white">
+                <h3 className="text-base lg:text-lg font-bold mb-1 hox-brand text-white line-clamp-2">
                   {division.headline}
                 </h3>
-
-                {/* Description */}
-                <p className="text-white/70 mb-6 leading-relaxed line-clamp-2 group-hover:text-white/90 transition-colors">
-                  {division.description}
-                </p>
 
                 {/* CTA */}
                 <div
                   className={cn(
-                    'flex items-center gap-2 text-sm font-medium uppercase tracking-wider transition-colors',
+                    'flex items-center gap-1 text-xs font-medium uppercase tracking-wider transition-colors mt-2',
                     `text-${division.accentColor}`
                   )}
                 >
-                  <span>explore {division.name}</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-2" />
+                  <span className="hidden sm:inline">explore</span>
+                  <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
             </Link>
