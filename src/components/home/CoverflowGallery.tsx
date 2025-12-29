@@ -33,7 +33,9 @@ export function CoverflowGallery() {
   const { ref: sectionRef, isVisible } = useScrollReveal<HTMLDivElement>();
   
   const [sectionHeight, setSectionHeight] = useState('200vh');
-  const [travel, setTravel] = useState(0);
+  const [travelLeft, setTravelLeft] = useState(0);
+  const [travelCenter, setTravelCenter] = useState(0);
+  const [travelRight, setTravelRight] = useState(0);
   
   // Track scroll progress through the tall container
   const { scrollYProgress } = useScroll({
@@ -45,10 +47,10 @@ export function CoverflowGallery() {
   const springConfig = { damping: 40, stiffness: 100, mass: 0.5 };
   const smoothProgress = useSpring(scrollYProgress, springConfig);
   
-  // Transform for each column - pixel-based for precision
-  const leftColumnY = useTransform(smoothProgress, [0, 1], [0, -travel]);
-  const centerColumnY = useTransform(smoothProgress, [0, 1], [-travel * 0.3, travel * 0.7]);
-  const rightColumnY = useTransform(smoothProgress, [0, 1], [0, -travel]);
+  // Transform for each column - pixel-based, per-column travel
+  const leftColumnY = useTransform(smoothProgress, [0, 1], [0, -travelLeft]);
+  const centerColumnY = useTransform(smoothProgress, [0, 0.4, 1], [0, -travelCenter * 0.2, -travelCenter]);
+  const rightColumnY = useTransform(smoothProgress, [0, 1], [0, -travelRight]);
 
   const { data: allFeaturedImages, isLoading } = useQuery({
     queryKey: ['coverflow-gallery-images'],
@@ -68,8 +70,8 @@ export function CoverflowGallery() {
     },
   });
 
-  // Use all featured images (up to 24 for 8 per column)
-  const allImages = shuffleArray(allFeaturedImages || []).slice(0, 24);
+  // Use all featured images
+  const allImages = shuffleArray(allFeaturedImages || []);
   
   // Split into 3 columns evenly
   const columnSize = Math.ceil(allImages.length / 3);
@@ -77,33 +79,49 @@ export function CoverflowGallery() {
   const centerColumn = allImages.slice(columnSize, columnSize * 2);
   const rightColumn = allImages.slice(columnSize * 2);
 
-  // Measure content and calculate dynamic section height
+  // Measure content and calculate per-column travel distances
   const measureAndSetHeight = useCallback(() => {
-    if (!frameRef.current || !leftColRef.current) return;
+    if (!frameRef.current || !leftColRef.current || !centerColRef.current || !rightColRef.current) return;
     
-    requestAnimationFrame(() => {
-      const frameH = frameRef.current?.clientHeight || 0;
-      const leftH = leftColRef.current?.scrollHeight || 0;
-      const centerH = centerColRef.current?.scrollHeight || 0;
-      const rightH = rightColRef.current?.scrollHeight || 0;
-      const maxColH = Math.max(leftH, centerH, rightH);
-      
-      const newTravel = Math.max(0, maxColH - frameH + 100); // +100 for padding
-      setTravel(newTravel);
-      
-      // Section height = viewport + travel distance
-      const viewportH = window.innerHeight;
-      const totalHeight = viewportH + newTravel;
-      setSectionHeight(`${totalHeight}px`);
-    });
+    const frameH = frameRef.current.clientHeight;
+    const leftH = leftColRef.current.scrollHeight;
+    const centerH = centerColRef.current.scrollHeight;
+    const rightH = rightColRef.current.scrollHeight;
+    
+    // Per-column travel - no fudge factor
+    const newTravelLeft = Math.max(0, leftH - frameH);
+    const newTravelCenter = Math.max(0, centerH - frameH);
+    const newTravelRight = Math.max(0, rightH - frameH);
+    const maxTravel = Math.max(newTravelLeft, newTravelCenter, newTravelRight);
+    
+    setTravelLeft(newTravelLeft);
+    setTravelCenter(newTravelCenter);
+    setTravelRight(newTravelRight);
+    
+    // Section height = viewport + max travel distance
+    const viewportH = window.innerHeight;
+    const totalHeight = viewportH + maxTravel;
+    setSectionHeight(`${totalHeight}px`);
   }, []);
 
+  // Use ResizeObserver for robust measurement
   useEffect(() => {
-    if (!isLoading && allImages.length > 0) {
-      // Small delay to ensure images are laid out
-      const timer = setTimeout(measureAndSetHeight, 100);
-      return () => clearTimeout(timer);
-    }
+    if (isLoading || allImages.length === 0) return;
+    
+    const observer = new ResizeObserver(() => {
+      measureAndSetHeight();
+    });
+    
+    // Observe frame and columns
+    if (frameRef.current) observer.observe(frameRef.current);
+    if (leftColRef.current) observer.observe(leftColRef.current);
+    if (centerColRef.current) observer.observe(centerColRef.current);
+    if (rightColRef.current) observer.observe(rightColRef.current);
+    
+    // Initial measurement
+    measureAndSetHeight();
+    
+    return () => observer.disconnect();
   }, [isLoading, allImages.length, measureAndSetHeight]);
 
   useEffect(() => {
@@ -122,6 +140,7 @@ export function CoverflowGallery() {
           alt={image.alt}
           className="w-full h-full object-cover"
           draggable={false}
+          onLoad={measureAndSetHeight}
         />
       </div>
     </div>
@@ -189,7 +208,7 @@ export function CoverflowGallery() {
               )}
             </motion.div>
 
-            {/* Center Column - moves opposite direction */}
+            {/* Center Column - eased movement up */}
             <motion.div 
               ref={centerColRef}
               className="flex flex-col gap-4 lg:gap-6"
