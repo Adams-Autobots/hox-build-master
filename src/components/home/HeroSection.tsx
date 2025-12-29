@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 import heroVideo from '@/assets/hero-video.mp4';
 
 const heroWords = [
@@ -90,13 +91,15 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <Link 
-              to="/projects"
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground/10 backdrop-blur-sm border border-foreground/20 text-foreground font-medium transition-all duration-300 hover:bg-foreground hover:text-background hover:font-bold"
-            >
-              Explore our work
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </Link>
+            <MagneticButton>
+              <Link 
+                to="/projects"
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground/10 backdrop-blur-sm border border-foreground/20 text-foreground font-medium transition-all duration-300 hover:bg-foreground hover:text-background hover:font-bold"
+              >
+                Explore our work
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </MagneticButton>
           </motion.div>
         </motion.div>
       </div>
