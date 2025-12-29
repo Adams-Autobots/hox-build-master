@@ -1,10 +1,11 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
+
 interface GalleryImage {
   id: string;
   src: string;
@@ -24,7 +25,15 @@ function shuffleArray<T>(array: T[]): T[] {
 
 export function CoverflowGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const centerColRef = useRef<HTMLDivElement>(null);
+  const rightColRef = useRef<HTMLDivElement>(null);
+  
   const { ref: sectionRef, isVisible } = useScrollReveal<HTMLDivElement>();
+  
+  const [sectionHeight, setSectionHeight] = useState('200vh');
+  const [travel, setTravel] = useState(0);
   
   // Track scroll progress through the tall container
   const { scrollYProgress } = useScroll({
@@ -36,11 +45,10 @@ export function CoverflowGallery() {
   const springConfig = { damping: 40, stiffness: 100, mass: 0.5 };
   const smoothProgress = useSpring(scrollYProgress, springConfig);
   
-  // Transform for each column - increased range for full image reveal
-  // Side columns move up (negative), center moves down (positive)
-  const leftColumnY = useTransform(smoothProgress, [0, 1], ['25%', '-25%']);
-  const centerColumnY = useTransform(smoothProgress, [0, 1], ['-25%', '25%']);
-  const rightColumnY = useTransform(smoothProgress, [0, 1], ['25%', '-25%']);
+  // Transform for each column - pixel-based for precision
+  const leftColumnY = useTransform(smoothProgress, [0, 1], [0, -travel]);
+  const centerColumnY = useTransform(smoothProgress, [0, 1], [-travel * 0.3, travel * 0.7]);
+  const rightColumnY = useTransform(smoothProgress, [0, 1], [0, -travel]);
 
   const { data: allFeaturedImages, isLoading } = useQuery({
     queryKey: ['coverflow-gallery-images'],
@@ -69,6 +77,40 @@ export function CoverflowGallery() {
   const centerColumn = allImages.slice(columnSize, columnSize * 2);
   const rightColumn = allImages.slice(columnSize * 2);
 
+  // Measure content and calculate dynamic section height
+  const measureAndSetHeight = useCallback(() => {
+    if (!frameRef.current || !leftColRef.current) return;
+    
+    requestAnimationFrame(() => {
+      const frameH = frameRef.current?.clientHeight || 0;
+      const leftH = leftColRef.current?.scrollHeight || 0;
+      const centerH = centerColRef.current?.scrollHeight || 0;
+      const rightH = rightColRef.current?.scrollHeight || 0;
+      const maxColH = Math.max(leftH, centerH, rightH);
+      
+      const newTravel = Math.max(0, maxColH - frameH + 100); // +100 for padding
+      setTravel(newTravel);
+      
+      // Section height = viewport + travel distance
+      const viewportH = window.innerHeight;
+      const totalHeight = viewportH + newTravel;
+      setSectionHeight(`${totalHeight}px`);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && allImages.length > 0) {
+      // Small delay to ensure images are laid out
+      const timer = setTimeout(measureAndSetHeight, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, allImages.length, measureAndSetHeight]);
+
+  useEffect(() => {
+    window.addEventListener('resize', measureAndSetHeight);
+    return () => window.removeEventListener('resize', measureAndSetHeight);
+  }, [measureAndSetHeight]);
+
   const ImageCard = ({ image }: { image: GalleryImage }) => (
     <div
       data-division={image.division}
@@ -90,17 +132,17 @@ export function CoverflowGallery() {
   );
 
   return (
-    <section ref={containerRef} className="relative h-[200vh]">
+    <section ref={containerRef} className="relative" style={{ height: sectionHeight }}>
       {/* Sticky frame that stays fixed while scrolling */}
-      <div ref={sectionRef} className="sticky top-0 h-screen overflow-hidden flex items-center">
+      <div ref={sectionRef} className="sticky top-0 h-screen overflow-hidden flex flex-col">
         {/* Top gradient fade */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
         
         {/* Bottom gradient fade */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
         
-        <div className="container mx-auto px-6 lg:px-12">
-          {/* Section Header */}
+        {/* Section Header */}
+        <div className="container mx-auto px-6 lg:px-12 pt-8 lg:pt-12">
           <div className="text-center mb-8 lg:mb-12">
             <span
               className={cn(
@@ -123,11 +165,14 @@ export function CoverflowGallery() {
               <span className="text-primary">Portfolio</span>
             </h2>
           </div>
+        </div>
 
-          {/* Coverflow Grid */}
-          <div className="grid grid-cols-3 gap-4 lg:gap-6 max-w-5xl mx-auto">
+        {/* Coverflow Frame */}
+        <div ref={frameRef} className="flex-1 overflow-hidden px-6 lg:px-12">
+          <div className="grid grid-cols-3 gap-4 lg:gap-6 max-w-5xl mx-auto h-full">
             {/* Left Column - moves up on scroll */}
             <motion.div 
+              ref={leftColRef}
               className="flex flex-col gap-4 lg:gap-6"
               style={{ y: leftColumnY }}
             >
@@ -144,8 +189,9 @@ export function CoverflowGallery() {
               )}
             </motion.div>
 
-            {/* Center Column - moves down on scroll */}
+            {/* Center Column - moves opposite direction */}
             <motion.div 
+              ref={centerColRef}
               className="flex flex-col gap-4 lg:gap-6"
               style={{ y: centerColumnY }}
             >
@@ -164,6 +210,7 @@ export function CoverflowGallery() {
 
             {/* Right Column - moves up on scroll */}
             <motion.div 
+              ref={rightColRef}
               className="flex flex-col gap-4 lg:gap-6"
               style={{ y: rightColumnY }}
             >
