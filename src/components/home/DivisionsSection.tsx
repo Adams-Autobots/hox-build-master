@@ -6,7 +6,8 @@ import { cn } from '@/lib/utils';
 import heroExhibitions from '@/assets/hero-exhibitions.jpg';
 import heroEvents from '@/assets/hero-events.jpg';
 import heroRetail from '@/assets/hero-retail.jpg';
-import heroInteriors from '@/assets/hero-interiors.jpg';
+
+const INTERIORS_GALLERY_IMAGE = 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/interiors/1766407392543-0.webp';
 
 const divisions = [
   {
@@ -39,7 +40,7 @@ const divisions = [
     headline: 'Interiors that elevate space.',
     path: '/divisions/interiors',
     accentColor: 'hox-green',
-    image: heroInteriors,
+    image: INTERIORS_GALLERY_IMAGE,
   },
 ];
 
