@@ -124,6 +124,7 @@ export default function WorkPage() {
                         <Link
                           key={image.id}
                           to={division.route}
+                          data-division={division.key}
                           className="group relative overflow-hidden rounded-lg bg-card aspect-[4/3]"
                         >
                           <img
