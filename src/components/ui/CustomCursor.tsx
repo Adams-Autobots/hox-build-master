@@ -80,8 +80,8 @@ export function CustomCursor() {
       <motion.div
         className="relative -translate-x-1/2 -translate-y-1/2 rounded-full"
         animate={{
-          width: isHovering ? 48 : 24,
-          height: isHovering ? 48 : 24,
+          width: isHovering ? 32 : 16,
+          height: isHovering ? 32 : 16,
           opacity: isVisible ? 1 : 0,
           backgroundColor: cursorColor || 'rgba(255, 255, 255, 0.8)',
         }}
