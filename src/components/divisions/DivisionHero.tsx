@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { MagneticButton } from '@/components/ui/MagneticButton';
 import { cn } from '@/lib/utils';
 
 interface DivisionHeroProps {
@@ -149,19 +148,17 @@ export function DivisionHero({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <MagneticButton>
-              <Button
-                variant="hero"
-                size="xl"
-                asChild
-                className={cn(config.bg, config.hover, `hover:${config.glow}`)}
-              >
-                <Link to="/contact">
-                  {ctaText}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </MagneticButton>
+            <Button
+              variant="hero"
+              size="xl"
+              asChild
+              className={cn(config.bg, config.hover, `hover:${config.glow}`)}
+            >
+              <Link to="/contact">
+                {ctaText}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
           </motion.div>
         </div>
       </div>
