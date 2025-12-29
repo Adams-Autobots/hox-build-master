@@ -66,6 +66,9 @@ export function ClientMarquee() {
           <span className="w-8 h-px bg-primary" />
           Our Clients
         </span>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+          Beyond completion. Into <span className="text-primary">partnership.</span>
+        </h2>
       </div>
 
       <div 
