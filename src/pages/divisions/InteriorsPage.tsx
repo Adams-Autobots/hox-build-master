@@ -43,35 +43,36 @@ export default function InteriorsPage() {
   
   return (
     <Layout>
-      <DivisionMeta
-        division="interiors"
-        title="Interior Design & Fit-out | HOX Dubai"
-        description="Commercial and residential interior fit-outs with bespoke joinery and premium finishes. Offices, restaurants, and luxury homes in UAE."
-        images={galleryImagesData}
-      />
-      <DivisionHero
-        division="interiors"
-        tagline="hoxinteriors."
-        headline="Interiors crafted"
-        highlightText="With precision."
-        description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
-        ctaText="Request interiors proposal"
-        heroImage={heroInteriors}
-        heroVideo={heroInteriorsVideo}
-        cropLeft
-      />
-      
-      <CapabilitiesGrid
-        division="interiors"
-        capabilities={capabilities}
-      />
+      <div data-division="interiors">
+        <DivisionMeta
+          division="interiors"
+          title="Interior Design & Fit-out | HOX Dubai"
+          description="Commercial and residential interior fit-outs with bespoke joinery and premium finishes. Offices, restaurants, and luxury homes in UAE."
+          images={galleryImagesData}
+        />
+        <DivisionHero
+          division="interiors"
+          tagline="hoxinteriors."
+          headline="Interiors crafted"
+          highlightText="With precision."
+          description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
+          ctaText="Request interiors proposal"
+          heroImage={heroInteriors}
+          heroVideo={heroInteriorsVideo}
+          cropLeft
+        />
+        
+        <CapabilitiesGrid
+          division="interiors"
+          capabilities={capabilities}
+        />
 
-      <ProcessTimeline division="interiors" />
+        <ProcessTimeline division="interiors" />
 
-      <FullPageGallery division="interiors" images={galleryImages} maxImages={16} showViewAll />
+        <FullPageGallery division="interiors" images={galleryImages} maxImages={16} showViewAll />
 
-      <DivisionFAQ division="interiors" />
-      
+        <DivisionFAQ division="interiors" />
+      </div>
     </Layout>
   );
 }

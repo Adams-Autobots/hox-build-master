@@ -43,34 +43,35 @@ export default function RetailPage() {
   
   return (
     <Layout>
-      <DivisionMeta
-        division="retail"
-        title="Retail Store Design & Fit-out | HOX Dubai"
-        description="Turnkey retail builds from flagship stores to pop-up kiosks. Visual merchandising, custom fixtures, and multi-location rollouts in UAE."
-        images={galleryImagesData}
-      />
-      <DivisionHero
-        division="retail"
-        tagline="hoxretail."
-        headline="Retail spaces"
-        highlightText="That convert."
-        description="We build retail environments that drive foot traffic and conversions. From flagship stores to pop-up activations, every detail is designed to sell."
-        ctaText="Request retail proposal"
-        heroImage={heroRetail}
-        heroVideo={heroRetailVideo}
-      />
-      
-      <CapabilitiesGrid
-        division="retail"
-        capabilities={capabilities}
-      />
+      <div data-division="retail">
+        <DivisionMeta
+          division="retail"
+          title="Retail Store Design & Fit-out | HOX Dubai"
+          description="Turnkey retail builds from flagship stores to pop-up kiosks. Visual merchandising, custom fixtures, and multi-location rollouts in UAE."
+          images={galleryImagesData}
+        />
+        <DivisionHero
+          division="retail"
+          tagline="hoxretail."
+          headline="Retail spaces"
+          highlightText="That convert."
+          description="We build retail environments that drive foot traffic and conversions. From flagship stores to pop-up activations, every detail is designed to sell."
+          ctaText="Request retail proposal"
+          heroImage={heroRetail}
+          heroVideo={heroRetailVideo}
+        />
+        
+        <CapabilitiesGrid
+          division="retail"
+          capabilities={capabilities}
+        />
 
-      <ProcessTimeline division="retail" />
+        <ProcessTimeline division="retail" />
 
-      <FullPageGallery division="retail" images={galleryImages} maxImages={16} showViewAll />
+        <FullPageGallery division="retail" images={galleryImages} maxImages={16} showViewAll />
 
-      <DivisionFAQ division="retail" />
-      
+        <DivisionFAQ division="retail" />
+      </div>
     </Layout>
   );
 }

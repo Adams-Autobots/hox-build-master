@@ -43,34 +43,35 @@ export default function ExhibitionsPage() {
   
   return (
     <Layout>
-      <DivisionMeta
-        division="exhibitions"
-        title="Exhibition Stand Design & Build | HOX Dubai"
-        description="Custom exhibition stands engineered for impact. Double-decker builds, pavilions, and bespoke architecture for trade shows and expos in UAE."
-        images={galleryImagesData}
-      />
-      <DivisionHero
-        division="exhibitions"
-        tagline="hoxexhibitions."
-        headline="Exhibition builds"
-        highlightText="Engineered to perform."
-        description="We design and fabricate exhibition stands that capture attention and deliver measurable impact. Structural engineering meets brand storytelling."
-        ctaText="Request exhibition proposal"
-        heroImage={heroExhibitions}
-        heroVideo={heroExhibitionsVideo}
-      />
-      
-      <CapabilitiesGrid
-        division="exhibitions"
-        capabilities={capabilities}
-      />
+      <div data-division="exhibitions">
+        <DivisionMeta
+          division="exhibitions"
+          title="Exhibition Stand Design & Build | HOX Dubai"
+          description="Custom exhibition stands engineered for impact. Double-decker builds, pavilions, and bespoke architecture for trade shows and expos in UAE."
+          images={galleryImagesData}
+        />
+        <DivisionHero
+          division="exhibitions"
+          tagline="hoxexhibitions."
+          headline="Exhibition builds"
+          highlightText="Engineered to perform."
+          description="We design and fabricate exhibition stands that capture attention and deliver measurable impact. Structural engineering meets brand storytelling."
+          ctaText="Request exhibition proposal"
+          heroImage={heroExhibitions}
+          heroVideo={heroExhibitionsVideo}
+        />
+        
+        <CapabilitiesGrid
+          division="exhibitions"
+          capabilities={capabilities}
+        />
 
-      <ProcessTimeline division="exhibitions" />
+        <ProcessTimeline division="exhibitions" />
 
-      <FullPageGallery division="exhibitions" images={galleryImages} maxImages={16} showViewAll />
+        <FullPageGallery division="exhibitions" images={galleryImages} maxImages={16} showViewAll />
 
-      <DivisionFAQ division="exhibitions" />
-      
+        <DivisionFAQ division="exhibitions" />
+      </div>
     </Layout>
   );
 }
