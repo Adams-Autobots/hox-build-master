@@ -29,7 +29,7 @@ import {
   Image as ImageIcon,
   GripVertical,
   Star,
-  LayoutGrid,
+  Home,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -61,7 +61,7 @@ interface GalleryImage {
   division: string;
   display_order: number;
   is_featured: boolean;
-  capability_index: number | null;
+  is_division_hero: boolean;
   // SEO fields
   title: string | null;
   seo_description: string | null;
@@ -87,7 +87,7 @@ interface SortableImageCardProps {
   onEdit: (image: GalleryImage) => void;
   onDelete: (id: string, src: string) => void;
   onToggleFeatured: (id: string, isFeatured: boolean) => void;
-  onSetCapability: (id: string, capabilityIndex: number | null) => void;
+  onSetDivisionHero: (id: string) => void;
   isEditing: boolean;
   editForm: EditFormState;
   setEditForm: React.Dispatch<React.SetStateAction<EditFormState>>;
@@ -100,7 +100,7 @@ function SortableImageCard({
   onEdit,
   onDelete,
   onToggleFeatured,
-  onSetCapability,
+  onSetDivisionHero,
   isEditing,
   editForm,
   setEditForm,
@@ -146,21 +146,15 @@ function SortableImageCard({
           className="w-full h-full object-cover"
         />
         <div className="absolute top-2 right-2 flex gap-1">
-          <Select
-            value={image.capability_index?.toString() ?? 'none'}
-            onValueChange={(v) => onSetCapability(image.id, v === 'none' ? null : parseInt(v))}
+          <Button
+            size="icon"
+            variant={image.is_division_hero ? "default" : "secondary"}
+            className={cn("w-8 h-8", image.is_division_hero && "bg-emerald-500 hover:bg-emerald-600")}
+            onClick={() => onSetDivisionHero(image.id)}
+            title={image.is_division_hero ? "Currently set as division hero" : "Set as division hero image"}
           >
-            <SelectTrigger className="w-8 h-8 p-0 bg-background/80 backdrop-blur-sm border-0" title="Set as capability card background">
-              <LayoutGrid className={cn("w-4 h-4 mx-auto", image.capability_index !== null && "text-primary")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">Not a card</SelectItem>
-              <SelectItem value="0">Card 1</SelectItem>
-              <SelectItem value="1">Card 2</SelectItem>
-              <SelectItem value="2">Card 3</SelectItem>
-              <SelectItem value="3">Card 4</SelectItem>
-            </SelectContent>
-          </Select>
+            <Home className={cn("w-4 h-4", image.is_division_hero && "fill-current")} />
+          </Button>
           <Button
             size="icon"
             variant={image.is_featured ? "default" : "secondary"}
@@ -191,9 +185,9 @@ function SortableImageCard({
           <span className="px-2 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-medium">
             #{image.display_order}
           </span>
-          {image.capability_index !== null && (
-            <span className="px-2 py-1 bg-primary/90 backdrop-blur-sm rounded text-xs font-medium text-primary-foreground">
-              Card {image.capability_index + 1}
+          {image.is_division_hero && (
+            <span className="px-2 py-1 bg-emerald-500/90 backdrop-blur-sm rounded text-xs font-medium text-white">
+              Hero
             </span>
           )}
           {image.is_featured && (
@@ -567,28 +561,26 @@ export default function GalleryAdminPage() {
     }
   };
 
-  const handleSetCapability = async (id: string, capabilityIndex: number | null) => {
+  const handleSetDivisionHero = async (id: string) => {
     try {
-      // If setting a capability index, first clear it from any other image in this division
-      if (capabilityIndex !== null) {
-        await supabase
-          .from('gallery_images')
-          .update({ capability_index: null })
-          .eq('division', selectedDivision)
-          .eq('capability_index', capabilityIndex);
-      }
+      // First clear is_division_hero from any other image in this division
+      await supabase
+        .from('gallery_images')
+        .update({ is_division_hero: false })
+        .eq('division', selectedDivision)
+        .eq('is_division_hero', true);
 
+      // Set the selected image as division hero
       const { error } = await supabase
         .from('gallery_images')
-        .update({ capability_index: capabilityIndex })
+        .update({ is_division_hero: true })
         .eq('id', id);
 
       if (error) throw error;
 
-      const capLabels = ['Card 1', 'Card 2', 'Card 3', 'Card 4'];
       toast({ 
-        title: capabilityIndex !== null ? `Set as ${capLabels[capabilityIndex]}` : 'Removed from capability cards',
-        description: capabilityIndex !== null ? 'This image will appear on the capability card' : 'Image is now a regular gallery image'
+        title: 'Set as Division Hero',
+        description: 'This image will appear on the home page division card'
       });
       queryClient.invalidateQueries({ queryKey: ['gallery-images', selectedDivision] });
       fetchImages();
@@ -874,7 +866,7 @@ export default function GalleryAdminPage() {
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                         onToggleFeatured={handleToggleFeatured}
-                        onSetCapability={handleSetCapability}
+                        onSetDivisionHero={handleSetDivisionHero}
                         isEditing={editingId === image.id}
                         editForm={editForm}
                         setEditForm={setEditForm}
