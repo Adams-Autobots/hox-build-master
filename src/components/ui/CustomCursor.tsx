@@ -83,7 +83,7 @@ export function CustomCursor() {
           width: isHovering ? 32 : 16,
           height: isHovering ? 32 : 16,
           opacity: isVisible ? 1 : 0,
-          backgroundColor: cursorColor || 'rgba(255, 255, 255, 0.8)',
+          backgroundColor: cursorColor || 'hsla(357, 85%, 52%, 0.8)',
         }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
       />
