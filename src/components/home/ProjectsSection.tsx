@@ -129,6 +129,7 @@ export function ProjectsSection() {
               <Link
                 key={image.id}
                 to={divisionRoutes[image.division] || '/projects'}
+                data-division={image.division}
                 className={cn(
                   'group relative overflow-hidden rounded-lg bg-background block transition-all duration-500',
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
