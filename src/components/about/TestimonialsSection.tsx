@@ -1,7 +1,7 @@
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 const testimonials = [
   {
@@ -32,22 +32,44 @@ export function TestimonialsSection() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const checkScrollability = () => {
+  const [isPaused, setIsPaused] = useState(false);
+
+  const checkScrollability = useCallback(() => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
       setCanScrollLeft(scrollLeft > 0);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
     }
-  };
+  }, []);
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scroll = useCallback((direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const cardWidth = scrollRef.current.clientWidth / 2;
       const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       setTimeout(checkScrollability, 300);
     }
-  };
+  }, [checkScrollability]);
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        const isAtEnd = scrollLeft >= scrollWidth - clientWidth - 10;
+        
+        if (isAtEnd) {
+          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          scroll('right');
+        }
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isPaused, scroll]);
 
   return (
     <section ref={ref} className="py-12 lg:py-16 bg-background">
@@ -107,6 +129,8 @@ export function TestimonialsSection() {
         <div
           ref={scrollRef}
           onScroll={checkScrollability}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
           className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
