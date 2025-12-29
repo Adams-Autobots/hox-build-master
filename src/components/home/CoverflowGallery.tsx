@@ -3,8 +3,8 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-
 interface GalleryImage {
   id: string;
   src: string;
@@ -24,6 +24,7 @@ function shuffleArray<T>(array: T[]): T[] {
 
 export function CoverflowGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { ref: sectionRef, isVisible } = useScrollReveal<HTMLDivElement>();
   
   // Track scroll progress through the tall container
   const { scrollYProgress } = useScroll({
@@ -90,7 +91,7 @@ export function CoverflowGallery() {
   return (
     <section ref={containerRef} className="relative h-[200vh]">
       {/* Sticky frame that stays fixed while scrolling */}
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
+      <div ref={sectionRef} className="sticky top-0 h-screen overflow-hidden flex items-center">
         {/* Top gradient fade */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
         
@@ -100,13 +101,23 @@ export function CoverflowGallery() {
         <div className="container mx-auto px-6 lg:px-12">
           {/* Section Header */}
           <div className="text-center mb-8 lg:mb-12">
-            <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-4">
+            <span
+              className={cn(
+                'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              )}
+            >
               <span className="w-8 h-px bg-primary" />
               Gallery
               <span className="w-8 h-px bg-primary" />
             </span>
             
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+            <h2
+              className={cn(
+                'text-3xl md:text-4xl lg:text-5xl font-bold leading-tight transition-all duration-700 delay-150',
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              )}
+            >
               <span className="hox-brand">Our </span>
               <span className="text-primary">Portfolio</span>
             </h2>
