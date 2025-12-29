@@ -29,27 +29,16 @@ const testimonials = [
 export function TestimonialsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const [isPaused, setIsPaused] = useState(false);
-
-  const checkScrollability = useCallback(() => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-    }
-  }, []);
 
   const scroll = useCallback((direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const cardWidth = scrollRef.current.clientWidth / 2;
       const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      setTimeout(checkScrollability, 300);
     }
-  }, [checkScrollability]);
+  }, []);
 
   // Auto-scroll continuous loop
   useEffect(() => {
@@ -100,26 +89,34 @@ export function TestimonialsSection() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           )}>
             <button
-              onClick={() => scroll('left')}
-              disabled={!canScrollLeft}
-              className={cn(
-                'w-12 h-12 rounded-full border border-border flex items-center justify-center transition-all duration-300',
-                canScrollLeft 
-                  ? 'hover:bg-primary hover:border-primary hover:text-primary-foreground' 
-                  : 'opacity-30 cursor-not-allowed'
-              )}
+              onClick={() => {
+                if (scrollRef.current) {
+                  const { scrollLeft } = scrollRef.current;
+                  if (scrollLeft <= 0) {
+                    // Loop to end
+                    scrollRef.current.scrollTo({ left: scrollRef.current.scrollWidth, behavior: 'smooth' });
+                  } else {
+                    scroll('left');
+                  }
+                }
+              }}
+              className="w-12 h-12 rounded-full border border-border flex items-center justify-center transition-all duration-300 hover:bg-primary hover:border-primary hover:text-primary-foreground"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
-              onClick={() => scroll('right')}
-              disabled={!canScrollRight}
-              className={cn(
-                'w-12 h-12 rounded-full border border-border flex items-center justify-center transition-all duration-300',
-                canScrollRight 
-                  ? 'hover:bg-primary hover:border-primary hover:text-primary-foreground' 
-                  : 'opacity-30 cursor-not-allowed'
-              )}
+              onClick={() => {
+                if (scrollRef.current) {
+                  const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+                  if (scrollLeft >= scrollWidth - clientWidth - 10) {
+                    // Loop to start
+                    scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+                  } else {
+                    scroll('right');
+                  }
+                }
+              }}
+              className="w-12 h-12 rounded-full border border-border flex items-center justify-center transition-all duration-300 hover:bg-primary hover:border-primary hover:text-primary-foreground"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -129,7 +126,6 @@ export function TestimonialsSection() {
         {/* Scrollable Container */}
         <div
           ref={scrollRef}
-          onScroll={checkScrollability}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4"
