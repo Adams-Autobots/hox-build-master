@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import heroExhibitions from '@/assets/hero-exhibitions.jpg';
 import heroEvents from '@/assets/hero-events.jpg';
 import heroRetail from '@/assets/hero-retail.jpg';
-import heroInteriors from '@/assets/hero-interiors.jpg';
+import divisionInteriorsHero from '@/assets/division-interiors-hero.png';
 
 const divisions = [
   {
@@ -39,7 +39,7 @@ const divisions = [
     headline: 'Interiors that elevate space.',
     path: '/divisions/interiors',
     accentColor: 'hox-green',
-    image: heroInteriors,
+    image: divisionInteriorsHero,
   },
 ];
 
