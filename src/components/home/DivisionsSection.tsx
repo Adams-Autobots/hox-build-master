@@ -165,6 +165,7 @@ function DivisionCard({
   return (
     <Link
       to={division.path}
+      data-division={division.name}
       className={cn(
         'group relative aspect-[3/4] rounded-2xl overflow-hidden transition-all duration-500',
         'hover:-translate-y-1',
