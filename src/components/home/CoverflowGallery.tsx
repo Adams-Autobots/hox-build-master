@@ -1,9 +1,8 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
-import { motion, useSpring, useTransform, useMotionValue } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 
 interface GalleryImage {
@@ -25,18 +24,22 @@ function shuffleArray<T>(array: T[]): T[] {
 
 export function CoverflowGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { ref: sectionRef, isVisible } = useScrollReveal<HTMLElement>();
-  const [isDragging, setIsDragging] = useState(false);
   
-  // Motion value for scroll position
-  const scrollY = useMotionValue(0);
-  const springConfig = { damping: 30, stiffness: 200 };
-  const smoothScrollY = useSpring(scrollY, springConfig);
+  // Track scroll progress through the tall container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Smoother spring configuration
+  const springConfig = { damping: 40, stiffness: 100, mass: 0.5 };
+  const smoothProgress = useSpring(scrollYProgress, springConfig);
   
-  // Transform for each column - center goes down, sides go up
-  const leftColumnY = useTransform(smoothScrollY, [0, 1], ['0%', '15%']);
-  const centerColumnY = useTransform(smoothScrollY, [0, 1], ['0%', '-15%']);
-  const rightColumnY = useTransform(smoothScrollY, [0, 1], ['0%', '15%']);
+  // Transform for each column - increased range for full image reveal
+  // Side columns move up (negative), center moves down (positive)
+  const leftColumnY = useTransform(smoothProgress, [0, 1], ['25%', '-25%']);
+  const centerColumnY = useTransform(smoothProgress, [0, 1], ['-25%', '25%']);
+  const rightColumnY = useTransform(smoothProgress, [0, 1], ['25%', '-25%']);
 
   const { data: allFeaturedImages, isLoading } = useQuery({
     queryKey: ['coverflow-gallery-images'],
@@ -64,74 +67,16 @@ export function CoverflowGallery() {
   const centerColumn = images.slice(3, 6);
   const rightColumn = images.slice(6, 9);
 
-  // Handle wheel scroll
-  const handleWheel = useCallback((e: WheelEvent) => {
-    if (!containerRef.current) return;
-    
-    const rect = containerRef.current.getBoundingClientRect();
-    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
-    
-    if (isInView) {
-      const delta = e.deltaY * 0.001;
-      const currentValue = scrollY.get();
-      const newValue = Math.max(0, Math.min(1, currentValue + delta));
-      scrollY.set(newValue);
-    }
-  }, [scrollY]);
-
-  // Handle touch/drag
-  const handleDragStart = useCallback(() => {
-    setIsDragging(true);
-  }, []);
-
-  const handleDrag = useCallback((_: any, info: { delta: { y: number } }) => {
-    const delta = -info.delta.y * 0.003;
-    const currentValue = scrollY.get();
-    const newValue = Math.max(0, Math.min(1, currentValue + delta));
-    scrollY.set(newValue);
-  }, [scrollY]);
-
-  const handleDragEnd = useCallback(() => {
-    setIsDragging(false);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [handleWheel]);
-
-  // Reset scroll position when leaving viewport
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          scrollY.set(0);
-        }
-      },
-      { threshold: 0 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [scrollY]);
-
-  const ImageCard = ({ image, index }: { image: GalleryImage; index: number }) => (
+  const ImageCard = ({ image }: { image: GalleryImage }) => (
     <div
       data-division={image.division}
-      className={cn(
-        'relative overflow-hidden rounded-xl transition-all duration-500',
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      )}
-      style={{ transitionDelay: `${200 + index * 100}ms` }}
+      className="relative overflow-hidden rounded-xl"
     >
       <div className="aspect-[3/4] overflow-hidden">
         <img
           src={image.src}
           alt={image.alt}
-          className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+          className="w-full h-full object-cover"
           draggable={false}
         />
       </div>
@@ -143,95 +88,87 @@ export function CoverflowGallery() {
   );
 
   return (
-    <section ref={sectionRef} className="py-16 lg:py-24 bg-background relative overflow-hidden">
-      <div className="container mx-auto px-6 lg:px-12">
-        {/* Section Header */}
-        <div className="text-center mb-12 lg:mb-16">
-          <span
-            className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            )}
-          >
-            <span className="w-8 h-px bg-primary" />
-            Gallery
-            <span className="w-8 h-px bg-primary" />
-          </span>
-          
-          <h2
-            className={cn(
-              'text-3xl md:text-4xl lg:text-5xl font-bold leading-tight transition-all duration-700 delay-150',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            )}
-          >
-            <span className="hox-brand">Our </span>
-            <span className="text-primary">Portfolio</span>
-          </h2>
+    <section ref={containerRef} className="relative h-[200vh]">
+      {/* Sticky frame that stays fixed while scrolling */}
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
+        {/* Top gradient fade */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
+        
+        {/* Bottom gradient fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
+        
+        <div className="container mx-auto px-6 lg:px-12">
+          {/* Section Header */}
+          <div className="text-center mb-8 lg:mb-12">
+            <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-4">
+              <span className="w-8 h-px bg-primary" />
+              Gallery
+              <span className="w-8 h-px bg-primary" />
+            </span>
+            
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              <span className="hox-brand">Our </span>
+              <span className="text-primary">Portfolio</span>
+            </h2>
+          </div>
+
+          {/* Coverflow Grid */}
+          <div className="grid grid-cols-3 gap-4 lg:gap-6 max-w-5xl mx-auto">
+            {/* Left Column - moves up on scroll */}
+            <motion.div 
+              className="flex flex-col gap-4 lg:gap-6"
+              style={{ y: leftColumnY }}
+            >
+              {isLoading ? (
+                <>
+                  <SkeletonCard />
+                  <SkeletonCard />
+                  <SkeletonCard />
+                </>
+              ) : (
+                leftColumn.map((image) => (
+                  <ImageCard key={image.id} image={image} />
+                ))
+              )}
+            </motion.div>
+
+            {/* Center Column - moves down on scroll */}
+            <motion.div 
+              className="flex flex-col gap-4 lg:gap-6"
+              style={{ y: centerColumnY }}
+            >
+              {isLoading ? (
+                <>
+                  <SkeletonCard />
+                  <SkeletonCard />
+                  <SkeletonCard />
+                </>
+              ) : (
+                centerColumn.map((image) => (
+                  <ImageCard key={image.id} image={image} />
+                ))
+              )}
+            </motion.div>
+
+            {/* Right Column - moves up on scroll */}
+            <motion.div 
+              className="flex flex-col gap-4 lg:gap-6"
+              style={{ y: rightColumnY }}
+            >
+              {isLoading ? (
+                <>
+                  <SkeletonCard />
+                  <SkeletonCard />
+                  <SkeletonCard />
+                </>
+              ) : (
+                rightColumn.map((image) => (
+                  <ImageCard key={image.id} image={image} />
+                ))
+              )}
+            </motion.div>
+          </div>
         </div>
-
-        {/* Coverflow Grid */}
-        <motion.div
-          ref={containerRef}
-          className="grid grid-cols-3 gap-4 lg:gap-6 relative cursor-grab active:cursor-grabbing select-none"
-          onPanStart={handleDragStart}
-          onPan={handleDrag}
-          onPanEnd={handleDragEnd}
-          style={{ touchAction: 'none' }}
-        >
-          {/* Left Column - moves up on scroll */}
-          <motion.div 
-            className="flex flex-col gap-4 lg:gap-6"
-            style={{ y: leftColumnY }}
-          >
-            {isLoading ? (
-              <>
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-              </>
-            ) : (
-              leftColumn.map((image, index) => (
-                <ImageCard key={image.id} image={image} index={index} />
-              ))
-            )}
-          </motion.div>
-
-          {/* Center Column - moves down on scroll */}
-          <motion.div 
-            className="flex flex-col gap-4 lg:gap-6"
-            style={{ y: centerColumnY }}
-          >
-            {isLoading ? (
-              <>
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-              </>
-            ) : (
-              centerColumn.map((image, index) => (
-                <ImageCard key={image.id} image={image} index={index + 3} />
-              ))
-            )}
-          </motion.div>
-
-          {/* Right Column - moves up on scroll */}
-          <motion.div 
-            className="flex flex-col gap-4 lg:gap-6"
-            style={{ y: rightColumnY }}
-          >
-            {isLoading ? (
-              <>
-                <SkeletonCard />
-                <SkeletonCard />
-                <SkeletonCard />
-              </>
-            ) : (
-              rightColumn.map((image, index) => (
-                <ImageCard key={image.id} image={image} index={index + 6} />
-              ))
-            )}
-          </motion.div>
-        </motion.div>
       </div>
     </section>
   );
