@@ -112,10 +112,15 @@ export function DivisionsSection() {
                   {division.displayName}
                 </h3>
 
+                {/* Headline */}
+                <p className="text-xs text-white/60 line-clamp-1 mt-1">
+                  {division.headline}
+                </p>
+
                 {/* Explore Link */}
                 <div
                   className={cn(
-                    'flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300',
+                    'flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider mt-3 transition-all duration-300',
                     `text-${division.accentColor}`
                   )}
                 >
