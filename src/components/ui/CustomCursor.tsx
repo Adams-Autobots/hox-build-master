@@ -119,8 +119,8 @@ export function CustomCursor() {
             <motion.div
               className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
               animate={{
-                width: (isHovering ? 56 : 44) * style.scale,
-                height: (isHovering ? 56 : 44) * style.scale,
+                width: (isHovering ? 28 : 22) * style.scale,
+                height: (isHovering ? 28 : 22) * style.scale,
                 opacity: isVisible ? style.opacity : 0,
               }}
               style={{
