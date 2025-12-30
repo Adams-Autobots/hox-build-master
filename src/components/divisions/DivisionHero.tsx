@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { HoverText } from '@/components/ui/HoverText';
 
 interface DivisionHeroProps {
   division: 'exhibitions' | 'events' | 'retail' | 'interiors';
@@ -127,9 +128,9 @@ export function DivisionHero({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
           >
-            <span className="hox-brand">{headline}</span>
+            <span className="hox-brand"><HoverText>{headline}</HoverText></span>
             <br />
-            <span className={`text-${config.color}`}>{highlightText}</span>
+            <span className={`text-${config.color}`}><HoverText>{highlightText}</HoverText></span>
           </motion.h1>
 
           {/* Description */}

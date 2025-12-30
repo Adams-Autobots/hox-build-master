@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { AnimatedStatsCounter } from './AnimatedStatsCounter';
+import { HoverText } from '@/components/ui/HoverText';
 export function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const {
@@ -45,10 +46,10 @@ export function AboutSection() {
             </span>
 
             <h2 className={cn('text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 transition-all duration-700 delay-150', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')}>
-              <span className="hox-brand">Built to </span>
-              <span className="text-primary">Deliver.</span>
+              <span className="hox-brand"><HoverText>Built to</HoverText> </span>
+              <span className="text-primary"><HoverText>Deliver.</HoverText></span>
               <br />
-              <span className="text-muted-foreground/60">engineered to impress.</span>
+              <span className="text-muted-foreground/60"><HoverText>engineered to impress.</HoverText></span>
             </h2>
 
             <div className={cn('space-y-6 transition-all duration-700 delay-300', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')}>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { HoverText } from '@/components/ui/HoverText';
 import heroVideo from '@/assets/hero-video.mp4';
 
 const heroWords = [
@@ -60,7 +61,7 @@ export function HeroSection() {
           className="max-w-3xl"
         >
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8 whitespace-nowrap">
-            <span className="text-foreground">Hox </span>
+            <span className="text-foreground"><HoverText>Hox</HoverText> </span>
             <AnimatePresence mode="wait">
               <motion.span
                 key={currentWordIndex}
@@ -71,7 +72,7 @@ export function HeroSection() {
                 className="inline-block"
                 style={{ color: heroWords[currentWordIndex].color }}
               >
-                {heroWords[currentWordIndex].word}.
+                <HoverText>{heroWords[currentWordIndex].word}</HoverText>.
               </motion.span>
             </AnimatePresence>
           </h1>

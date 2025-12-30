@@ -1,6 +1,7 @@
 import { Zap, Clock, Layers, CheckCircle } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
+import { HoverText } from '@/components/ui/HoverText';
 
 const features = [
   {
@@ -53,10 +54,10 @@ export function WhyHoxSection() {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
             >
-              <span className="hox-brand">The power of </span>
-              <span className="text-primary">Building</span>
+              <span className="hox-brand"><HoverText>The power of</HoverText> </span>
+              <span className="text-primary"><HoverText>Building</HoverText></span>
               <br />
-              <span className="text-muted-foreground/60">in-house.</span>
+              <span className="text-muted-foreground/60"><HoverText>in-house.</HoverText></span>
             </h2>
 
             <p
