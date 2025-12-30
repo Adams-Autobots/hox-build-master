@@ -24,6 +24,10 @@ const divisionConfig = {
     glow: 'shadow-[0_0_40px_hsl(357_85%_52%/0.6)]',
     bg: 'bg-hox-red',
     hover: 'hover:bg-hox-red/90',
+    textColor: 'text-hox-red',
+    borderColor: 'border-hox-red/50',
+    hoverBorder: 'hover:border-hox-red',
+    hoverGlow: 'hover:shadow-[0_0_30px_hsl(357_85%_52%/0.4)]',
   },
   events: {
     color: 'hox-blue',
@@ -31,6 +35,10 @@ const divisionConfig = {
     glow: 'shadow-[0_0_40px_hsl(196_100%_47%/0.6)]',
     bg: 'bg-hox-blue',
     hover: 'hover:bg-hox-blue/90',
+    textColor: 'text-hox-blue',
+    borderColor: 'border-hox-blue/50',
+    hoverBorder: 'hover:border-hox-blue',
+    hoverGlow: 'hover:shadow-[0_0_30px_hsl(196_100%_47%/0.4)]',
   },
   retail: {
     color: 'hox-orange',
@@ -38,6 +46,10 @@ const divisionConfig = {
     glow: 'shadow-[0_0_40px_hsl(36_89%_61%/0.6)]',
     bg: 'bg-hox-orange',
     hover: 'hover:bg-hox-orange/90',
+    textColor: 'text-hox-orange',
+    borderColor: 'border-hox-orange/50',
+    hoverBorder: 'hover:border-hox-orange',
+    hoverGlow: 'hover:shadow-[0_0_30px_hsl(36_89%_61%/0.4)]',
   },
   interiors: {
     color: 'hox-green',
@@ -45,6 +57,10 @@ const divisionConfig = {
     glow: 'shadow-[0_0_40px_hsl(87_53%_51%/0.6)]',
     bg: 'bg-hox-green',
     hover: 'hover:bg-hox-green/90',
+    textColor: 'text-hox-green',
+    borderColor: 'border-hox-green/50',
+    hoverBorder: 'hover:border-hox-green',
+    hoverGlow: 'hover:shadow-[0_0_30px_hsl(87_53%_51%/0.4)]',
   },
 };
 
@@ -150,10 +166,17 @@ export function DivisionHero({
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <Button
-              variant="hero"
+              variant="outline"
               size="xl"
               asChild
-              className={cn(config.bg, config.hover, `hover:${config.glow}`)}
+              className={cn(
+                "bg-transparent border-2",
+                config.textColor,
+                config.borderColor,
+                config.hoverBorder,
+                config.hoverGlow,
+                "hover:bg-transparent hover:scale-[1.02] active:scale-[0.98]"
+              )}
             >
               <Link to="/contact">
                 {ctaText}
