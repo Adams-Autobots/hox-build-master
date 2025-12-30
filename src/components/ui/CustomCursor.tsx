@@ -13,6 +13,7 @@ export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [cursorColor, setCursorColor] = useState<string | null>(null);
+  const [isOverHoverText, setIsOverHoverText] = useState(false);
   
   // Base cursor position
   const cursorX = useMotionValue(-100);
@@ -44,6 +45,10 @@ export function CustomCursor() {
       const target = e.target as HTMLElement;
       const isInteractive = target.closest('a, button, [role="button"], input, textarea, select, [data-magnetic]');
       setIsHovering(!!isInteractive);
+
+      // Check if over hover-letter element
+      const overHoverLetter = !!target.closest('.hover-letter');
+      setIsOverHoverText(overHoverLetter);
 
       // Check for division card hover
       const divisionCard = target.closest('[data-division]') as HTMLElement | null;
@@ -77,7 +82,7 @@ export function CustomCursor() {
       style={{
         x: ringX,
         y: ringY,
-        mixBlendMode: cursorColor ? 'normal' : 'difference',
+        mixBlendMode: cursorColor ? 'normal' : (isOverHoverText ? 'normal' : 'difference'),
       }}
     >
       <motion.div
