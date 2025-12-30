@@ -112,6 +112,7 @@
     transition: transform 150ms ease-out;
     transform-origin: center;
     color: inherit;
+    isolation: isolate;
   }
 
   .hover-letter:hover {
