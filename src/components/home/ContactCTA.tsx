@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, MessageCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
@@ -57,20 +57,9 @@ export function ContactCTA() {
           >
             <Button variant="hero" size="xl" asChild>
               <Link to="/contact" className="group">
-                Request a proposal
+                Talk to our team
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
-            </Button>
-            <Button variant="hero-outline" size="xl" asChild>
-              <a
-                href="https://wa.me/971588950056"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Whatsapp us
-              </a>
             </Button>
           </div>
         </div>
