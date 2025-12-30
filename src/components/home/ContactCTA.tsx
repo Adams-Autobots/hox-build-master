@@ -56,7 +56,12 @@ export function ContactCTA() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            <Button variant="hero" size="xl" asChild>
+            <Button 
+              variant="outline" 
+              size="xl" 
+              asChild
+              className="bg-transparent border-2 text-primary border-primary/50 hover:border-primary hover:bg-transparent hover:shadow-[0_0_30px_hsl(357_85%_52%/0.4)] hover:scale-[1.02] active:scale-[0.98]"
+            >
               <Link to="/contact" className="group">
                 Talk to our team
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
