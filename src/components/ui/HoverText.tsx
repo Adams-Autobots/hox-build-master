@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface HoverTextProps {
   children: string;
@@ -12,21 +12,25 @@ export function HoverText({ children, className = '' }: HoverTextProps) {
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
   }, []);
 
-  const characters = children.split('');
-
   // On touch devices, just render the text normally
   if (isTouchDevice) {
     return <span className={className}>{children}</span>;
   }
 
+  // Split into words, then characters within each word
+  const words = children.split(' ');
+
   return (
     <span className={className}>
-      {characters.map((char, index) => (
-        <span
-          key={index}
-          className={char === ' ' ? '' : 'hover-letter'}
-        >
-          {char === ' ' ? '\u00A0' : char}
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block whitespace-nowrap">
+          {word.split('').map((char, charIndex) => (
+            <span key={charIndex} className="hover-letter">
+              {char}
+            </span>
+          ))}
+          {/* Add space after word (except last word) */}
+          {wordIndex < words.length - 1 && '\u00A0'}
         </span>
       ))}
     </span>
