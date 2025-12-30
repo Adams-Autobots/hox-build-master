@@ -131,10 +131,14 @@ export function ProjectsSection() {
                 to={divisionRoutes[image.division] || '/projects'}
                 data-division={image.division}
                 className={cn(
-                  'group relative overflow-hidden rounded-lg bg-background block transition-all duration-500',
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  'group relative overflow-hidden rounded-lg bg-background block transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-lg',
+                  isVisible 
+                    ? 'opacity-100 translate-x-0 scale-100' 
+                    : index % 2 === 0 
+                      ? 'opacity-0 -translate-x-8 scale-95' 
+                      : 'opacity-0 translate-x-8 scale-95'
                 )}
-                style={{ transitionDelay: `${300 + index * 100}ms` } as React.CSSProperties}
+                style={{ transitionDelay: `${300 + index * 150}ms` } as React.CSSProperties}
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
