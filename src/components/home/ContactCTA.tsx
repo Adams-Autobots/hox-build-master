@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
+import { HoverText } from '@/components/ui/HoverText';
 
 export function ContactCTA() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
@@ -33,10 +34,10 @@ export function ContactCTA() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            <span className="hox-brand">Ready to build </span>
-            <span className="text-primary">Something</span>
+            <span className="hox-brand"><HoverText>Ready to build</HoverText> </span>
+            <span className="text-primary"><HoverText>Something</HoverText></span>
             <br />
-            <span className="text-muted-foreground/60">exceptional?</span>
+            <span className="text-muted-foreground/60"><HoverText>exceptional?</HoverText></span>
           </h2>
 
           <p

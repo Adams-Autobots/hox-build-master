@@ -5,6 +5,7 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { HoverText } from '@/components/ui/HoverText';
 
 // Fallback images (hardcoded from gallery position #1)
 const FALLBACK_IMAGES = {
@@ -106,10 +107,10 @@ export function DivisionsSection() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            <span className="hox-brand">Four specialized </span>
-            <span className="text-primary">Arms.</span>
+            <span className="hox-brand"><HoverText>Four specialized</HoverText> </span>
+            <span className="text-primary"><HoverText>Arms.</HoverText></span>
             <br />
-            <span className="text-muted-foreground/60">one unified vision.</span>
+            <span className="text-muted-foreground/60"><HoverText>one unified vision.</HoverText></span>
           </h2>
         </div>
 
