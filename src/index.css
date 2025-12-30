@@ -95,6 +95,17 @@
     }
   }
 
+  /* Restore cursor for admin pages */
+  .cursor-visible,
+  .cursor-visible * {
+    cursor: auto !important;
+  }
+  .cursor-visible a,
+  .cursor-visible button,
+  .cursor-visible [role="button"] {
+    cursor: pointer !important;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight;
   }
