@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { HoverText } from "@/components/ui/HoverText";
 
 const clients = [
   "National Geographic",
@@ -67,7 +68,7 @@ export function ClientMarquee() {
           Our Clients
         </span>
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-          Beyond completion. Into <span className="text-primary">partnership.</span>
+          <HoverText>Beyond completion. Into</HoverText> <span className="text-primary"><HoverText>partnership.</HoverText></span>
         </h2>
       </div>
 
