@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { LeadershipSection } from '@/components/about/LeadershipSection';
 import { ResourcesSection } from '@/components/about/ResourcesSection';
 import { TestimonialsSection } from '@/components/about/TestimonialsSection';
+import { HoverText } from '@/components/ui/HoverText';
 
 
 export default function AboutPage() {
@@ -20,10 +21,10 @@ export default function AboutPage() {
             </span>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
-              <span className="hox-brand">Production </span>
-              <span className="text-primary">Excellence</span>
+              <HoverText className="hox-brand">Production </HoverText>
+              <span className="text-primary"><HoverText>Excellence</HoverText></span>
               <br />
-              <span className="text-muted-foreground/60">since 2008.</span>
+              <span className="text-muted-foreground/60"><HoverText>since 2008.</HoverText></span>
             </h1>
 
             <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
@@ -38,8 +39,8 @@ export default function AboutPage() {
         <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-3xl">
             <h2 className={cn('text-4xl md:text-5xl font-bold leading-tight mb-8 transition-all duration-700', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')}>
-              <span className="hox-brand">Our </span>
-              <span className="text-primary">Story.</span>
+              <HoverText className="hox-brand">Our </HoverText>
+              <span className="text-primary"><HoverText>Story.</HoverText></span>
             </h2>
 
             <div className={cn('space-y-6 text-lg text-muted-foreground leading-relaxed transition-all duration-700 delay-150', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')}>

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { HoverText } from '@/components/ui/HoverText';
 
 export default function ContactPage() {
   const { toast } = useToast();
@@ -39,10 +40,10 @@ export default function ContactPage() {
               </span>
 
               <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-8">
-                <span className="hox-brand">Let's </span>
-                <span className="text-primary">Build</span>
+                <HoverText className="hox-brand">Let's </HoverText>
+                <span className="text-primary"><HoverText>Build</HoverText></span>
                 <br />
-                <span className="text-muted-foreground/60">together.</span>
+                <span className="text-muted-foreground/60"><HoverText>together.</HoverText></span>
               </h1>
 
               <p className="text-xl text-muted-foreground mb-12 leading-relaxed">
