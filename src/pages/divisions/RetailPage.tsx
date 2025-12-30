@@ -56,7 +56,7 @@ export default function RetailPage() {
           headline="Retail spaces"
           highlightText="That convert."
           description="We build retail environments that drive foot traffic and conversions. From flagship stores to pop-up activations, every detail is designed to sell."
-          ctaText="Request retail proposal"
+          ctaText="Book a consultation"
           heroImage={heroRetail}
           heroVideo={heroRetailVideo}
         />
