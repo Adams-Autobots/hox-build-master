@@ -56,7 +56,7 @@ export default function InteriorsPage() {
           headline="Interiors crafted"
           highlightText="With precision."
           description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
-          ctaText="Request interiors proposal"
+          ctaText="Book a consultation"
           heroImage={heroInteriors}
           heroVideo={heroInteriorsVideo}
           cropLeft
