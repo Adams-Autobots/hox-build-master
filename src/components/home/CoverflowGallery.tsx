@@ -35,9 +35,7 @@ export function CoverflowGallery() {
   const { ref: sectionRef, isVisible } = useScrollReveal<HTMLDivElement>();
   
   const [sectionHeight, setSectionHeight] = useState('200vh');
-  const [travelLeft, setTravelLeft] = useState(0);
-  const [travelCenter, setTravelCenter] = useState(0);
-  const [travelRight, setTravelRight] = useState(0);
+  const [travel, setTravel] = useState(0);
   
   // Track scroll progress through the tall container
   const { scrollYProgress } = useScroll({
@@ -49,10 +47,10 @@ export function CoverflowGallery() {
   const springConfig = { damping: 40, stiffness: 100, mass: 0.5 };
   const smoothProgress = useSpring(scrollYProgress, springConfig);
   
-  // Transform for each column - pixel-based, per-column travel
-  const leftColumnY = useTransform(smoothProgress, [0, 1], [0, -travelLeft]);
-  const centerColumnY = useTransform(smoothProgress, [0, 0.4, 1], [0, -travelCenter * 0.2, -travelCenter]);
-  const rightColumnY = useTransform(smoothProgress, [0, 1], [0, -travelRight]);
+  // Simple up/down transforms - left/right go UP, center goes DOWN (for visual contrast)
+  const leftColumnY = useTransform(smoothProgress, [0, 1], [0, -travel]);
+  const centerColumnY = useTransform(smoothProgress, [0, 1], [-travel, 0]); // Starts offset, scrolls down
+  const rightColumnY = useTransform(smoothProgress, [0, 1], [0, -travel]);
 
   const { data: allFeaturedImages, isLoading } = useQuery({
     queryKey: ['coverflow-gallery-images'],
@@ -81,7 +79,7 @@ export function CoverflowGallery() {
   const centerColumn = allImages.slice(columnSize, columnSize * 2);
   const rightColumn = allImages.slice(columnSize * 2);
 
-  // Measure content and calculate per-column travel distances
+  // Measure content and calculate travel distance
   const measureAndSetHeight = useCallback(() => {
     if (!frameRef.current || !leftColRef.current || !centerColRef.current || !rightColRef.current) return;
     
@@ -90,19 +88,15 @@ export function CoverflowGallery() {
     const centerH = centerColRef.current.scrollHeight;
     const rightH = rightColRef.current.scrollHeight;
     
-    // Per-column travel - no fudge factor
-    const newTravelLeft = Math.max(0, leftH - frameH);
-    const newTravelCenter = Math.max(0, centerH - frameH);
-    const newTravelRight = Math.max(0, rightH - frameH);
-    const maxTravel = Math.max(newTravelLeft, newTravelCenter, newTravelRight);
+    // Use the tallest column to determine travel distance
+    const maxColH = Math.max(leftH, centerH, rightH);
+    const newTravel = Math.max(0, maxColH - frameH);
     
-    setTravelLeft(newTravelLeft);
-    setTravelCenter(newTravelCenter);
-    setTravelRight(newTravelRight);
+    setTravel(newTravel);
     
-    // Section height = viewport + max travel distance
+    // Section height = viewport + travel distance
     const viewportH = window.innerHeight;
-    const totalHeight = viewportH + maxTravel;
+    const totalHeight = viewportH + newTravel;
     setSectionHeight(`${totalHeight}px`);
   }, []);
 
@@ -210,7 +204,7 @@ export function CoverflowGallery() {
               )}
             </motion.div>
 
-            {/* Center Column - eased movement up */}
+            {/* Center Column - starts offset, moves down on scroll */}
             <motion.div 
               ref={centerColRef}
               className="flex flex-col gap-4 lg:gap-6"
@@ -249,16 +243,17 @@ export function CoverflowGallery() {
             </motion.div>
           </div>
         </div>
-      </div>
-      {/* View Full Gallery Link */}
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-8 z-20">
-        <Link 
-          to="/projects" 
-          className="group inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
-        >
-          <span className="text-sm font-medium tracking-wide">View full gallery</span>
-          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-        </Link>
+        
+        {/* View Full Gallery Link - Inside sticky container */}
+        <div className="py-6 flex justify-center z-20">
+          <Link 
+            to="/projects" 
+            className="group inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
+          >
+            <span className="text-sm font-medium tracking-wide">View full gallery</span>
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </div>
       </div>
     </section>
   );
