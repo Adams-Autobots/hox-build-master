@@ -28,16 +28,16 @@ const Index = () => {
           <ProjectsSection />
         </section>
 
+        <section className="scroll-snap-section-auto relative z-10 bg-background">
+          <ClientMarquee />
+        </section>
+
         <section className="scroll-snap-section">
           <WhyHoxVideoSection />
         </section>
 
         <section className="scroll-snap-section-auto relative z-10">
           <WhyHoxSection />
-        </section>
-
-        <section className="scroll-snap-section-auto">
-          <ClientMarquee />
         </section>
 
         <section className="scroll-snap-section-auto">
