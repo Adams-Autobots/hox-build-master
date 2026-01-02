@@ -20,11 +20,11 @@ const Index = () => {
           <AboutSection />
         </section>
 
-        <section className="scroll-snap-section-auto">
+        <section className="scroll-snap-section-auto relative z-10 bg-background">
           <DivisionsSection />
         </section>
 
-        <section className="scroll-snap-section-auto">
+        <section className="scroll-snap-section-auto relative z-10 bg-background">
           <ProjectsSection />
         </section>
 

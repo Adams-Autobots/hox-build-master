@@ -7,17 +7,17 @@ export function WhyHoxVideoSection() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start start", "end start"]
+    offset: ["start end", "end start"]
   });
 
-  // Fade out video as user scrolls past
-  const videoOpacity = useTransform(scrollYProgress, [0.6, 1.2], [1, 0]);
+  // Only show video when section is in view, fade out as user scrolls past
+  const videoOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   return (
     <section ref={sectionRef} className="relative h-screen w-full overflow-hidden">
-      {/* Fixed Video Background */}
+      {/* Fixed Video Background - only visible when this section is in view */}
       <motion.div 
-        className="fixed inset-0 w-full h-full z-0"
+        className="fixed inset-0 w-full h-full z-[5] pointer-events-none"
         style={{ opacity: videoOpacity }}
       >
         <video
