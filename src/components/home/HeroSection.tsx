@@ -58,7 +58,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mb-6"
           >
-            <span className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+            <span className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
               <span className="text-[hsl(var(--hox-red))]">hox</span>
               <span className="text-foreground">creative</span>
               <span className="text-[hsl(var(--hox-red))]">.</span>
