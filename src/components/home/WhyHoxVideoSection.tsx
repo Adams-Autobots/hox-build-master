@@ -3,10 +3,10 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import whyHoxVideo from '@/assets/hero-whyhox-video.mp4';
 
 const values = [
-  { name: 'Reliable', color: 'text-[#00AEEF]' },
-  { name: 'Ethical', color: 'text-[#F4A545]' },
-  { name: 'Dedicated', color: 'text-[#8DC63F]' },
-  { name: 'Transparent', color: 'text-primary' },
+  { name: 'Reliable', color: 'hsl(var(--hox-red))' },
+  { name: 'Ethical', color: 'hsl(var(--hox-blue))' },
+  { name: 'Dedicated', color: 'hsl(var(--hox-orange))' },
+  { name: 'Transparent', color: 'hsl(var(--hox-green))' },
 ];
 
 export function WhyHoxVideoSection() {
@@ -75,7 +75,7 @@ export function WhyHoxVideoSection() {
 
           {/* Value words - similar to hero division names */}
           <motion.div 
-            className="flex flex-col gap-2 mb-8"
+            className="grid grid-cols-2 md:flex md:flex-wrap gap-4 md:gap-6 mb-8 max-w-xs md:max-w-none"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -83,12 +83,23 @@ export function WhyHoxVideoSection() {
             {values.map((value, index) => (
               <motion.span
                 key={value.name}
-                className={`text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-wide transition-all duration-500 ${
-                  index === activeIndex 
-                    ? `${value.color} scale-105 origin-left` 
-                    : 'text-foreground/40'
-                }`}
-                whileHover={{ scale: 1.05, x: 10 }}
+                className="text-lg md:text-2xl lg:text-3xl font-semibold transition-all duration-300 cursor-pointer"
+                style={{
+                  color: activeIndex === index ? value.color : 'hsl(var(--foreground))',
+                  textShadow: activeIndex === index ? `0 0 20px ${value.color}` : 'none',
+                }}
+                animate={activeIndex === index ? {
+                  scale: [1, 1.08, 1],
+                } : {}}
+                transition={activeIndex === index ? {
+                  duration: 0.6,
+                  ease: "easeInOut",
+                } : { duration: 0.2 }}
+                whileHover={{ 
+                  scale: 1.15,
+                  color: value.color,
+                  textShadow: `0 0 25px ${value.color}`,
+                }}
               >
                 {value.name}
               </motion.span>
