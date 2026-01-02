@@ -51,10 +51,8 @@ export function Header() {
             to="/"
             className="block"
           >
-            <span className="text-2xl font-bold tracking-tight hox-brand">
-              <span className="text-primary">hox</span>
-              <span className="text-foreground">creative</span>
-              <span className="text-primary">.</span>
+            <span className="text-3xl font-bold tracking-tight text-primary">
+              h.
             </span>
           </Link>
 
