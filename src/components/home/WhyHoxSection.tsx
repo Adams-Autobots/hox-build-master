@@ -45,6 +45,13 @@ export function WhyHoxSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           {/* Content */}
           <div>
+            <span className={cn(
+              'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            )}>
+              <span className="w-8 h-px bg-primary" />
+              Why hox
+            </span>
             <h2 className={cn(
               'text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 transition-all duration-700 delay-150',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
