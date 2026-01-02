@@ -42,17 +42,9 @@ export function WhyHoxSection() {
       </div>
 
       <div ref={ref} className="container mx-auto px-6 lg:px-12 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           {/* Content */}
           <div>
-            <span className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            )}>
-              <span className="w-8 h-px bg-primary" />
-              Why hox
-            </span>
-
             <h2 className={cn(
               'text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 transition-all duration-700 delay-150',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -75,20 +67,20 @@ export function WhyHoxSection() {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4 lg:gap-6">
             {stats.map((stat, index) => (
               <div
                 key={stat.label}
                 className={cn(
-                  'group p-6 rounded-lg bg-background/50 border border-border hover:border-primary/30 transition-all duration-500',
+                  'group p-6 lg:p-8 rounded-lg bg-card border border-border hover:border-primary/30 transition-all duration-500',
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 )}
                 style={{ transitionDelay: `${400 + index * 100}ms` }}
               >
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
+                <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-3">
                   {stat.value}
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs md:text-sm uppercase tracking-wider text-muted-foreground">
                   {stat.label}
                 </p>
               </div>
