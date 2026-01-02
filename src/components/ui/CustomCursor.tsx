@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 
 // Division color mapping (with transparency)
 const DIVISION_COLORS: Record<string, string> = {
@@ -15,13 +15,9 @@ export function CustomCursor() {
   const [cursorColor, setCursorColor] = useState<string | null>(null);
   const [isOverHoverText, setIsOverHoverText] = useState(false);
   
-  // Base cursor position
+  // Cursor position (no spring for instant response)
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  
-  // Single spring for the ring
-  const ringX = useSpring(cursorX, { damping: 25, stiffness: 400 });
-  const ringY = useSpring(cursorY, { damping: 25, stiffness: 400 });
 
   const onMouseMove = useCallback((e: MouseEvent) => {
     cursorX.set(e.clientX);
@@ -80,8 +76,8 @@ export function CustomCursor() {
     <motion.div
       className="pointer-events-none fixed top-0 left-0 z-[9999]"
       style={{
-        x: ringX,
-        y: ringY,
+        x: cursorX,
+        y: cursorY,
         mixBlendMode: cursorColor ? 'normal' : (isOverHoverText ? 'normal' : 'difference'),
       }}
     >
