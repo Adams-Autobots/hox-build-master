@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { HoverText } from '@/components/ui/HoverText';
 import heroVideo from '@/assets/hero-video.mp4';
 
 const divisions = [
@@ -59,8 +60,8 @@ export function HeroSection() {
             className="mb-6"
           >
             <span className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-              <span className="text-[hsl(var(--hox-red))]">hox</span>
-              <span className="text-foreground">creative</span>
+              <HoverText className="text-[hsl(var(--hox-red))]">hox</HoverText>
+              <HoverText className="text-foreground">creative</HoverText>
               <span className="text-[hsl(var(--hox-red))]">.</span>
             </span>
           </motion.div>
