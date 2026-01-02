@@ -21,8 +21,8 @@ export function WhyHoxSection() {
     offset: ["start end", "start start"]
   });
 
-  // Background opacity: stays fully transparent until halfway, then solidifies
-  const rawOpacity = useTransform(scrollYProgress, [0, 0.5, 0.75, 1], [0, 0, 0.5, 1]);
+  // Background opacity: stays fully transparent until 70%, then solidifies
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.7, 0.85, 1], [0, 0, 0.5, 1]);
   const backgroundOpacity = useSpring(rawOpacity, {
     stiffness: 100,
     damping: 30
