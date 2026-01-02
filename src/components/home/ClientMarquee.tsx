@@ -61,7 +61,7 @@ export function ClientMarquee() {
   const row2 = clients.slice(midpoint);
 
   return (
-    <section className="py-16 lg:py-20 bg-card overflow-hidden">
+    <section className="py-16 lg:py-20 bg-gradient-to-b from-background via-card/50 to-card overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12 mb-10">
         <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-4">
           <span className="w-8 h-px bg-primary" />
@@ -78,8 +78,8 @@ export function ClientMarquee() {
         onMouseLeave={() => setIsPaused(false)}
       >
         {/* Gradient Overlays - subtle fade */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-card via-card/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-card via-card/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-background via-card/50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-card via-card/50 to-transparent z-10 pointer-events-none" />
 
         {/* Row 1 - scrolls left */}
         <motion.div
