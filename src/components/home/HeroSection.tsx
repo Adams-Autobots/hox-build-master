@@ -51,6 +51,20 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} 
           className="max-w-3xl"
         >
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mb-6"
+          >
+            <span className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+              <span className="text-[hsl(var(--hox-red))]">hox</span>
+              <span className="text-foreground">creative</span>
+              <span className="text-[hsl(var(--hox-red))]">.</span>
+            </span>
+          </motion.div>
+
           {/* Division Names */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} 
