@@ -65,17 +65,23 @@ export function HeroSection() {
                 className="relative group"
               >
                 <motion.span
-                  className="text-lg md:text-xl lg:text-2xl font-medium transition-all duration-300 cursor-pointer"
+                  className="text-xl md:text-2xl lg:text-3xl font-semibold transition-all duration-300 cursor-pointer"
                   style={{
                     color: activeIndex === index ? division.color : 'hsl(var(--foreground))',
                     textShadow: activeIndex === index ? `0 0 20px ${division.color}` : 'none',
                   }}
+                  animate={activeIndex === index ? {
+                    scale: [1, 1.08, 1],
+                  } : {}}
+                  transition={activeIndex === index ? {
+                    duration: 0.6,
+                    ease: "easeInOut",
+                  } : { duration: 0.2 }}
                   whileHover={{ 
                     scale: 1.15,
                     color: division.color,
                     textShadow: `0 0 25px ${division.color}`,
                   }}
-                  transition={{ duration: 0.2 }}
                 >
                   {division.name}
                 </motion.span>
