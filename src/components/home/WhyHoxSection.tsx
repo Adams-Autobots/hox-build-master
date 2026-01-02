@@ -29,8 +29,8 @@ export function WhyHoxSection() {
   });
 
   return (
-    <section ref={sectionRef} className="py-16 lg:py-20 relative overflow-hidden bg-card">
-      {/* Additional scroll-responsive overlay for video fade effect */}
+    <section ref={sectionRef} className="py-16 lg:py-20 relative overflow-hidden">
+      {/* Scroll-responsive background that solidifies */}
       <motion.div 
         className="absolute inset-0 bg-card" 
         style={{ opacity: backgroundOpacity }} 
