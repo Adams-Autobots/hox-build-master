@@ -80,18 +80,14 @@ export function HeroSection() {
                 className="relative group"
               >
                 <motion.span
-                  className="text-lg md:text-2xl lg:text-3xl font-semibold transition-all duration-300 cursor-pointer"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  className="text-lg md:text-2xl lg:text-3xl font-semibold transition-all duration-300 cursor-pointer inline-block"
                   style={{
                     color: activeIndex === index ? division.color : 'hsl(var(--foreground))',
                     textShadow: activeIndex === index ? `0 0 20px ${division.color}` : 'none',
                   }}
-                  animate={activeIndex === index ? {
-                    scale: [1, 1.08, 1],
-                  } : {}}
-                  transition={activeIndex === index ? {
-                    duration: 0.6,
-                    ease: "easeInOut",
-                  } : { duration: 0.2 }}
                   whileHover={{ 
                     scale: 1.15,
                     color: division.color,
