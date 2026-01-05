@@ -80,7 +80,7 @@ export function HeroSection() {
                 className="relative group"
               >
                 <motion.span
-                  className="text-lg md:text-2xl lg:text-3xl font-semibold transition-all duration-300 cursor-pointer"
+                  className="text-lg md:text-2xl lg:text-3xl font-semibold transition-all duration-300"
                   style={{
                     color: activeIndex === index ? division.color : 'hsl(var(--foreground))',
                     textShadow: activeIndex === index ? `0 0 20px ${division.color}` : 'none',
@@ -98,7 +98,11 @@ export function HeroSection() {
                     textShadow: `0 0 25px ${division.color}`,
                   }}
                 >
-                  {division.name}
+                  {division.name.split('').map((char, charIndex) => (
+                    <span key={charIndex} className="hover-letter">
+                      {char}
+                    </span>
+                  ))}
                 </motion.span>
               </Link>
             ))}
