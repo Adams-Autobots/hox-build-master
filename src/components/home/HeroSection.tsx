@@ -34,14 +34,14 @@ export function HeroSection() {
       >
         <video src={heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" />
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-background/50" />
+        <div className="absolute inset-0 bg-background/30" />
         {/* Subtle red brand tint */}
-        <div className="absolute inset-0 bg-[hsl(var(--hox-red)/0.06)]" />
+        <div className="absolute inset-0 bg-[hsl(var(--hox-red)/0.04)]" />
         {/* Gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-background/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-background/15" />
         {/* Bottom fade gradient for smooth bleed transition */}
-        <div className="absolute bottom-0 left-0 right-0 h-[40vh] bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-[40vh] bg-gradient-to-t from-background via-background/40 to-transparent" />
       </motion.div>
 
       {/* Content */}
