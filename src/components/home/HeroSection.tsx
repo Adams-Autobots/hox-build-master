@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { HoverText } from '@/components/ui/HoverText';
-import heroVideo from '@/assets/hero-video.mp4';
+import heroVideo from '@/assets/hero-video-v2.mp4';
 
 const divisions = [
   { name: 'Exhibitions', color: 'hsl(var(--hox-red))', path: '/divisions/exhibitions' },
