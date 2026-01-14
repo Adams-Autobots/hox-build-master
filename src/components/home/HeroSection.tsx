@@ -32,7 +32,7 @@ export function HeroSection() {
         className="fixed inset-0 w-full h-screen pointer-events-none" 
         style={{ opacity: videoOpacity, zIndex: 0 }}
       >
-        <video src={heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover scale-x-[-1]" />
+        <video src={heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/50" />
         {/* Subtle red brand tint */}
