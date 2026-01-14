@@ -21,7 +21,7 @@ export function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex(prev => (prev + 1) % divisions.length);
-    }, 2000);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
