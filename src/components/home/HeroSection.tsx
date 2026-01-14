@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
@@ -11,7 +11,9 @@ const divisions = [
   { name: 'Retail', color: 'hsl(var(--hox-orange))', path: '/divisions/retail' },
   { name: 'Interiors', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
 ];
+
 export function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const { scrollY } = useScroll();
 
@@ -19,10 +21,45 @@ export function HeroSection() {
   const videoOpacity = useTransform(scrollY, [0, window.innerHeight * 0.6, window.innerHeight * 1.2], [1, 1, 0]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % divisions.length);
-    }, 4000);
-    return () => clearInterval(interval);
+    const video = videoRef.current;
+    if (!video) return;
+
+    let interval: NodeJS.Timeout;
+
+    const startCycle = () => {
+      // Reset to first division when video starts/loops
+      setActiveIndex(0);
+      
+      // Clear any existing interval
+      if (interval) clearInterval(interval);
+      
+      // Start the 4-second cycle
+      interval = setInterval(() => {
+        setActiveIndex(prev => (prev + 1) % divisions.length);
+      }, 4000);
+    };
+
+    const handlePlay = () => startCycle();
+    const handleSeeked = () => {
+      // When video loops back to start, reset the cycle
+      if (video.currentTime < 0.1) {
+        startCycle();
+      }
+    };
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('seeked', handleSeeked);
+    
+    // If video is already playing (autoplay), start immediately
+    if (!video.paused) {
+      startCycle();
+    }
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('seeked', handleSeeked);
+      if (interval) clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -32,7 +69,7 @@ export function HeroSection() {
         className="fixed inset-0 w-full h-screen pointer-events-none" 
         style={{ opacity: videoOpacity, zIndex: 0 }}
       >
-        <video src={heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+        <video ref={videoRef} src={heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/30" />
         {/* Subtle red brand tint */}
