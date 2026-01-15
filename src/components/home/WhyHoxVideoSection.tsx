@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import whyHoxVideo from '@/assets/hero-whyhox-video.mp4';
+import whyHoxVideo from '@/assets/hero-whyhox-video-v2.mp4';
 
 const values = [
   { name: 'Reliable', color: 'hsl(var(--hox-red))' },
@@ -11,7 +11,6 @@ const values = [
 
 export function WhyHoxVideoSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
@@ -21,36 +20,6 @@ export function WhyHoxVideoSection() {
 
   // Only show video when section is in view, fade out as user scrolls past
   const videoOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
-
-  // Start video at 2 seconds to skip the first 2 seconds
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleLoadedMetadata = () => {
-      video.currentTime = 2;
-    };
-
-    const handleSeeked = () => {
-      // When video loops, skip first 2 seconds again
-      if (video.currentTime < 0.1) {
-        video.currentTime = 2;
-      }
-    };
-
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    video.addEventListener('seeked', handleSeeked);
-
-    // If already loaded, set time immediately
-    if (video.readyState >= 1) {
-      video.currentTime = 2;
-    }
-
-    return () => {
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      video.removeEventListener('seeked', handleSeeked);
-    };
-  }, []);
 
   // Cycle through values
   useEffect(() => {
@@ -68,8 +37,7 @@ export function WhyHoxVideoSection() {
         style={{ opacity: videoOpacity }}
       >
         <video
-          ref={videoRef}
-          key="whyhox-video"
+          key="whyhox-video-v2"
           autoPlay
           muted
           loop
