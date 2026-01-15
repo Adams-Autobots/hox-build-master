@@ -11,7 +11,9 @@ const values = [
 
 export function WhyHoxVideoSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [loopFade, setLoopFade] = useState(1);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -20,6 +22,31 @@ export function WhyHoxVideoSection() {
 
   // Only show video when section is in view, fade out as user scrolls past
   const videoOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+
+  // Smooth loop transition - fade out near end, fade in at start
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => {
+      const timeLeft = video.duration - video.currentTime;
+      const fadeOutDuration = 0.5; // Start fading 0.5s before end
+      const fadeInDuration = 0.3; // Fade in over 0.3s at start
+      
+      if (timeLeft <= fadeOutDuration) {
+        // Fade out near the end
+        setLoopFade(timeLeft / fadeOutDuration);
+      } else if (video.currentTime <= fadeInDuration) {
+        // Fade in at the start
+        setLoopFade(video.currentTime / fadeInDuration);
+      } else {
+        setLoopFade(1);
+      }
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
+  }, []);
 
   // Cycle through values
   useEffect(() => {
@@ -37,12 +64,14 @@ export function WhyHoxVideoSection() {
         style={{ opacity: videoOpacity }}
       >
         <video
+          ref={videoRef}
           key="whyhox-video-v2"
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-100"
+          style={{ opacity: loopFade }}
         >
           <source src={whyHoxVideo} type="video/mp4" />
         </video>
