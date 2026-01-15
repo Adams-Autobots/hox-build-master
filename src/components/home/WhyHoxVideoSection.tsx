@@ -22,30 +22,27 @@ export function WhyHoxVideoSection() {
   // Only show video when section is in view, fade out as user scrolls past
   const videoOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
-  // Start video at 3 seconds on first load only, then loop continuously
+  // Always skip first 3 seconds - on initial load and every loop
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    let hasSetInitialTime = false;
-
-    const handleLoadedMetadata = () => {
-      if (!hasSetInitialTime) {
+    const handleTimeUpdate = () => {
+      // If video is in the first 3 seconds, skip ahead
+      if (video.currentTime < 3) {
         video.currentTime = 3;
-        hasSetInitialTime = true;
       }
     };
 
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
+    video.addEventListener('timeupdate', handleTimeUpdate);
 
-    // If already loaded, set time immediately
-    if (video.readyState >= 1 && !hasSetInitialTime) {
+    // Set initial time if already loaded
+    if (video.readyState >= 1) {
       video.currentTime = 3;
-      hasSetInitialTime = true;
     }
 
     return () => {
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      video.removeEventListener('timeupdate', handleTimeUpdate);
     };
   }, []);
 
