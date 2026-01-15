@@ -28,13 +28,13 @@ export function WhyHoxVideoSection() {
     if (!video) return;
 
     const handleLoadedMetadata = () => {
-      video.currentTime = 2;
+      video.currentTime = 3;
     };
 
     const handleSeeked = () => {
-      // When video loops, skip first 2 seconds again
+      // When video loops, skip first 3 seconds again
       if (video.currentTime < 0.1) {
-        video.currentTime = 2;
+        video.currentTime = 3;
       }
     };
 
@@ -43,7 +43,7 @@ export function WhyHoxVideoSection() {
 
     // If already loaded, set time immediately
     if (video.readyState >= 1) {
-      video.currentTime = 2;
+      video.currentTime = 3;
     }
 
     return () => {
