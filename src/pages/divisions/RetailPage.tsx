@@ -13,7 +13,7 @@ import heroRetailVideo from '@/assets/hero-retail-video.mp4';
 import { useMemo } from 'react';
 
 const capabilityTitles = [
-  { icon: Store, title: 'Mall Activation' },
+  { icon: Store, title: 'Mall Activations' },
   { icon: Package, title: 'Retail Displays' },
   { icon: Palette, title: 'Exterior Signage' },
   { icon: Wrench, title: 'Retail Interiors' },
