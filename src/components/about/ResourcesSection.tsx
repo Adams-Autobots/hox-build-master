@@ -20,7 +20,7 @@ const skills = [
     image: skillDecorFinishes
   },
   {
-    title: 'Design & Concept Development',
+    title: 'Project Execution',
     description: 'Original and creative, our team brings your space to life, and gets the fullest potential from your project.',
     image: skillDesignConcept
   }
