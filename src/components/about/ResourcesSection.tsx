@@ -21,7 +21,7 @@ const skills = [
   },
   {
     title: 'Project Execution',
-    description: 'Original and creative, our team brings your space to life, and gets the fullest potential from your project.',
+    description: 'What matters most is getting it done, right on time and to the standard you expect.',
     image: skillDesignConcept
   }
 ];
