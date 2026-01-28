@@ -91,16 +91,26 @@ export function DivisionsSection() {
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="mb-16 lg:mb-24">
+          <span
+            className={cn(
+              'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            )}
+          >
+            <span className="w-8 h-px bg-primary" />
+            Our divisions
+          </span>
+
           <h2
             className={cn(
               'text-4xl md:text-5xl lg:text-6xl font-bold leading-tight transition-all duration-700 delay-150',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            <span className="hox-brand"><HoverText>Four areas of</HoverText> </span>
-            <span className="text-primary"><HoverText>expertise.</HoverText></span>
+            <span className="hox-brand"><HoverText>Four specialized</HoverText> </span>
+            <span className="text-primary"><HoverText>Arms.</HoverText></span>
             <br />
-            <span className="text-muted-foreground/60"><HoverText>One unified vision.</HoverText></span>
+            <span className="text-muted-foreground/60"><HoverText>one unified vision.</HoverText></span>
           </h2>
         </div>
 
