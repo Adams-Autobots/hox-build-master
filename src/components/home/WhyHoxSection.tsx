@@ -74,17 +74,20 @@ export function WhyHoxSection() {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 gap-8">
             {features.map((feature, index) => (
               <div
                 key={feature}
                 className={cn(
-                  'group aspect-[4/3] p-5 lg:p-6 rounded-lg bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-500 cursor-default flex items-center justify-center',
+                  'group relative p-8 rounded-lg bg-background border border-border hover:border-primary/30 transition-all duration-500 overflow-hidden flex items-center justify-center',
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 )}
                 style={{ transitionDelay: `${400 + index * 100}ms` }}
               >
-                <p className="text-xs md:text-sm lg:text-base font-semibold uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors duration-300 text-center leading-relaxed">
+                {/* Background Glow Effect */}
+                <div className="absolute inset-0 rounded-lg bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <p className="relative text-sm md:text-base font-semibold uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors duration-500 text-center leading-relaxed">
                   {feature}
                 </p>
               </div>
