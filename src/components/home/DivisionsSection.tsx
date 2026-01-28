@@ -107,10 +107,10 @@ export function DivisionsSection() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            <span className="hox-brand"><HoverText>Four specialized</HoverText> </span>
-            <span className="text-primary"><HoverText>Arms.</HoverText></span>
+          <span className="hox-brand"><HoverText>Four areas of</HoverText> </span>
+            <span className="text-primary"><HoverText>expertise.</HoverText></span>
             <br />
-            <span className="text-muted-foreground/60"><HoverText>one unified vision.</HoverText></span>
+            <span className="text-muted-foreground/60"><HoverText>One unified vision.</HoverText></span>
           </h2>
         </div>
 
