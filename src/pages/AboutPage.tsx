@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout/Layout';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import { LeadershipSection } from '@/components/about/LeadershipSection';
+
 import { ResourcesSection } from '@/components/about/ResourcesSection';
 import { TestimonialsSection } from '@/components/about/TestimonialsSection';
 import { HoverText } from '@/components/ui/HoverText';
@@ -59,7 +59,7 @@ export default function AboutPage() {
       </section>
 
       <ResourcesSection />
-      <LeadershipSection />
+      
       <TestimonialsSection />
     </Layout>;
 }
