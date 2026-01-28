@@ -11,7 +11,7 @@ const skills = [
   },
   {
     title: 'Technical Planning & Drawing',
-    description: 'CAD experience, and knowledge of technical requirements make us qualified, safe hands to handle your projects.',
+    description: 'Helping turn great ideas into budget workable deliveries.',
     image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop'
   },
   {
