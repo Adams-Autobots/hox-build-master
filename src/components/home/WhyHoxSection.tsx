@@ -4,11 +4,11 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { HoverText } from '@/components/ui/HoverText';
 
-const stats = [
-  { value: '100%', label: 'In-house production' },
-  { value: '0%', label: 'Outsourcing' },
-  { value: '24/7', label: 'Production capability' },
-  { value: '4', label: 'Specialized divisions' },
+const features = [
+  'In-house production',
+  'Value Engineering',
+  'Since 2008',
+  '4 specialised divisions',
 ];
 
 export function WhyHoxSection() {
@@ -75,20 +75,17 @@ export function WhyHoxSection() {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-4 lg:gap-6">
-            {stats.map((stat, index) => (
+            {features.map((feature, index) => (
               <div
-                key={stat.label}
+                key={feature}
                 className={cn(
-                  'group p-6 lg:p-8 rounded-lg bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-500 cursor-default',
+                  'group p-6 lg:p-8 rounded-lg bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-500 cursor-default flex items-center justify-center',
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 )}
                 style={{ transitionDelay: `${400 + index * 100}ms` }}
               >
-                <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 mb-3">
-                  {stat.value}
-                </div>
-                <p className="text-xs md:text-sm uppercase tracking-wider text-muted-foreground group-hover:text-foreground/80 transition-colors duration-300">
-                  {stat.label}
+                <p className="text-sm md:text-base lg:text-lg font-medium uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors duration-300 text-center">
+                  {feature}
                 </p>
               </div>
             ))}
