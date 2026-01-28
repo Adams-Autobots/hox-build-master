@@ -15,7 +15,7 @@ const skills = [
     image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop'
   },
   {
-    title: 'Decor & Detailing',
+    title: 'Value Engineering',
     description: 'Our interior designers and projects team are the best, and our attention to detail is unparalleled.',
     image: skillDecorFinishes
   },
