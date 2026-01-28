@@ -151,7 +151,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }} 
             className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-lg mb-10"
           >
-            Dubai's premier production powerhouse delivering world-class exhibitions, events, retail environments, and interior solutions with precision engineering.
+            Dubai based production, design and technical planning delivering world class exhibitions, events, retail and interior environments.
           </motion.p>
 
           <motion.div 
