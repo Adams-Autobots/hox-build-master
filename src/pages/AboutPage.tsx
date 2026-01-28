@@ -41,19 +41,17 @@ export default function AboutPage() {
 
             <div className={cn('space-y-6 text-lg text-muted-foreground leading-relaxed transition-all duration-700 delay-150', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')}>
               <p>
-                HOX was founded with a simple belief: that great production requires complete control 
-                over every stage of the process. From day one, we invested in building in-house 
-                capabilities that would allow us to deliver without compromise.
+                Established in 2008, hox has been around. We have a team diverse in skills, knowledge 
+                and backgrounds. We are based in the UAE, and have completed projects across the GCC. 
+                We have been lucky to have executed over 3000 projects, large and small for some of 
+                the biggest names on the globe.
               </p>
               <p>
-                Today, we operate a state-of-the-art facility in Al Quoz with dedicated workshops 
-                for metal fabrication, carpentry, CNC machining, and finishing. Our team of 200+ 
-                specialists handles everything from design to installation.
-              </p>
-              <p>
-                We've partnered with global brands, leading developers, and creative agencies to 
-                deliver some of the region's most memorable builds — from Expo 2020 pavilions to 
-                luxury retail environments.
+                Years of planning, investment, and commitment to accomplishing what others can't has 
+                made us efficient, effective and given us a base of resources, equipment and capabilities 
+                that few are able to match. Our office is a fun place to be, and we would love to meet 
+                you - give you a tour, and show you what we are about, and what making the difference 
+                means to us.
               </p>
             </div>
           </div>
