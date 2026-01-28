@@ -56,7 +56,7 @@ export default function ExhibitionsPage() {
           headline="Exhibition builds"
           highlightText="Engineered to perform."
           description="We design and fabricate exhibition stands that capture attention and deliver measurable impact. Structural engineering meets brand storytelling."
-          ctaText="Book a consultation"
+          ctaText="Get in touch"
           heroImage={heroExhibitions}
           heroVideo={heroExhibitionsVideo}
         />

@@ -56,7 +56,7 @@ export default function EventsPage() {
           headline="Events built"
           highlightText="To be remembered."
           description="From corporate galas to product launches, we create immersive event experiences that leave lasting impressions. Precision production meets creative excellence."
-          ctaText="Book a consultation"
+          ctaText="Get in touch"
           heroImage={heroEvents}
           heroVideo={heroEventsVideo}
         />
