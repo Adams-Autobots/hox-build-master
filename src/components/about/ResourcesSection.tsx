@@ -6,7 +6,7 @@ import skillDesignConcept from '@/assets/skill-design-concept.jpg';
 const skills = [
   {
     title: 'Project Management',
-    description: 'With decades of combined experience of planning and scheduling, supplier management our team accomplishes wonders.',
+    description: 'Decades of experience in planning, scheduling, and supplier coordination. We make complex simple.',
     image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=600&fit=crop'
   },
   {
@@ -16,7 +16,7 @@ const skills = [
   },
   {
     title: 'Value Engineering',
-    description: 'Our interior designers and projects team are the best, and our attention to detail is unparalleled.',
+    description: 'Maximizing impact while optimizing costs. Smart solutions without compromise.',
     image: skillDecorFinishes
   },
   {
