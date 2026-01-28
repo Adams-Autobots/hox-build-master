@@ -15,7 +15,7 @@ import { useMemo } from 'react';
 const capabilityTitles = [
   { icon: Heart, title: 'Wedding Production' },
   { icon: Users, title: 'Corporate Events' },
-  { icon: Theater, title: 'Stage and Set' },
+  { icon: Theater, title: 'Thematic Production' },
   { icon: Palette, title: 'Branding and Décor' },
 ];
 
