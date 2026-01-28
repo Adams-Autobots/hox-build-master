@@ -46,10 +46,10 @@ export function AboutSection() {
             </span>
 
             <h2 className={cn('text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 transition-all duration-700 delay-150', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')}>
-              <span className="hox-brand"><HoverText>Built to</HoverText> </span>
-              <span className="text-primary"><HoverText>Deliver.</HoverText></span>
+              <span className="hox-brand"><HoverText>Delivery</HoverText> </span>
+              <span className="text-primary"><HoverText>experts.</HoverText></span>
               <br />
-              <span className="text-muted-foreground/60"><HoverText>engineered to impress.</HoverText></span>
+              <span className="text-muted-foreground/60"><HoverText>Supporting your projects.</HoverText></span>
             </h2>
 
             <div className={cn('space-y-6 transition-all duration-700 delay-300', isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')}>
