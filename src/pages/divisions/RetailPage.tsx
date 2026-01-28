@@ -15,7 +15,7 @@ import { useMemo } from 'react';
 const capabilityTitles = [
   { icon: Store, title: 'Mall Activations' },
   { icon: Package, title: 'Retail Displays' },
-  { icon: Palette, title: 'Exterior Signage' },
+  { icon: Palette, title: 'Signage and Branding' },
   { icon: Wrench, title: 'Retail Interiors' },
 ];
 
