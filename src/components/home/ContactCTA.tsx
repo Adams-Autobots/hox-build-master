@@ -46,8 +46,7 @@ export function ContactCTA() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            Let's discuss your next project. Our team is ready to bring your vision to life 
-            with precision, speed, and uncompromising quality.
+            Let's discuss your next project. Our team is ready to listen and bring your vision to life.
           </p>
 
           <div
