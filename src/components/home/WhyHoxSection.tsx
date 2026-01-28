@@ -56,10 +56,10 @@ export function WhyHoxSection() {
               'text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 transition-all duration-700 delay-150',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}>
-              <span className="hox-brand"><HoverText>The power of</HoverText> </span>
-              <span className="text-primary"><HoverText>Building</HoverText></span>
+              <span className="hox-brand"><HoverText>Experience, expertise</HoverText> </span>
+              <span className="text-primary"><HoverText>and</HoverText></span>
               <br />
-              <span className="text-muted-foreground/60"><HoverText>in-house.</HoverText></span>
+              <span className="text-muted-foreground/60"><HoverText>Trust.</HoverText></span>
             </h2>
 
             <div className={cn(
