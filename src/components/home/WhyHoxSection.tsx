@@ -79,12 +79,12 @@ export function WhyHoxSection() {
               <div
                 key={feature}
                 className={cn(
-                  'group p-6 lg:p-8 rounded-lg bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-500 cursor-default flex items-center justify-center',
+                  'group aspect-[4/3] p-5 lg:p-6 rounded-lg bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-500 cursor-default flex items-center justify-center',
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 )}
                 style={{ transitionDelay: `${400 + index * 100}ms` }}
               >
-                <p className="text-sm md:text-base lg:text-lg font-medium uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors duration-300 text-center">
+                <p className="text-xs md:text-sm lg:text-base font-semibold uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors duration-300 text-center leading-relaxed">
                   {feature}
                 </p>
               </div>
