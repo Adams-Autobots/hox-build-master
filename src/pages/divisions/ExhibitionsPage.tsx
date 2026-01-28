@@ -14,8 +14,8 @@ import { useMemo } from 'react';
 
 const capabilityTitles = [
   { icon: Boxes, title: 'Custom Stands' },
-  { icon: Hammer, title: 'National Pavilions' },
-  { icon: Lightbulb, title: 'Shell Scheme' },
+  { icon: Hammer, title: 'International Agency Support' },
+  { icon: Lightbulb, title: 'Unmanaged Regional Expertise' },
   { icon: Truck, title: 'Full Show Contracting' },
 ];
 
