@@ -5,13 +5,12 @@ import { LeadershipSection } from '@/components/about/LeadershipSection';
 import { ResourcesSection } from '@/components/about/ResourcesSection';
 import { TestimonialsSection } from '@/components/about/TestimonialsSection';
 import { HoverText } from '@/components/ui/HoverText';
-
-
 export default function AboutPage() {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
-
-  return (
-    <Layout>
+  const {
+    ref,
+    isVisible
+  } = useScrollReveal<HTMLElement>();
+  return <Layout>
       <section className="pt-32 pb-12 lg:pb-16 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-4xl">
@@ -27,10 +26,7 @@ export default function AboutPage() {
               <span className="text-muted-foreground/60"><HoverText>since 2008.</HoverText></span>
             </h1>
 
-            <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
-              We are a Dubai-born production powerhouse that has grown from a small fabrication workshop 
-              into a multi-division company serving the region's most demanding clients.
-            </p>
+            <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">We are a Dubai-born production powerhouse that has grown from a small fabrication workshop into a multi-division company serving the most demanding clients.</p>
           </div>
         </div>
       </section>
@@ -67,6 +63,5 @@ export default function AboutPage() {
       <ResourcesSection />
       <LeadershipSection />
       <TestimonialsSection />
-    </Layout>
-  );
+    </Layout>;
 }
