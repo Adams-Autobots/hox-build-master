@@ -13,7 +13,7 @@ interface StatItem {
 const stats: StatItem[] = [
   { value: 3000, suffix: "+", label: "projects delivered" },
   { value: 17, suffix: "+", label: "years in dubai" },
-  { value: 100, suffix: "%", label: "in-house production" },
+  { value: 40, suffix: "+", label: "qualified workforce" },
   { value: 4, label: "divisions" },
 ];
 
