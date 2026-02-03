@@ -17,7 +17,7 @@ interface FAQ {
 const divisionFAQs: Record<Division, FAQ[]> = {
   exhibitions: [
     { question: 'What is your typical lead time for exhibition stands?', answer: 'Standard builds require 4-6 weeks from design approval. Rush projects can be completed in 2-3 weeks depending on complexity. We recommend engaging us 8-12 weeks before your event for optimal results.' },
-    { question: 'Do you handle international exhibitions?', answer: 'Yes, we regularly deliver projects across the GCC, Europe, and Asia. We manage all logistics including shipping, customs, and on-site installation with our traveling crew.' },
+    { question: 'Do you deliver projects across the UAE?', answer: 'Yes, we deliver exhibition stands and builds across all emirates in the UAE. Our team handles logistics, installation, and on-site support throughout the country. We are also currently expanding our operations to KSA.' },
     { question: 'What is the maximum stand size you can build?', answer: 'We regularly deliver stands from 20sqm to 2,000sqm+. Our facility and team are equipped to handle double-decker structures, pavilions, and complex multi-level builds.' },
     { question: 'Do you provide stand storage between events?', answer: 'Yes, we offer climate-controlled storage for reusable stand components. We also provide refurbishment services to keep your stand looking fresh for each event.' },
     { question: 'Can you handle all permits and venue requirements?', answer: 'Absolutely. We manage structural calculations, fire safety compliance, electrical certifications, and all venue-specific requirements as part of our service.' },
