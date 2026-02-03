@@ -17,7 +17,7 @@ const skills = [
   {
     title: 'Value Engineering',
     description: 'Maximizing impact while optimizing costs. Smart solutions without compromise.',
-    image: skillDecorFinishes
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop'
   },
   {
     title: 'Project Execution',
