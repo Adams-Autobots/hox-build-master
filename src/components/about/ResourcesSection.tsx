@@ -12,7 +12,7 @@ const skills = [
   {
     title: 'Technical Planning & Drawing',
     description: 'Helping turn great ideas into budget workable deliveries.',
-    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=600&fit=crop'
+    image: skillDesignConcept
   },
   {
     title: 'Value Engineering',
@@ -22,7 +22,7 @@ const skills = [
   {
     title: 'Project Execution',
     description: 'What matters most is getting it done, right on time and to the standard you expect.',
-    image: skillDesignConcept
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop'
   }
 ];
 
