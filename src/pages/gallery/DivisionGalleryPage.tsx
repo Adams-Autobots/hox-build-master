@@ -55,6 +55,8 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
 
   return (
     <Layout>
+      {/* Division wrapper for cursor color */}
+      <div data-division={division} className="min-h-screen">
       {/* Division Navigation */}
       <DivisionNav currentDivision={division} />
 
@@ -119,6 +121,7 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
           </div>
         </section>
       )}
+      </div>
     </Layout>
   );
 }
