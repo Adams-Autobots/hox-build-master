@@ -1,94 +1,94 @@
 
-# Add Hero-Style Framer Motion Animations to All Big Headings
+# Fix Missing HoverText on 6 Headings
 
-## Overview
-Update all main section headings across the site to use the same Framer Motion animation pattern as the home page hero section, providing a consistent and polished entrance animation.
+## Problem Identified
+Six section headings have the Framer Motion entrance animation but are **missing the `<HoverText>` wrapper**, which means letters don't scale on cursor hover.
 
-## Current vs Target Animation
+## Files to Fix
 
-**Current (CSS-based):**
-- Uses `useScrollReveal` hook with CSS classes
-- `transition-all duration-700`
-- `opacity-0 translate-y-8` → `opacity-100 translate-y-0`
-
-**Target (Framer Motion, like Hero):**
-- Uses `motion.h1` / `motion.h2`
-- `initial={{ opacity: 0, y: 30 }}`
-- `animate={{ opacity: 1, y: 0 }}`
-- `transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}`
-- `viewport={{ once: true }}` for scroll-triggered animation
-
-## Files to Update
-
-### Page Headings (Main H1s)
-1. **`src/pages/AboutPage.tsx`** - "Production Excellence since 2008." and "Our Story."
-2. **`src/pages/ContactPage.tsx`** - "Let's Build together."
-3. **`src/pages/WorkPage.tsx`** - "Our Projects."
-4. **`src/components/divisions/DivisionHero.tsx`** - Already uses motion, verify consistency
-
-### Section Headings (H2s)
-5. **`src/components/about/ResourcesSection.tsx`** - "Our Skills."
-6. **`src/components/about/TestimonialsSection.tsx`** - "What our clients Say."
-7. **`src/components/home/WhyHoxSection.tsx`** - "Experience, expertise and Trust."
-8. **`src/components/home/DivisionsSection.tsx`** - "Four areas of expertise."
-9. **`src/components/home/ProjectsSection.tsx`** - "Projects that Define us."
-10. **`src/components/home/ContactCTA.tsx`** - "Ready to build Something exceptional?"
-11. **`src/components/divisions/ProcessTimeline.tsx`** - "From concept to Completion."
-12. **`src/components/divisions/CapabilitiesGrid.tsx`** - "What we Deliver."
-13. **`src/components/divisions/FullPageGallery.tsx`** - "See our work in Action."
-14. **`src/components/divisions/DivisionFAQ.tsx`** - "Frequently asked Questions."
-
-## Implementation Pattern
-
-For each heading, replace the CSS-based animation with Framer Motion:
-
+### 1. `src/components/about/ResourcesSection.tsx`
+**Current (line 54-55):**
 ```tsx
-// Before (CSS-based)
-<h2 className={cn(
-  'text-4xl md:text-5xl font-bold transition-all duration-700',
-  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-)}>
-  <HoverText>Heading Text</HoverText>
-</h2>
-
-// After (Framer Motion)
-<motion.h2
-  className="text-4xl md:text-5xl font-bold"
-  initial={{ opacity: 0, y: 30 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
->
-  <HoverText>Heading Text</HoverText>
-</motion.h2>
+<span className="hox-brand">Our </span>
+<span className="text-primary">Skills.</span>
 ```
+**Fix:**
+```tsx
+<span className="hox-brand"><HoverText>Our</HoverText> </span>
+<span className="text-primary"><HoverText>Skills.</HoverText></span>
+```
+
+### 2. `src/components/about/TestimonialsSection.tsx`
+**Current (line 62-63):**
+```tsx
+<span className="hox-brand">What our clients </span>
+<span className="text-primary">Say.</span>
+```
+**Fix:**
+```tsx
+<span className="hox-brand"><HoverText>What our clients</HoverText> </span>
+<span className="text-primary"><HoverText>Say.</HoverText></span>
+```
+
+### 3. `src/components/divisions/ProcessTimeline.tsx`
+**Current (line 91-92):**
+```tsx
+<span className="hox-brand">From concept to </span>
+<span className={divisionColors[division]}>Completion.</span>
+```
+**Fix:**
+```tsx
+<span className="hox-brand"><HoverText>From concept to</HoverText> </span>
+<span className={divisionColors[division]}><HoverText>Completion.</HoverText></span>
+```
+
+### 4. `src/components/divisions/CapabilitiesGrid.tsx`
+**Current (line 62-63):**
+```tsx
+<span className="hox-brand">What we </span>
+<span className={iconColor}>Deliver.</span>
+```
+**Fix:**
+```tsx
+<span className="hox-brand"><HoverText>What we</HoverText> </span>
+<span className={iconColor}><HoverText>Deliver.</HoverText></span>
+```
+
+### 5. `src/components/divisions/FullPageGallery.tsx`
+**Current (line 153-154):**
+```tsx
+<span className="hox-brand">See our work in </span>
+<span className={divisionColors[division]}>Action.</span>
+```
+**Fix:**
+```tsx
+<span className="hox-brand"><HoverText>See our work in</HoverText> </span>
+<span className={divisionColors[division]}><HoverText>Action.</HoverText></span>
+```
+
+### 6. `src/components/divisions/DivisionFAQ.tsx`
+**Current (line 101-102):**
+```tsx
+<span className="hox-brand">Frequently asked </span>
+<span className={divisionColors[division]}>Questions.</span>
+```
+**Fix:**
+```tsx
+<span className="hox-brand"><HoverText>Frequently asked</HoverText> </span>
+<span className={divisionColors[division]}><HoverText>Questions.</HoverText></span>
+```
+
+---
 
 ## Technical Details
 
-### Animation Configuration (matching Hero)
-- Duration: 0.7s (slightly longer than hero's 0.6s for section reveals)
-- Easing: `[0.25, 0.46, 0.45, 0.94]` (smooth cubic-bezier)
-- Y offset: 30px (same as hero)
-- Viewport trigger: `{ once: true }` (animates once when scrolled into view)
-
-### Required Imports
-Each file will need to import `motion` from Framer Motion:
+Each file will need the `HoverText` import added:
 ```tsx
-import { motion } from 'framer-motion';
-```
-
-### Stagger Pattern for Multi-line Headings
-For headings with multiple lines/colors, apply increasing delays:
-```tsx
-<motion.h2 ...>
-  <motion.span transition={{ delay: 0 }}>First line</motion.span>
-  <motion.span transition={{ delay: 0.1 }}>Second line</motion.span>
-</motion.h2>
+import { HoverText } from '@/components/ui/HoverText';
 ```
 
 ## Summary
-- 14 files will be updated
-- All big headings will animate with the same smooth motion as the hero
-- Maintains existing HoverText letter-scale effect
-- Uses viewport-triggered animations for scroll-based reveals
-- Consistent easing curve across the entire site
+- **6 files** will be updated
+- All headings will have the letter-scale hover effect matching the rest of the site
+- No changes to the Framer Motion entrance animations (already working)
+- Maintains consistency with the established typography interaction pattern
