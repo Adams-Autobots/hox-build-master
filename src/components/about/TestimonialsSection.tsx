@@ -1,7 +1,8 @@
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 const testimonials = [
   {
@@ -28,38 +29,11 @@ const testimonials = [
 
 export function TestimonialsSection() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
-  const scrollRef = useRef<HTMLDivElement>(null);
-
   const [isPaused, setIsPaused] = useState(false);
 
-  const scroll = useCallback((direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const cardWidth = scrollRef.current.clientWidth / 2;
-      const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  }, []);
-
-  // Auto-scroll continuous loop
-  useEffect(() => {
-    if (isPaused) return;
-
-    const interval = setInterval(() => {
-      if (scrollRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        const isAtEnd = scrollLeft >= scrollWidth - clientWidth - 10;
-        
-        if (isAtEnd) {
-          // Reset to start instantly, then continue scrolling
-          scrollRef.current.scrollTo({ left: 0, behavior: 'auto' });
-        } else {
-          scroll('right');
-        }
-      }
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [isPaused, scroll]);
+  // Card width estimation: ~450px on desktop, ~350px on mobile + 24px gap
+  const cardWidth = 470; // approximate card width + gap
+  const totalWidth = cardWidth * testimonials.length;
 
   return (
     <section ref={ref} className="py-12 lg:py-16 bg-background">
@@ -83,62 +57,36 @@ export function TestimonialsSection() {
             </h2>
           </div>
 
-          {/* Navigation Arrows */}
-          <div className={cn(
-            'hidden md:flex gap-2 transition-all duration-700 delay-200',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          )}>
-            <button
-              onClick={() => {
-                if (scrollRef.current) {
-                  const { scrollLeft } = scrollRef.current;
-                  if (scrollLeft <= 0) {
-                    // Loop to end
-                    scrollRef.current.scrollTo({ left: scrollRef.current.scrollWidth, behavior: 'smooth' });
-                  } else {
-                    scroll('left');
-                  }
-                }
-              }}
-              className="w-12 h-12 rounded-full border border-border flex items-center justify-center transition-all duration-300 hover:bg-primary hover:border-primary hover:text-primary-foreground"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => {
-                if (scrollRef.current) {
-                  const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-                  if (scrollLeft >= scrollWidth - clientWidth - 10) {
-                    // Loop to start
-                    scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-                  } else {
-                    scroll('right');
-                  }
-                }
-              }}
-              className="w-12 h-12 rounded-full border border-border flex items-center justify-center transition-all duration-300 hover:bg-primary hover:border-primary hover:text-primary-foreground"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
         </div>
 
-        {/* Scrollable Container */}
+        {/* Continuous Scroll Container */}
         <div
-          ref={scrollRef}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="overflow-hidden"
         >
-          {testimonials.map((testimonial, index) => (
+          <motion.div
+            className="flex gap-6"
+            animate={{
+              x: isPaused ? undefined : [0, -totalWidth],
+            }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 40,
+                ease: "linear",
+              },
+            }}
+          >
+            {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
             <div
               key={index}
               className={cn(
-                'relative flex-shrink-0 w-[calc(100%-24px)] md:w-[calc(50%-12px)] p-8 rounded-xl bg-card border border-border transition-all duration-500 group hover:border-primary/30 snap-start',
+                'relative flex-shrink-0 w-[340px] md:w-[450px] p-8 rounded-xl bg-card border border-border transition-all duration-500 group hover:border-primary/30',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
-              style={{ transitionDelay: `${200 + index * 100}ms` }}
+              style={{ transitionDelay: `${200 + (index % testimonials.length) * 100}ms` }}
             >
               <Quote className="w-10 h-10 text-primary/20 mb-6 transition-colors duration-300 group-hover:text-primary/40" />
               
@@ -151,7 +99,8 @@ export function TestimonialsSection() {
                 <p className="text-sm text-muted-foreground">{testimonial.company}</p>
               </div>
             </div>
-          ))}
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
