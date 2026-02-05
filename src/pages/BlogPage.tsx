@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Calendar } from 'lucide-react';
 import { Layout } from '@/components/layout/Layout';
+import { HoverText } from '@/components/ui/HoverText';
 
 const blogPosts = [
   { slug: 'exhibition-design-trends-2024', title: 'Exhibition Design Trends Shaping 2024', date: '15 Dec 2024', category: 'Exhibitions', excerpt: 'Explore the latest trends in exhibition design, from sustainable materials to immersive technology integrations.', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80' },
@@ -15,8 +16,8 @@ export default function BlogPage() {
       <section className="pt-32 pb-16">
         <div className="container mx-auto px-6 lg:px-12">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
-            <span className="hox-brand">Our </span>
-            <span className="text-primary">Blog.</span>
+            <span className="hox-brand"><HoverText>Our</HoverText> </span>
+            <span className="text-primary"><HoverText>Blog.</HoverText></span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl">
             Insights, trends, and stories from the world of production excellence.

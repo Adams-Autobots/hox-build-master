@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { HoverText } from "@/components/ui/HoverText";
 
 const NotFound = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const NotFound = () => {
           <div className="max-w-2xl mx-auto text-center">
             <span className="text-9xl font-bold text-primary/20">404</span>
             <h1 className="text-4xl md:text-5xl font-bold mt-4 mb-6 hox-brand">
-              page not found.
+              <HoverText>page not found.</HoverText>
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
               The page you're looking for doesn't exist or has been moved.

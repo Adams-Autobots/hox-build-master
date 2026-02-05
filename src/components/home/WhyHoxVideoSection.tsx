@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import whyHoxVideo from '@/assets/hero-whyhox-video-v2.mp4';
+import { HoverText } from '@/components/ui/HoverText';
 
 const values = [
   { name: 'Reliable', color: 'hsl(var(--hox-red))' },
@@ -60,7 +61,7 @@ export function WhyHoxVideoSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            We deliver <span className="text-primary">unforgettable.</span>
+            <HoverText>We deliver</HoverText> <span className="text-primary"><HoverText>unforgettable.</HoverText></span>
           </motion.h2>
 
           {/* Value words - similar to hero division names */}

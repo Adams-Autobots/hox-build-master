@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Calendar } from 'lucide-react';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
+import { HoverText } from '@/components/ui/HoverText';
 
 const blogPosts: Record<string, {
   title: string;
@@ -74,7 +75,9 @@ export default function BlogPostPage() {
           </Link>
 
           <span className="text-sm font-medium text-primary uppercase tracking-wider block mb-4">{post.category}</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 hox-brand">{post.title}</h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 hox-brand">
+            <HoverText>{post.title}</HoverText>
+          </h1>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Calendar className="w-4 h-4" />
             <span>{post.date}</span>
