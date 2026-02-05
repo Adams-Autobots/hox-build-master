@@ -1,7 +1,7 @@
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import skillDecorFinishes from '@/assets/skill-decor-finishes.jpg';
 import skillDesignConcept from '@/assets/skill-design-concept.jpg';
+import skillProjectExecution from '@/assets/skill-project-execution.jpg';
 
 const skills = [
   {
@@ -22,7 +22,7 @@ const skills = [
   {
     title: 'Project Execution',
     description: 'What matters most is getting it done, right on time and to the standard you expect.',
-    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop'
+    image: skillProjectExecution
   }
 ];
 
