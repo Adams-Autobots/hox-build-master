@@ -10,6 +10,7 @@ import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages'
 import { Store, Palette, Package, Wrench } from 'lucide-react';
 import heroRetail from '@/assets/hero-retail.jpg';
 import heroRetailVideo from '@/assets/hero-retail-video.mp4';
+import retailDisplaysCard from '@/assets/retail-displays-card.png';
 import { useMemo } from 'react';
 
 const capabilityTitles = [
@@ -37,7 +38,7 @@ export default function RetailPage() {
   const capabilities = useMemo(() => {
     return capabilityTitles.map((cap, index) => ({
       ...cap,
-      backgroundImage: capabilityImagesData?.[index]?.src || '',
+      backgroundImage: index === 1 ? retailDisplaysCard : (capabilityImagesData?.[index]?.src || ''),
     }));
   }, [capabilityImagesData]);
   
