@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Instagram, Linkedin } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { HoverText } from '@/components/ui/HoverText';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 export default function ContactPage() {
   const { toast } = useToast();
@@ -34,22 +42,37 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
             {/* Left Column - Info */}
             <div>
-              <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6">
+              <motion.span 
+                className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
                 <span className="w-8 h-px bg-primary" />
                 Get in touch
-              </span>
+              </motion.span>
 
-              <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-8">
+              <motion.h1 
+                className="text-5xl md:text-6xl font-bold leading-tight mb-8"
+                {...headingAnimation}
+              >
                 <HoverText className="hox-brand">Let's </HoverText>
                 <span className="text-primary"><HoverText>Build</HoverText></span>
                 <br />
                 <span className="text-muted-foreground/60"><HoverText>together.</HoverText></span>
-              </h1>
+              </motion.h1>
 
-              <p className="text-xl text-muted-foreground mb-12 leading-relaxed">
+              <motion.p 
+                className="text-xl text-muted-foreground mb-12 leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
                 Ready to start your next project? Our team is here to discuss your requirements 
                 and provide a tailored proposal.
-              </p>
+              </motion.p>
 
               <div className="space-y-6 mb-12">
                 <a href="tel:+97143477519" className="flex items-center gap-4 text-foreground hover:text-primary transition-colors">

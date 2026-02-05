@@ -1,12 +1,19 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMemo } from 'react';
 import { HoverText } from '@/components/ui/HoverText';
+import { cn } from '@/lib/utils';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 interface GalleryImage {
   id: string;
@@ -40,8 +47,6 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 export function ProjectsSection() {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
-
   const { data: allFeaturedImages, isLoading } = useQuery({
     queryKey: ['featured-gallery-images'],
     queryFn: async (): Promise<GalleryImage[]> => {
@@ -92,30 +97,29 @@ export function ProjectsSection() {
   }, [allFeaturedImages]);
 
   return (
-    <section ref={ref} className="py-16 lg:py-20 bg-card relative overflow-hidden">
+    <section className="py-16 lg:py-20 bg-card relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 lg:mb-24 gap-8">
           <div>
-            <span
-              className={cn(
-                'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-              )}
+            <motion.span
+              className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
               <span className="w-8 h-px bg-primary" />
               Featured work
-            </span>
+            </motion.span>
 
-            <h2
-              className={cn(
-                'text-4xl md:text-5xl lg:text-6xl font-bold leading-tight transition-all duration-700 delay-150',
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              )}
+            <motion.h2
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+              {...headingAnimation}
             >
               <span className="hox-brand"><HoverText>Projects that</HoverText> </span>
               <span className="text-primary"><HoverText>Define us.</HoverText></span>
-            </h2>
+            </motion.h2>
           </div>
         </div>
 
@@ -127,20 +131,22 @@ export function ProjectsSection() {
             ))
           ) : (
             images?.map((image, index) => (
-              <Link
+              <motion.div
                 key={image.id}
-                to={divisionRoutes[image.division] || '/projects'}
-                data-division={image.division}
-                className={cn(
-                  'group relative overflow-hidden rounded-lg bg-background block transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-lg',
-                  isVisible 
-                    ? 'opacity-100 translate-x-0 scale-100' 
-                    : index % 2 === 0 
-                      ? 'opacity-0 -translate-x-8 scale-95' 
-                      : 'opacity-0 translate-x-8 scale-95'
-                )}
-                style={{ transitionDelay: `${300 + index * 150}ms` } as React.CSSProperties}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: 0.1 + index * 0.05,
+                  ease: [0.25, 0.46, 0.45, 0.94]
+                }}
               >
+                <Link
+                  to={divisionRoutes[image.division] || '/projects'}
+                  data-division={image.division}
+                  className="group relative overflow-hidden rounded-lg bg-background block transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-lg"
+                >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
                     src={image.src}
@@ -148,18 +154,19 @@ export function ProjectsSection() {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
-              </Link>
+                </Link>
+              </motion.div>
             ))
           )}
         </div>
 
         {/* View All Link */}
-        <div
-          className={cn(
-            'flex justify-center mt-12 transition-all duration-700',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          )}
-          style={{ transitionDelay: '800ms' }}
+        <motion.div
+          className="flex justify-center mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.5 }}
         >
           <Link
             to="/projects"
@@ -168,7 +175,7 @@ export function ProjectsSection() {
             View all projects
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

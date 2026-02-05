@@ -1,8 +1,15 @@
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import { MessageSquare, PenTool, Wrench, Truck, CheckCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type Division = 'exhibitions' | 'events' | 'retail' | 'interiors';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 const divisionColors: Record<Division, string> = {
   exhibitions: 'text-[hsl(var(--hox-red))]',
@@ -58,33 +65,32 @@ interface ProcessTimelineProps {
 }
 
 export function ProcessTimeline({ division }: ProcessTimelineProps) {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
-
   return (
-    <section ref={ref} className="py-12 lg:py-16 bg-background">
+    <section className="py-12 lg:py-16 bg-background">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="max-w-3xl mb-10">
-          <span
+          <motion.span
             className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-4 transition-all duration-700',
-              divisionColors[division],
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-4',
+              divisionColors[division]
             )}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
             <span className={cn('w-8 h-px', divisionColors[division].replace('text-', 'bg-'))} />
             Our process
-          </span>
+          </motion.span>
           
-          <h2
-            className={cn(
-              'text-3xl md:text-4xl lg:text-5xl font-bold leading-tight transition-all duration-700 delay-150',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            )}
+          <motion.h2
+            className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+            {...headingAnimation}
           >
             <span className="hox-brand">From concept to </span>
             <span className={divisionColors[division]}>Completion.</span>
-          </h2>
+          </motion.h2>
         </div>
 
         {/* Horizontal Card Grid */}
@@ -93,13 +99,13 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
             const Icon = step.icon;
 
             return (
-              <div
+              <motion.div
                 key={step.title}
-                className={cn(
-                  'relative group transition-all duration-700',
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                )}
-                style={{ transitionDelay: `${200 + index * 100}ms` }}
+                className="relative group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 + index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 {/* Connecting line (hidden on first card and mobile) */}
                 {index > 0 && (
@@ -138,7 +144,7 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
                     {step.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

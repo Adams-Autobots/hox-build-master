@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { HoverText } from '@/components/ui/HoverText';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 // Fallback images (hardcoded from gallery position #1)
 const FALLBACK_IMAGES = {
@@ -55,8 +62,6 @@ const divisions: {
 ];
 
 export function DivisionsSection() {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
-
   // Fetch division hero images from database (now supports multiple per division)
   const { data: heroImages } = useQuery({
     queryKey: ['division-hero-images'],
@@ -87,31 +92,30 @@ export function DivisionsSection() {
   };
 
   return (
-    <section ref={ref} className="py-16 lg:py-20 bg-background relative">
+    <section className="py-16 lg:py-20 bg-background relative">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="mb-16 lg:mb-24">
-          <span
-            className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            )}
+          <motion.span
+            className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
             <span className="w-8 h-px bg-primary" />
             Our divisions
-          </span>
+          </motion.span>
 
-          <h2
-            className={cn(
-              'text-4xl md:text-5xl lg:text-6xl font-bold leading-tight transition-all duration-700 delay-150',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            )}
+          <motion.h2
+            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+            {...headingAnimation}
           >
           <span className="hox-brand"><HoverText>Four areas of</HoverText> </span>
             <span className="text-primary"><HoverText>expertise.</HoverText></span>
             <br />
             <span className="text-muted-foreground/60"><HoverText>One unified vision.</HoverText></span>
-          </h2>
+          </motion.h2>
         </div>
 
         {/* Divisions Grid */}
@@ -121,7 +125,6 @@ export function DivisionsSection() {
               key={division.name}
               division={division}
               images={getImages(division.name)}
-              isVisible={isVisible}
               index={index}
             />
           ))}
@@ -135,7 +138,6 @@ export function DivisionsSection() {
 function DivisionCard({
   division,
   images,
-  isVisible,
   index,
 }: {
   division: {
@@ -146,7 +148,6 @@ function DivisionCard({
     accentColor: string;
   };
   images: string[];
-  isVisible: boolean;
   index: number;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -164,18 +165,22 @@ function DivisionCard({
   }, [images.length, isPaused]);
 
   return (
-    <Link
-      to={division.path}
-      data-division={division.name}
-      className={cn(
-        'group relative aspect-[3/4] rounded-2xl overflow-hidden transition-all duration-500',
-        'hover:-translate-y-1',
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      )}
-      style={{ transitionDelay: `${300 + index * 100}ms` }}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: 0.2 + index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] as const }}
     >
+      <Link
+        to={division.path}
+        data-division={division.name}
+        className={cn(
+          'group relative aspect-[3/4] rounded-2xl overflow-hidden block transition-all duration-500',
+          'hover:-translate-y-1'
+        )}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
       {/* Background Images - Stacked for crossfade */}
       {images.map((src, imgIndex) => (
         <img
@@ -228,6 +233,7 @@ function DivisionCard({
         </div>
 
       </div>
-    </Link>
+      </Link>
+    </motion.div>
   );
 }

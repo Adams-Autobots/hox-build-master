@@ -1,7 +1,13 @@
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import skillDesignConcept from '@/assets/skill-design-concept.jpg';
 import skillProjectExecution from '@/assets/skill-project-execution.jpg';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 const skills = [
   {
@@ -27,40 +33,47 @@ const skills = [
 ];
 
 export function ResourcesSection() {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
-
   return (
-    <section ref={ref} className="py-12 lg:py-16 bg-background">
+    <section className="py-12 lg:py-16 bg-background">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="mb-12">
-          <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6">
+          <motion.span 
+            className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <span className="w-8 h-px bg-primary" />
             What We Do Best
-          </span>
-          <h2 className={cn(
-            'text-3xl md:text-4xl lg:text-5xl font-bold leading-tight transition-all duration-700',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          )}>
+          </motion.span>
+          <motion.h2 
+            className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+            {...headingAnimation}
+          >
             <span className="hox-brand">Our </span>
             <span className="text-primary">Skills.</span>
-          </h2>
-          <p className={cn(
-            'mt-6 text-lg text-muted-foreground max-w-3xl leading-relaxed transition-all duration-700 delay-100',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          )}>
+          </motion.h2>
+          <motion.p 
+            className="mt-6 text-lg text-muted-foreground max-w-3xl leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
             We have a team diverse in skills, knowledge and backgrounds. We are based in the UAE, and have completed projects across the GCC. We have been lucky to have executed over 3000+ projects, large and small for some of the biggest names on the globe.
-          </p>
+          </motion.p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {skills.map((skill, index) => (
-            <div
+            <motion.div
               key={skill.title}
-              className={cn(
-                'group relative overflow-hidden rounded-xl bg-card border border-border transition-all duration-500',
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              )}
-              style={{ transitionDelay: `${200 + index * 100}ms` }}
+              className="group relative overflow-hidden rounded-xl bg-card border border-border"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 + index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
               <div className="aspect-[16/10] overflow-hidden">
                 <img
@@ -73,7 +86,7 @@ export function ResourcesSection() {
                 <h3 className="text-lg lg:text-xl font-bold mb-3 hox-brand">{skill.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{skill.description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

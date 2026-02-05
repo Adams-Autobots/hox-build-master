@@ -1,13 +1,20 @@
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { cn } from '@/lib/utils';
 
 type Division = 'exhibitions' | 'events' | 'retail' | 'interiors';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 interface FAQ {
   question: string;
@@ -64,64 +71,67 @@ interface DivisionFAQProps {
 }
 
 export function DivisionFAQ({ division }: DivisionFAQProps) {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const faqs = divisionFAQs[division];
 
   return (
-    <section ref={ref} className="py-16 lg:py-20 bg-background">
+    <section className="py-16 lg:py-20 bg-background">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-4xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <span
+            <motion.span
               className={cn(
-                'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6 transition-all duration-700',
-                divisionColors[division],
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6',
+                divisionColors[division]
               )}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
               <span className={cn('w-8 h-px', divisionBg[division])} />
               Common questions
               <span className={cn('w-8 h-px', divisionBg[division])} />
-            </span>
+            </motion.span>
             
-            <h2
-              className={cn(
-                'text-3xl md:text-4xl lg:text-5xl font-bold leading-tight transition-all duration-700 delay-150',
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              )}
+            <motion.h2
+              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+              {...headingAnimation}
             >
               <span className="hox-brand">Frequently asked </span>
               <span className={divisionColors[division]}>Questions.</span>
-            </h2>
+            </motion.h2>
           </div>
 
           {/* FAQ Accordion */}
           <Accordion type="single" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
-              <AccordionItem
+              <motion.div
                 key={index}
-                value={`item-${index}`}
-                className={cn(
-                  'border border-border rounded-lg px-6 bg-card transition-all duration-500 data-[state=open]:border-primary/30',
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                )}
-                style={{ transitionDelay: `${200 + index * 100}ms` }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 + index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
-                <AccordionTrigger className="text-left py-6 hover:no-underline group">
-                  <span className="flex items-start gap-4 text-lg font-medium">
-                    <span className={cn('text-sm font-bold mt-1', divisionColors[division])}>
-                      0{index + 1}
+                <AccordionItem
+                  value={`item-${index}`}
+                  className="border border-border rounded-lg px-6 bg-card transition-all duration-500 data-[state=open]:border-primary/30"
+                >
+                  <AccordionTrigger className="text-left py-6 hover:no-underline group">
+                    <span className="flex items-start gap-4 text-lg font-medium">
+                      <span className={cn('text-sm font-bold mt-1', divisionColors[division])}>
+                        0{index + 1}
+                      </span>
+                      <span className="group-hover:text-primary transition-colors">
+                        {faq.question}
+                      </span>
                     </span>
-                    <span className="group-hover:text-primary transition-colors">
-                      {faq.question}
-                    </span>
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent className="pb-6 pl-10 text-muted-foreground leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-6 pl-10 text-muted-foreground leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
             ))}
           </Accordion>
         </div>
