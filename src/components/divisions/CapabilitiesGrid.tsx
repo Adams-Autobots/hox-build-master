@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { HoverText } from '@/components/ui/HoverText';
 
 const headingAnimation = {
   initial: { opacity: 0, y: 30 },
@@ -59,8 +60,8 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
             className="text-3xl md:text-4xl lg:text-5xl font-bold"
             {...headingAnimation}
           >
-            <span className="hox-brand">What we </span>
-            <span className={iconColor}>Deliver.</span>
+            <span className="hox-brand"><HoverText>What we</HoverText> </span>
+            <span className={iconColor}><HoverText>Deliver.</HoverText></span>
           </motion.h2>
         </motion.div>
 

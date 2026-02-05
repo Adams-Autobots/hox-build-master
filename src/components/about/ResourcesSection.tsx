@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { HoverText } from '@/components/ui/HoverText';
 import skillDesignConcept from '@/assets/skill-design-concept.jpg';
 import skillProjectExecution from '@/assets/skill-project-execution.jpg';
 
@@ -51,8 +52,8 @@ export function ResourcesSection() {
             className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
             {...headingAnimation}
           >
-            <span className="hox-brand">Our </span>
-            <span className="text-primary">Skills.</span>
+            <span className="hox-brand"><HoverText>Our</HoverText> </span>
+            <span className="text-primary"><HoverText>Skills.</HoverText></span>
           </motion.h2>
           <motion.p 
             className="mt-6 text-lg text-muted-foreground max-w-3xl leading-relaxed"
