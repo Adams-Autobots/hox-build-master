@@ -7,6 +7,7 @@ import { useGalleryImages, type Division, type GalleryImage } from '@/hooks/useG
 import { GalleryStructuredData } from '@/components/seo/GalleryStructuredData';
 import { DivisionNav } from './DivisionNav';
 import { LazyImage } from '@/components/ui/LazyImage';
+import { HoverText } from '@/components/ui/HoverText';
 
 const headingAnimation = {
   initial: { opacity: 0, y: 30 },
@@ -150,8 +151,8 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
                 {...headingAnimation}
               >
-                <span className="hox-brand">See our work in </span>
-                <span className={divisionColors[division]}>Action.</span>
+                <span className="hox-brand"><HoverText>See our work in</HoverText> </span>
+                <span className={divisionColors[division]}><HoverText>Action.</HoverText></span>
               </motion.h2>
             </div>
 

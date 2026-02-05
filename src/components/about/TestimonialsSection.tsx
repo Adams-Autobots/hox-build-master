@@ -1,6 +1,7 @@
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { HoverText } from '@/components/ui/HoverText';
 
 const headingAnimation = {
   initial: { opacity: 0, y: 30 },
@@ -59,8 +60,8 @@ export function TestimonialsSection() {
               className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
               {...headingAnimation}
             >
-              <span className="hox-brand">What our clients </span>
-              <span className="text-primary">Say.</span>
+              <span className="hox-brand"><HoverText>What our clients</HoverText> </span>
+              <span className="text-primary"><HoverText>Say.</HoverText></span>
             </motion.h2>
           </div>
 

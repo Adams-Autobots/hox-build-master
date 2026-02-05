@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
+import { HoverText } from '@/components/ui/HoverText';
 
 type Division = 'exhibitions' | 'events' | 'retail' | 'interiors';
 
@@ -98,8 +99,8 @@ export function DivisionFAQ({ division }: DivisionFAQProps) {
               className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
               {...headingAnimation}
             >
-              <span className="hox-brand">Frequently asked </span>
-              <span className={divisionColors[division]}>Questions.</span>
+              <span className="hox-brand"><HoverText>Frequently asked</HoverText> </span>
+              <span className={divisionColors[division]}><HoverText>Questions.</HoverText></span>
             </motion.h2>
           </div>
 

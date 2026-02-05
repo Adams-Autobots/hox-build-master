@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { MessageSquare, PenTool, Wrench, Truck, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { HoverText } from '@/components/ui/HoverText';
 
 type Division = 'exhibitions' | 'events' | 'retail' | 'interiors';
 
@@ -88,8 +89,8 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
             className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
             {...headingAnimation}
           >
-            <span className="hox-brand">From concept to </span>
-            <span className={divisionColors[division]}>Completion.</span>
+            <span className="hox-brand"><HoverText>From concept to</HoverText> </span>
+            <span className={divisionColors[division]}><HoverText>Completion.</HoverText></span>
           </motion.h2>
         </div>
 
