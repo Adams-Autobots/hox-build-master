@@ -1,7 +1,14 @@
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 interface Capability {
   icon: LucideIcon;
@@ -39,8 +46,8 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
           className="mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
@@ -48,7 +55,13 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
             <span className="w-8 h-px bg-current" />
             Capabilities
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold"><span className="hox-brand">What we </span><span className={iconColor}>Deliver.</span></h2>
+          <motion.h2 
+            className="text-3xl md:text-4xl lg:text-5xl font-bold"
+            {...headingAnimation}
+          >
+            <span className="hox-brand">What we </span>
+            <span className={iconColor}>Deliver.</span>
+          </motion.h2>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -1,13 +1,20 @@
 import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { X, ChevronLeft, ChevronRight, Loader2, ArrowRight } from 'lucide-react';
 import { useGalleryImages, type Division, type GalleryImage } from '@/hooks/useGalleryImages';
 import { GalleryStructuredData } from '@/components/seo/GalleryStructuredData';
 import { DivisionNav } from './DivisionNav';
 import { LazyImage } from '@/components/ui/LazyImage';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
+
 interface StaticGalleryImage {
   src: string;
   alt: string;
@@ -44,7 +51,6 @@ const divisionRoutes: Record<Division, string> = {
 };
 
 export function FullPageGallery({ division, images: fallbackImages, maxImages, showViewAll = false }: FullPageGalleryProps) {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   
   
@@ -121,31 +127,32 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
         pageUrl={typeof window !== 'undefined' ? window.location.href : ''}
       />
 
-      <section ref={ref} className="py-16 lg:py-20 bg-card" aria-label={`${division} project gallery`}>
+      <section className="py-16 lg:py-20 bg-card" aria-label={`${division} project gallery`}>
         <div className="container mx-auto px-6 lg:px-12">
           {/* Section Header */}
           <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
             <div>
-              <span
+              <motion.span
                 className={cn(
-                  'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6 transition-all duration-700',
-                  divisionColors[division],
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6',
+                  divisionColors[division]
                 )}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
               >
                 <span className={cn('w-8 h-px', divisionBg[division])} />
                 Project gallery
-              </span>
+              </motion.span>
               
-              <h2
-                className={cn(
-                  'text-3xl md:text-4xl lg:text-5xl font-bold leading-tight transition-all duration-700 delay-150',
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                )}
+              <motion.h2
+                className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+                {...headingAnimation}
               >
                 <span className="hox-brand">See our work in </span>
                 <span className={divisionColors[division]}>Action.</span>
-              </h2>
+              </motion.h2>
             </div>
 
           </header>
@@ -169,14 +176,13 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                   <motion.figure
                     key={index}
                     data-division={division}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ 
-                      opacity: isVisible ? 1 : 0, 
-                      y: isVisible ? 0 : 20 
-                    }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ 
                       delay: 0.1 * (index % 6),
-                      duration: 0.5 
+                      duration: 0.5,
+                      ease: [0.25, 0.46, 0.45, 0.94]
                     }}
                     className="group relative overflow-hidden rounded-lg cursor-pointer m-0 aspect-square"
                     onClick={() => openLightbox(index)}
@@ -201,7 +207,8 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
               {showViewAll && hasMoreImages && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.5 }}
                   className="flex justify-center mt-12"
                 >

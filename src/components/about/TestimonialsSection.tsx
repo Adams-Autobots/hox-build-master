@@ -1,8 +1,13 @@
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { cn } from '@/lib/utils';
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 const testimonials = [
   {
@@ -28,7 +33,6 @@ const testimonials = [
 ];
 
 export function TestimonialsSection() {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const [isPaused, setIsPaused] = useState(false);
 
   // Card width estimation: ~450px on desktop, ~350px on mobile + 24px gap
@@ -36,25 +40,28 @@ export function TestimonialsSection() {
   const totalWidth = cardWidth * testimonials.length;
 
   return (
-    <section ref={ref} className="py-12 lg:py-16 bg-background">
+    <section className="py-12 lg:py-16 bg-background">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-end justify-between mb-12">
           <div>
-            <span className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            )}>
+            <motion.span 
+              className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <span className="w-8 h-px bg-primary" />
               Client Voices
-            </span>
+            </motion.span>
             
-            <h2 className={cn(
-              'text-3xl md:text-4xl lg:text-5xl font-bold leading-tight transition-all duration-700 delay-100',
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            )}>
+            <motion.h2 
+              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+              {...headingAnimation}
+            >
               <span className="hox-brand">What our clients </span>
               <span className="text-primary">Say.</span>
-            </h2>
+            </motion.h2>
           </div>
 
         </div>
@@ -80,13 +87,13 @@ export function TestimonialsSection() {
             }}
           >
             {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
-            <div
+            <motion.div
               key={index}
-              className={cn(
-                'relative flex-shrink-0 w-[340px] md:w-[450px] p-8 rounded-xl bg-card border border-border transition-all duration-500 group hover:border-primary/30',
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              )}
-              style={{ transitionDelay: `${200 + (index % testimonials.length) * 100}ms` }}
+              className="relative flex-shrink-0 w-[340px] md:w-[450px] p-8 rounded-xl bg-card border border-border transition-all duration-500 group hover:border-primary/30"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: (index % testimonials.length) * 0.1 }}
             >
               <Quote className="w-10 h-10 text-primary/20 mb-6 transition-colors duration-300 group-hover:text-primary/40" />
               
@@ -98,7 +105,7 @@ export function TestimonialsSection() {
                 <p className="font-bold text-foreground">{testimonial.author}</p>
                 <p className="text-sm text-muted-foreground">{testimonial.company}</p>
               </div>
-            </div>
+            </motion.div>
             ))}
           </motion.div>
         </div>

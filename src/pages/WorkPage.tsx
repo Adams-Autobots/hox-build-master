@@ -1,12 +1,20 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
 import { Layout } from '@/components/layout/Layout';
 import { useGalleryImages, Division } from '@/hooks/useGalleryImages';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { HoverText } from '@/components/ui/HoverText';
+
+const headingAnimation = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 const divisionHoverColors: Record<Division, string> = {
   exhibitions: 'group-hover:text-[hsl(var(--hox-red))]',
@@ -73,13 +81,22 @@ export default function WorkPage() {
     <Layout>
       <section className="pt-32 pb-16 lg:pb-24">
         <div className="container mx-auto px-6 lg:px-12">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
+          <motion.h1 
+            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8"
+            {...headingAnimation}
+          >
             <HoverText className="hox-brand">Our </HoverText>
             <span className="text-primary"><HoverText>Projects.</HoverText></span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl">
+          </motion.h1>
+          <motion.p 
+            className="text-xl text-muted-foreground max-w-2xl"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
             A selection of projects that showcase our capabilities across all four divisions.
-          </p>
+          </motion.p>
         </div>
       </section>
 
