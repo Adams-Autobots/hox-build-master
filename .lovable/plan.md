@@ -1,43 +1,68 @@
 
-# Fix: Restore Mouse Cursor on Auth/Sign-In Page
 
-## Problem Identified
-The mouse cursor disappears on the `/auth` (sign-in) page because:
+# Continuous One-Direction Scroll for Client Testimonials
 
-1. The global CSS hides the native browser cursor on non-touch devices (`cursor: none`)
-2. The AuthPage doesn't use the `Layout` component (which renders the `CustomCursor`)
-3. The AuthPage is missing the `cursor-visible` CSS class that restores native cursors
+## Current Behavior
+The testimonials carousel currently scrolls to the right, and when it reaches the end, it instantly jumps back to the start (visible reset). The navigation arrows also loop in both directions.
 
-This means the native cursor is hidden but no custom cursor is being rendered, causing the cursor to "disappear."
+## Proposed Solution
+Convert the testimonials section to use Framer Motion-based continuous animation (similar to the Client Marquee on the homepage). This will create a seamless infinite loop scrolling in one direction with no visible reset.
 
-## Solution
-Add the `cursor-visible` class to the AuthPage's root container, matching the pattern already used in the GalleryAdminPage.
+## Implementation Approach
 
-## Changes Required
+### 1. Switch from Native Scroll to Framer Motion Animation
+Replace the `scrollBy` interval-based approach with Framer Motion's `animate` property for smooth, continuous movement.
 
-### File: `src/pages/AuthPage.tsx`
+### 2. Duplicate Testimonial Cards
+Triple the testimonial cards array to create enough content for seamless looping (same technique used in ClientMarquee).
 
-**Current code (line 91):**
-```tsx
-<div className="min-h-screen flex items-center justify-center bg-background p-4">
-```
+### 3. Update Auto-Scroll Logic
+- Use Framer Motion's `repeat: Infinity` and `repeatType: "loop"` for seamless looping
+- Remove the reset-to-start logic
+- Maintain pause-on-hover functionality
 
-**Updated code:**
-```tsx
-<div className="min-h-screen flex items-center justify-center bg-background p-4 cursor-visible">
-```
-
-This same change should also be applied to the loading state container (line 84):
-```tsx
-<div className="min-h-screen flex items-center justify-center bg-background cursor-visible">
-```
+### 4. Simplify Navigation Arrows
+- Keep arrows for manual navigation
+- Update left arrow to scroll backward within the loop
+- Update right arrow to scroll forward within the loop
+- Both will work within the continuous flow
 
 ---
 
 ## Technical Details
 
-The `cursor-visible` class is defined in `src/index.css` (lines 98-107) and:
-- Overrides `cursor: none` with `cursor: auto !important` on all elements
-- Sets `cursor: pointer !important` on interactive elements (links, buttons)
+### File to Modify
+- `src/components/about/TestimonialsSection.tsx`
 
-This approach maintains consistency with the existing admin page pattern and ensures users can see their cursor when filling out the login form.
+### Key Changes
+
+**Replace the scrollable div with a motion.div:**
+```tsx
+<motion.div
+  className="flex gap-6"
+  animate={{
+    x: isPaused ? undefined : [0, -totalWidth],
+  }}
+  transition={{
+    x: {
+      repeat: Infinity,
+      repeatType: "loop",
+      duration: 30, // Slower for testimonials since they're longer
+      ease: "linear",
+    },
+  }}
+>
+  {/* Tripled testimonials for seamless loop */}
+  {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+    // Card component
+  ))}
+</motion.div>
+```
+
+**Calculate card width for animation:**
+- Estimate card width based on typical card size (~450px per card + gap)
+- Total animation distance = number of original testimonials × card width
+
+**Navigation arrows:**
+- Will continue to work by temporarily pausing animation and scrolling
+
