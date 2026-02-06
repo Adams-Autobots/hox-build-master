@@ -75,7 +75,7 @@ export default function BlogPostPage() {
           </Link>
 
           <span className="text-sm font-medium text-primary uppercase tracking-wider block mb-4">{post.category}</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 hox-brand">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 hox-brand">
             <HoverText>{post.title}</HoverText>
           </h1>
           <div className="flex items-center gap-2 text-muted-foreground">

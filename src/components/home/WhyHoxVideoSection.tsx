@@ -56,7 +56,7 @@ export function WhyHoxVideoSection() {
       <div className="relative z-10 h-full flex items-center">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.h2
-            className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8"
+            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
