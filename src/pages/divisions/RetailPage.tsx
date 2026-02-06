@@ -50,6 +50,7 @@ export default function RetailPage() {
           title="Retail Store Design & Fit-out | HOX Dubai"
           description="Turnkey retail builds from flagship stores to pop-up kiosks. Visual merchandising, custom fixtures, and multi-location rollouts in UAE."
           images={galleryImagesData}
+          ogImage="/og-retail.png"
         />
         <DivisionHero
           division="retail"
