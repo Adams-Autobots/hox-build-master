@@ -46,7 +46,9 @@ export function PageMeta({
     setMeta('og:type', type, true);
     setMeta('og:url', window.location.href, true);
     if (image) {
-      setMeta('og:image', image, true);
+      // Ensure absolute URL for OG image
+      const absoluteImage = image.startsWith('http') ? image : `${window.location.origin}${image}`;
+      setMeta('og:image', absoluteImage, true);
     }
 
     // Twitter Card tags
@@ -54,7 +56,8 @@ export function PageMeta({
     setMeta('twitter:title', title);
     setMeta('twitter:description', description);
     if (image) {
-      setMeta('twitter:image', image);
+      const absoluteImage = image.startsWith('http') ? image : `${window.location.origin}${image}`;
+      setMeta('twitter:image', absoluteImage);
     }
 
     // Cleanup function to reset title
