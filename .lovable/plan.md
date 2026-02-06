@@ -1,94 +1,69 @@
 
-# Fix Missing HoverText on 6 Headings
+# Cleanup Unused Assets and Test Summary
 
-## Problem Identified
-Six section headings have the Framer Motion entrance animation but are **missing the `<HoverText>` wrapper**, which means letters don't scale on cursor hover.
+## Testing Results
 
-## Files to Fix
+Tested the following pages - all working with no console errors:
+- **Home page (/)** - Hero video playing, division name cycling works
+- **Exhibitions page (/divisions/exhibitions)** - New hero video playing correctly
+- **About page (/about)** - Heading animations working, HoverText functional
+- **Contact page (/contact)** - Heading animations working
 
-### 1. `src/components/about/ResourcesSection.tsx`
-**Current (line 54-55):**
-```tsx
-<span className="hox-brand">Our </span>
-<span className="text-primary">Skills.</span>
-```
-**Fix:**
-```tsx
-<span className="hox-brand"><HoverText>Our</HoverText> </span>
-<span className="text-primary"><HoverText>Skills.</HoverText></span>
-```
-
-### 2. `src/components/about/TestimonialsSection.tsx`
-**Current (line 62-63):**
-```tsx
-<span className="hox-brand">What our clients </span>
-<span className="text-primary">Say.</span>
-```
-**Fix:**
-```tsx
-<span className="hox-brand"><HoverText>What our clients</HoverText> </span>
-<span className="text-primary"><HoverText>Say.</HoverText></span>
-```
-
-### 3. `src/components/divisions/ProcessTimeline.tsx`
-**Current (line 91-92):**
-```tsx
-<span className="hox-brand">From concept to </span>
-<span className={divisionColors[division]}>Completion.</span>
-```
-**Fix:**
-```tsx
-<span className="hox-brand"><HoverText>From concept to</HoverText> </span>
-<span className={divisionColors[division]}><HoverText>Completion.</HoverText></span>
-```
-
-### 4. `src/components/divisions/CapabilitiesGrid.tsx`
-**Current (line 62-63):**
-```tsx
-<span className="hox-brand">What we </span>
-<span className={iconColor}>Deliver.</span>
-```
-**Fix:**
-```tsx
-<span className="hox-brand"><HoverText>What we</HoverText> </span>
-<span className={iconColor}><HoverText>Deliver.</HoverText></span>
-```
-
-### 5. `src/components/divisions/FullPageGallery.tsx`
-**Current (line 153-154):**
-```tsx
-<span className="hox-brand">See our work in </span>
-<span className={divisionColors[division]}>Action.</span>
-```
-**Fix:**
-```tsx
-<span className="hox-brand"><HoverText>See our work in</HoverText> </span>
-<span className={divisionColors[division]}><HoverText>Action.</HoverText></span>
-```
-
-### 6. `src/components/divisions/DivisionFAQ.tsx`
-**Current (line 101-102):**
-```tsx
-<span className="hox-brand">Frequently asked </span>
-<span className={divisionColors[division]}>Questions.</span>
-```
-**Fix:**
-```tsx
-<span className="hox-brand"><HoverText>Frequently asked</HoverText> </span>
-<span className={divisionColors[division]}><HoverText>Questions.</HoverText></span>
-```
+All Framer Motion animations and HoverText hover effects are functioning correctly.
 
 ---
 
-## Technical Details
+## Unused Assets to Delete
 
-Each file will need the `HoverText` import added:
-```tsx
-import { HoverText } from '@/components/ui/HoverText';
-```
+| File | Reason |
+|------|--------|
+| `src/assets/hero-video.mp4` | Replaced by `hero-video-v3.mp4` |
+| `src/assets/hero-exhibitions-video.mp4` | Replaced by `hero-exhibitions-video-v2.mp4` |
+| `src/assets/hero-whyhox-video.mp4` | Replaced by `hero-whyhox-video-v2.mp4` |
+| `src/assets/skill-decor-finishes.jpg` | Never imported or used anywhere |
 
-## Summary
-- **6 files** will be updated
-- All headings will have the letter-scale hover effect matching the rest of the site
-- No changes to the Framer Motion entrance animations (already working)
-- Maintains consistency with the established typography interaction pattern
+**Total space to recover:** 4 video/image files
+
+---
+
+## Assets Still in Use (Keep)
+
+| Asset | Used By |
+|-------|---------|
+| `hero-video-v3.mp4` | HeroSection.tsx |
+| `hero-exhibitions-video-v2.mp4` | ExhibitionsPage.tsx |
+| `hero-events-video-v2.mp4` | EventsPage.tsx |
+| `hero-interiors-video.mp4` | InteriorsPage.tsx |
+| `hero-retail-video.mp4` | RetailPage.tsx |
+| `hero-whyhox-video-v2.mp4` | WhyHoxVideoSection.tsx |
+| `hero-events.jpg` | EventsPage.tsx |
+| `hero-exhibitions.jpg` | ExhibitionsPage.tsx |
+| `hero-interiors.jpg` | InteriorsPage.tsx |
+| `hero-retail.jpg` | RetailPage.tsx |
+| `retail-displays-card.png` | RetailPage.tsx |
+| `skill-design-concept.jpg` | ResourcesSection.tsx |
+| `skill-project-execution.jpg` | ResourcesSection.tsx |
+
+---
+
+## Code Analysis
+
+### `useScrollReveal` Hook - KEEP
+Still actively used by:
+- `src/components/about/LeadershipSection.tsx`
+- `src/components/home/AnimatedStatsCounter.tsx`
+- `src/components/home/AboutSection.tsx`
+
+### No Unused Components Found
+All components in the codebase are properly imported and used.
+
+---
+
+## Implementation Steps
+
+1. Delete `src/assets/hero-video.mp4`
+2. Delete `src/assets/hero-exhibitions-video.mp4`
+3. Delete `src/assets/hero-whyhox-video.mp4`
+4. Delete `src/assets/skill-decor-finishes.jpg`
+
+No code changes required - just asset deletions.
