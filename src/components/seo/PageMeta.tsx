@@ -7,17 +7,6 @@ interface PageMetaProps {
   image?: string;
   type?: 'website' | 'article';
   noIndex?: boolean;
-  page?: string;
-}
-
-// Generate dynamic OG image URL
-function getOgImageUrl(page: string, title: string): string {
-  const baseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const params = new URLSearchParams({
-    page,
-    title: title.split('|')[0].trim(), // Use first part of title before |
-  });
-  return `${baseUrl}/functions/v1/og-image?${params.toString()}`;
 }
 
 export function PageMeta({
@@ -27,7 +16,6 @@ export function PageMeta({
   image,
   type = 'website',
   noIndex = false,
-  page = 'home',
 }: PageMetaProps) {
   useEffect(() => {
     // Set document title
@@ -52,27 +40,28 @@ export function PageMeta({
       setMeta('robots', 'noindex, nofollow');
     }
 
-    // Use dynamic OG image or provided image
-    const ogImage = image || getOgImageUrl(page, title);
-
     // Open Graph tags
     setMeta('og:title', title, true);
     setMeta('og:description', description, true);
     setMeta('og:type', type, true);
     setMeta('og:url', window.location.href, true);
-    setMeta('og:image', ogImage, true);
+    if (image) {
+      setMeta('og:image', image, true);
+    }
 
     // Twitter Card tags
     setMeta('twitter:card', 'summary_large_image');
     setMeta('twitter:title', title);
     setMeta('twitter:description', description);
-    setMeta('twitter:image', ogImage);
+    if (image) {
+      setMeta('twitter:image', image);
+    }
 
     // Cleanup function to reset title
     return () => {
       document.title = 'HOX - Design & Build Excellence';
     };
-  }, [title, description, keywords, image, type, noIndex, page]);
+  }, [title, description, keywords, image, type, noIndex]);
 
   return null;
 }

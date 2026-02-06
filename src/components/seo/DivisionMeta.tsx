@@ -15,17 +15,6 @@ const divisionKeywords: Record<Division, string> = {
   interiors: 'interior design, office fit-out, commercial interiors, workspace design, interior construction',
 };
 
-// Generate dynamic OG image URL for divisions
-function getDivisionOgImageUrl(division: Division, title: string): string {
-  const baseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const params = new URLSearchParams({
-    page: division,
-    division: division,
-    title: title.split('|')[0].trim(),
-  });
-  return `${baseUrl}/functions/v1/og-image?${params.toString()}`;
-}
-
 export function DivisionMeta({ division, title, description, images }: DivisionMetaProps) {
   useEffect(() => {
     // Set title
@@ -47,22 +36,25 @@ export function DivisionMeta({ division, title, description, images }: DivisionM
     setMeta('description', description);
     setMeta('keywords', divisionKeywords[division]);
 
-    // Use dynamic OG image for divisions
-    const ogImage = getDivisionOgImageUrl(division, title);
-
     // Open Graph tags
     setMeta('og:title', title, true);
     setMeta('og:description', description, true);
     setMeta('og:type', 'website', true);
     setMeta('og:url', window.location.href, true);
-    setMeta('og:image', ogImage, true);
-    setMeta('og:image:alt', `${division} - HOX`, true);
+
+    // Set OG image from first gallery image
+    if (images && images.length > 0) {
+      setMeta('og:image', images[0].src, true);
+      setMeta('og:image:alt', images[0].alt, true);
+    }
 
     // Twitter Card tags
     setMeta('twitter:card', 'summary_large_image');
     setMeta('twitter:title', title);
     setMeta('twitter:description', description);
-    setMeta('twitter:image', ogImage);
+    if (images && images.length > 0) {
+      setMeta('twitter:image', images[0].src);
+    }
 
     // Cleanup function to reset title
     return () => {
