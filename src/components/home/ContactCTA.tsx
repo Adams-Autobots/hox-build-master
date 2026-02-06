@@ -34,7 +34,7 @@ export function ContactCTA() {
           </motion.span>
 
           <motion.h2
-            className="text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8"
             {...headingAnimation}
           >
             <span className="hox-brand"><HoverText>Ready to build</HoverText> </span>
