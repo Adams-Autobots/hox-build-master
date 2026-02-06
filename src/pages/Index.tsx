@@ -16,6 +16,7 @@ const Index = () => {
         title="HOX | Production Excellence Since 2008 | Dubai"
         description="Dubai's premier production powerhouse delivering precision-built exhibitions, events, retail environments, and interiors since 2008."
         keywords="exhibition stands dubai, event production uae, retail fabrication, interior fit-out"
+        image="/og-home.png"
       />
       <div className="scroll-snap-container">
         <section className="scroll-snap-section">
