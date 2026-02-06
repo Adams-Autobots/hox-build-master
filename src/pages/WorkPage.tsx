@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { PageMeta } from '@/components/seo/PageMeta';
 import { ArrowUpRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
@@ -79,6 +80,11 @@ export default function WorkPage() {
 
   return (
     <Layout>
+      <PageMeta
+        title="Our Projects | HOX Portfolio | Exhibition, Events, Retail, Interiors"
+        description="Explore HOX's portfolio of completed projects across exhibitions, events, retail, and interiors. See our work for leading brands across the UAE."
+        keywords="hox projects, exhibition portfolio dubai, event production work, retail fit-out portfolio"
+      />
       <section className="pt-32 pb-16 lg:pb-24">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.h1 

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Calendar } from 'lucide-react';
 import { Layout } from '@/components/layout/Layout';
+import { PageMeta } from '@/components/seo/PageMeta';
 import { HoverText } from '@/components/ui/HoverText';
 
 const blogPosts = [
@@ -13,6 +14,11 @@ const blogPosts = [
 export default function BlogPage() {
   return (
     <Layout>
+      <PageMeta
+        title="Blog | HOX Insights | Production & Design Trends"
+        description="Insights, trends, and stories from HOX. Read about exhibition design, event production, retail interiors, and fabrication excellence."
+        keywords="hox blog, exhibition design trends, event production tips, retail design insights"
+      />
       <section className="pt-32 pb-16">
         <div className="container mx-auto px-6 lg:px-12">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">

@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Calendar } from 'lucide-react';
 import { Layout } from '@/components/layout/Layout';
+import { PageMeta } from '@/components/seo/PageMeta';
 import { Button } from '@/components/ui/button';
 import { HoverText } from '@/components/ui/HoverText';
 
@@ -67,6 +68,13 @@ export default function BlogPostPage() {
 
   return (
     <Layout>
+      <PageMeta
+        title={`${post.title} | HOX Blog`}
+        description={post.content[0].substring(0, 155) + '...'}
+        keywords={`${post.category.toLowerCase()}, hox blog, dubai production`}
+        type="article"
+        image={post.image}
+      />
       <section className="pt-32 pb-16">
         <div className="container mx-auto px-6 lg:px-12">
           <Link to="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8">
