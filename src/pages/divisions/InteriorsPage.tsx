@@ -49,6 +49,7 @@ export default function InteriorsPage() {
           title="Interior Design & Fit-out | HOX Dubai"
           description="Commercial and residential interior fit-outs with bespoke joinery and premium finishes. Offices, restaurants, and luxury homes in UAE."
           images={galleryImagesData}
+          ogImage="/og-interiors.png"
         />
         <DivisionHero
           division="interiors"
