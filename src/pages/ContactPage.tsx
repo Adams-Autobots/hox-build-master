@@ -42,6 +42,7 @@ export default function ContactPage() {
         title="Contact HOX | Get a Quote | Dubai Production Experts"
         description="Contact HOX for exhibition stands, event production, retail fit-outs, and interior design. Request a proposal from Dubai's leading production company."
         keywords="contact hox, exhibition quote dubai, event production enquiry, retail fit-out quote"
+        image="/favicon.png"
       />
       <section className="pt-32 pb-24 lg:pb-32 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
