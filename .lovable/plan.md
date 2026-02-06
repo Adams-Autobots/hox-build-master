@@ -1,87 +1,67 @@
 
-# Verify and Standardize Heading Sizes
+# Fix Mobile Menu Page Overlap Issue
 
-## Current State Analysis
+## Problem Analysis
 
-After reviewing all pages and components, I found **inconsistencies** in heading sizes across the site. Here's the breakdown:
+When clicking the mobile menu, page content shows through/overlaps the menu overlay. This happens because:
 
----
-
-## Hero Banner Headings (h1)
-
-| Page/Component | Current Size | Status |
-|----------------|--------------|--------|
-| **Home (HeroSection)** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
-| **Division pages (DivisionHero)** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
-| **About page** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
-| **Work page** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
-| **Blog page** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
-| **Blog post page** | `text-4xl md:text-5xl lg:text-6xl` | **Smaller** |
-| **Contact page** | `text-5xl md:text-6xl` (missing lg:text-7xl) | **Missing lg size** |
-| **WhyHoxVideoSection** | `text-4xl md:text-6xl lg:text-7xl` | **Inconsistent mobile** |
-| **404 page** | `text-4xl md:text-5xl` | **Smaller** (intentional) |
+1. **Semi-transparent background**: The overlay uses `bg-background/98` (98% opacity), allowing slight content bleed-through
+2. **Z-index issues**: The overlay uses `z-40`, but some page content may have competing z-indexes
+3. **Missing body scroll lock**: The page remains scrollable when the menu is open, causing content to move behind the overlay
 
 ---
 
-## Section Headings (h2)
+## Solution
 
-| Component | Current Size | Status |
-|-----------|--------------|--------|
-| **About page "Our Story"** | `text-4xl md:text-5xl` | **Missing lg size** |
-| **ResourcesSection** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
-| **TestimonialsSection** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
-| **CapabilitiesGrid** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
-| **ProcessTimeline** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
-| **FullPageGallery** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
-| **DivisionFAQ** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
+### File: `src/components/layout/Header.tsx`
 
----
+**Changes to the MobileNav component:**
 
-## Issues to Fix
+1. **Change overlay background to fully opaque**
+   - From: `bg-background/98 backdrop-blur-xl`
+   - To: `bg-background` (100% opacity, removes transparency)
 
-### 1. Contact Page Hero (h1)
-**Current:** `text-5xl md:text-6xl`  
-**Should be:** `text-5xl md:text-6xl lg:text-7xl`
+2. **Increase z-index of overlay**
+   - From: `z-40`
+   - To: `z-[60]` (higher than the header's z-50 to ensure it covers everything)
 
-### 2. Blog Post Page Hero (h1)
-**Current:** `text-4xl md:text-5xl lg:text-6xl`  
-**Should be:** `text-5xl md:text-6xl lg:text-7xl`
-
-### 3. WhyHoxVideoSection (h2)
-**Current:** `text-4xl md:text-6xl lg:text-7xl`  
-**Should be:** `text-5xl md:text-6xl lg:text-7xl` (to match hero headings)
-
-### 4. About Page "Our Story" (h2)
-**Current:** `text-4xl md:text-5xl`  
-**Should be:** `text-3xl md:text-4xl lg:text-5xl` (to match other section headings)
+3. **Add body scroll lock when menu is open**
+   - Add a `useEffect` hook that sets `overflow: hidden` on the body when the menu is open
+   - This prevents page content from scrolling behind the overlay
 
 ---
 
-## Heading Size Standards
+## Technical Changes
 
-After standardization:
+```text
+Location: MobileNav function in Header.tsx
 
-| Type | Size Classes |
-|------|--------------|
-| **Hero headings (h1)** | `text-5xl md:text-6xl lg:text-7xl` |
-| **Section headings (h2)** | `text-3xl md:text-4xl lg:text-5xl` |
+1. Add useEffect for body scroll lock:
+   useEffect(() => {
+     if (isOpen) {
+       document.body.style.overflow = 'hidden';
+     } else {
+       document.body.style.overflow = '';
+     }
+     return () => {
+       document.body.style.overflow = '';
+     };
+   }, [isOpen]);
 
-**Exception:** 404 page heading remains smaller (`text-4xl md:text-5xl`) as this is intentional for that context.
-
----
-
-## Files to Update
-
-1. `src/pages/ContactPage.tsx` - Add `lg:text-7xl` to h1
-2. `src/pages/BlogPostPage.tsx` - Change h1 to standard hero size
-3. `src/components/home/WhyHoxVideoSection.tsx` - Change h2 to standard hero size
-4. `src/pages/AboutPage.tsx` - Change "Our Story" h2 to standard section size
+2. Update overlay div classes:
+   - Change: 'fixed inset-0 top-0 bg-background/98 backdrop-blur-xl transition-all duration-500 z-40'
+   - To: 'fixed inset-0 bg-background transition-all duration-500 z-[60]'
+```
 
 ---
 
 ## Summary
 
-- **4 files** need updates
-- All hero banners will use `text-5xl md:text-6xl lg:text-7xl`
-- All section headings will use `text-3xl md:text-4xl lg:text-5xl`
-- Creates consistent typography hierarchy across the entire site
+| Change | Before | After |
+|--------|--------|-------|
+| Background | `bg-background/98` (semi-transparent) | `bg-background` (fully opaque) |
+| Z-index | `z-40` | `z-[60]` |
+| Body scroll | Not locked | Locked when menu open |
+| Backdrop blur | `backdrop-blur-xl` | Removed (not needed with opaque bg) |
+
+These changes will ensure the mobile menu completely covers the page content without any overlap or bleed-through.
