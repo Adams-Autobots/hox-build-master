@@ -55,7 +55,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-3xl">
             <motion.h2 
-              className="text-4xl md:text-5xl font-bold leading-tight mb-8"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-8"
               {...headingAnimation}
             >
               <HoverText className="hox-brand">Our </HoverText>

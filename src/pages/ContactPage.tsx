@@ -54,7 +54,7 @@ export default function ContactPage() {
               </motion.span>
 
               <motion.h1 
-                className="text-5xl md:text-6xl font-bold leading-tight mb-8"
+                className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8"
                 {...headingAnimation}
               >
                 <HoverText className="hox-brand">Let's </HoverText>
