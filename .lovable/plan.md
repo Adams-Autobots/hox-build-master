@@ -1,99 +1,70 @@
 
-# Add Meta Tags to All Pages
+
+# Dynamic OG Image Generation
 
 ## Overview
 
-Create a reusable `PageMeta` component and implement SEO meta tags across all pages that currently lack them. The existing `DivisionMeta` component provides a solid pattern to follow.
+Create a backend function that generates custom Open Graph images dynamically for each page. These images will display professional, branded visuals with page-specific content for better social media sharing.
 
 ---
 
 ## Current State
 
-| Page | Has Meta Tags |
-|------|---------------|
-| Homepage (`/`) | Partial (via index.html only) |
-| About (`/about`) | No |
-| Contact (`/contact`) | No |
-| Work/Projects (`/projects`) | No |
-| Blog (`/blog`) | No |
-| Blog Post (`/blog/:slug`) | No |
-| Division Pages (4) | Yes (via DivisionMeta) |
-| Gallery Pages (4) | No |
-| Auth (`/auth`) | No |
-| 404 | No |
+| Issue | Status |
+|-------|--------|
+| Default OG image | Using generic Lovable placeholder (`lovable.dev/opengraph-image-p98pqg.png`) |
+| Division pages | Use first gallery image (no branding/text overlay) |
+| Other pages | No custom OG images set |
 
 ---
 
-## Solution
+## Solution: Dynamic OG Image Generation
 
-### 1. Create Reusable PageMeta Component
+Create a backend function that generates branded OG images with:
+- HOX logo/branding
+- Page title text overlay
+- Division-specific colors
+- Professional layout (1200x630 pixels - standard OG size)
 
-**File: `src/components/seo/PageMeta.tsx`**
+---
 
-A flexible component that sets:
-- Page title
-- Meta description
-- Keywords
-- Canonical URL
-- Open Graph tags (title, description, type, url, image)
-- Twitter Card tags
+## How It Works
 
 ```text
-interface PageMetaProps {
-  title: string;
-  description: string;
-  keywords?: string;
-  image?: string;
-  type?: 'website' | 'article';
-  noIndex?: boolean;  // For pages like /auth, /admin
-}
+Request Flow:
+                                          
+  Social Media     Backend Function         Response
+  Crawler         /og-image?page=about     1200x630 PNG
+       │                  │                      │
+       └──────────────────┼──────────────────────┘
+                          │
+                     Generates:
+                   ┌─────────────────────┐
+                   │    HOX              │
+                   │    ────             │
+                   │    About Us         │
+                   │    Production       │
+                   │    Excellence       │
+                   └─────────────────────┘
 ```
 
-### 2. Add PageMeta to Each Page
+---
 
-#### Homepage (`src/pages/Index.tsx`)
-- Title: "HOX | Production Excellence Since 2008 | Dubai"
-- Description: "Dubai's premier production powerhouse delivering precision-built exhibitions, events, retail environments, and interiors since 2008."
-- Keywords: "exhibition stands dubai, event production uae, retail fabrication, interior fit-out"
+## Implementation Approach
 
-#### About Page (`src/pages/AboutPage.tsx`)
-- Title: "About HOX | Our Story & Team | Dubai Production Company"
-- Description: "Learn about HOX - Dubai's production powerhouse since 2008. Discover our story, capabilities, and commitment to design & build excellence."
-- Keywords: "about hox, dubai production company, exhibition company uae, event production team"
+### Option A: SVG-to-PNG Generation (Recommended)
 
-#### Contact Page (`src/pages/ContactPage.tsx`)
-- Title: "Contact HOX | Get a Quote | Dubai Production Experts"
-- Description: "Contact HOX for exhibition stands, event production, retail fit-outs, and interior design. Request a proposal from Dubai's leading production company."
-- Keywords: "contact hox, exhibition quote dubai, event production enquiry, retail fit-out quote"
+Generate images using SVG templates converted to PNG. This approach:
+- No external dependencies required
+- Full control over branding and layout
+- Fast and lightweight
+- Supports all page types
 
-#### Work/Projects Page (`src/pages/WorkPage.tsx`)
-- Title: "Our Projects | HOX Portfolio | Exhibition, Events, Retail, Interiors"
-- Description: "Explore HOX's portfolio of completed projects across exhibitions, events, retail, and interiors. See our work for leading brands across the UAE."
-- Keywords: "hox projects, exhibition portfolio dubai, event production work, retail fit-out portfolio"
-
-#### Blog Page (`src/pages/BlogPage.tsx`)
-- Title: "Blog | HOX Insights | Production & Design Trends"
-- Description: "Insights, trends, and stories from HOX. Read about exhibition design, event production, retail interiors, and fabrication excellence."
-- Keywords: "hox blog, exhibition design trends, event production tips, retail design insights"
-
-#### Blog Post Page (`src/pages/BlogPostPage.tsx`)
-- Title: Dynamic from post data
-- Description: First paragraph truncated
-- Type: "article"
-- Keywords: Dynamic from category
-
-#### Gallery Pages (`src/pages/gallery/DivisionGalleryPage.tsx`)
-- Title: "[Division] Gallery | HOX Projects"
-- Description: "Browse HOX's complete collection of [division] projects. High-quality photography showcasing our design and build excellence."
-- Keywords: Division-specific terms
-
-#### Auth Page (`src/pages/AuthPage.tsx`)
-- Title: "Admin Login | HOX"
-- noIndex: true (prevent search indexing)
-
-#### 404 Page (`src/pages/NotFound.tsx`)
-- Title: "Page Not Found | HOX"
-- noIndex: true
+### How it works:
+1. Backend function receives page type and optional parameters
+2. Builds an SVG with HOX branding, title, and division colors
+3. Converts SVG to PNG using the `resvg-wasm` library
+4. Returns the image with proper caching headers
 
 ---
 
@@ -101,88 +72,71 @@ interface PageMetaProps {
 
 | File | Purpose |
 |------|---------|
-| `src/components/seo/PageMeta.tsx` | Reusable SEO meta component |
+| `supabase/functions/og-image/index.ts` | Backend function for image generation |
 
 ## Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/pages/Index.tsx` | Add PageMeta |
-| `src/pages/AboutPage.tsx` | Add PageMeta |
-| `src/pages/ContactPage.tsx` | Add PageMeta |
-| `src/pages/WorkPage.tsx` | Add PageMeta |
-| `src/pages/BlogPage.tsx` | Add PageMeta |
-| `src/pages/BlogPostPage.tsx` | Add PageMeta with article type |
-| `src/pages/gallery/DivisionGalleryPage.tsx` | Add PageMeta |
-| `src/pages/AuthPage.tsx` | Add PageMeta with noIndex |
-| `src/pages/NotFound.tsx` | Add PageMeta with noIndex |
+| `src/components/seo/PageMeta.tsx` | Update to use dynamic OG image URLs |
+| `src/components/seo/DivisionMeta.tsx` | Update to use dynamic OG image URLs |
+| `index.html` | Update default OG image URL |
+
+---
+
+## Dynamic Image Configuration
+
+| Page Type | Title | Accent Color |
+|-----------|-------|--------------|
+| Homepage | "Production Excellence Since 2008" | Primary |
+| About | "Our Story & Team" | Primary |
+| Contact | "Get In Touch" | Primary |
+| Projects | "Our Projects" | Primary |
+| Blog | "Insights & Trends" | Primary |
+| Exhibitions | "Exhibition Builds" | Red (#EE2737) |
+| Events | "Event Production" | Blue (#0072BC) |
+| Retail | "Retail Environments" | Orange (#F58220) |
+| Interiors | "Interior Fit-Out" | Green (#97D700) |
 
 ---
 
 ## Technical Details
 
-### PageMeta Component Implementation
+### Backend Function Structure
+
+The function will:
+1. Accept query parameters: `page`, `title`, `division`
+2. Load division colors and branding
+3. Generate SVG with text and styling
+4. Convert to PNG using resvg-wasm
+5. Return image with cache headers (1 hour)
+
+### SVG Template Features
+- 1200x630 pixel canvas (standard OG size)
+- Dark background with gradient
+- HOX logo/text prominent
+- Page title with division accent color
+- Subtle grid or pattern background
+
+### Usage in Components
 
 ```typescript
-// Core functionality
-export function PageMeta({ 
-  title, 
-  description, 
-  keywords, 
-  image, 
-  type = 'website',
-  noIndex = false 
-}: PageMetaProps) {
-  useEffect(() => {
-    // Set document title
-    document.title = title;
-
-    // Helper to set meta tags
-    const setMeta = (name: string, content: string, isProperty = false) => {
-      const attr = isProperty ? 'property' : 'name';
-      let meta = document.querySelector(`meta[${attr}="${name}"]`);
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute(attr, name);
-        document.head.appendChild(meta);
-      }
-      meta.content = content;
-    };
-
-    // Standard meta
-    setMeta('description', description);
-    if (keywords) setMeta('keywords', keywords);
-    if (noIndex) setMeta('robots', 'noindex, nofollow');
-
-    // Open Graph
-    setMeta('og:title', title, true);
-    setMeta('og:description', description, true);
-    setMeta('og:type', type, true);
-    setMeta('og:url', window.location.href, true);
-    if (image) setMeta('og:image', image, true);
-
-    // Twitter
-    setMeta('twitter:card', 'summary_large_image');
-    setMeta('twitter:title', title);
-    setMeta('twitter:description', description);
-    if (image) setMeta('twitter:image', image);
-
-    // Cleanup
-    return () => {
-      document.title = 'HOX - Design & Build Excellence';
-    };
-  }, [title, description, keywords, image, type, noIndex]);
-
-  return null;
-}
+// In PageMeta component
+const ogImageUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/og-image?page=about&title=${encodeURIComponent(title)}`;
 ```
+
+### Caching Strategy
+- 1-hour cache on generated images
+- Social platforms will cache for longer
+- Instant updates when content changes
 
 ---
 
 ## Expected Outcome
 
-- All pages will have proper SEO meta tags
-- Search engines will display correct titles and descriptions
-- Social sharing will show proper preview cards
-- Admin/error pages will be excluded from search indexing
-- Consistent SEO implementation across the entire site
+- Every page gets a unique, branded OG image
+- Social shares show professional HOX branding
+- Division pages use their specific brand colors
+- No need to manually create images for each page
+- Images are generated on-demand and cached
+
