@@ -1,69 +1,87 @@
 
-# Cleanup Unused Assets and Test Summary
+# Verify and Standardize Heading Sizes
 
-## Testing Results
+## Current State Analysis
 
-Tested the following pages - all working with no console errors:
-- **Home page (/)** - Hero video playing, division name cycling works
-- **Exhibitions page (/divisions/exhibitions)** - New hero video playing correctly
-- **About page (/about)** - Heading animations working, HoverText functional
-- **Contact page (/contact)** - Heading animations working
-
-All Framer Motion animations and HoverText hover effects are functioning correctly.
+After reviewing all pages and components, I found **inconsistencies** in heading sizes across the site. Here's the breakdown:
 
 ---
 
-## Unused Assets to Delete
+## Hero Banner Headings (h1)
 
-| File | Reason |
-|------|--------|
-| `src/assets/hero-video.mp4` | Replaced by `hero-video-v3.mp4` |
-| `src/assets/hero-exhibitions-video.mp4` | Replaced by `hero-exhibitions-video-v2.mp4` |
-| `src/assets/hero-whyhox-video.mp4` | Replaced by `hero-whyhox-video-v2.mp4` |
-| `src/assets/skill-decor-finishes.jpg` | Never imported or used anywhere |
-
-**Total space to recover:** 4 video/image files
-
----
-
-## Assets Still in Use (Keep)
-
-| Asset | Used By |
-|-------|---------|
-| `hero-video-v3.mp4` | HeroSection.tsx |
-| `hero-exhibitions-video-v2.mp4` | ExhibitionsPage.tsx |
-| `hero-events-video-v2.mp4` | EventsPage.tsx |
-| `hero-interiors-video.mp4` | InteriorsPage.tsx |
-| `hero-retail-video.mp4` | RetailPage.tsx |
-| `hero-whyhox-video-v2.mp4` | WhyHoxVideoSection.tsx |
-| `hero-events.jpg` | EventsPage.tsx |
-| `hero-exhibitions.jpg` | ExhibitionsPage.tsx |
-| `hero-interiors.jpg` | InteriorsPage.tsx |
-| `hero-retail.jpg` | RetailPage.tsx |
-| `retail-displays-card.png` | RetailPage.tsx |
-| `skill-design-concept.jpg` | ResourcesSection.tsx |
-| `skill-project-execution.jpg` | ResourcesSection.tsx |
+| Page/Component | Current Size | Status |
+|----------------|--------------|--------|
+| **Home (HeroSection)** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
+| **Division pages (DivisionHero)** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
+| **About page** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
+| **Work page** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
+| **Blog page** | `text-5xl md:text-6xl lg:text-7xl` | Standard |
+| **Blog post page** | `text-4xl md:text-5xl lg:text-6xl` | **Smaller** |
+| **Contact page** | `text-5xl md:text-6xl` (missing lg:text-7xl) | **Missing lg size** |
+| **WhyHoxVideoSection** | `text-4xl md:text-6xl lg:text-7xl` | **Inconsistent mobile** |
+| **404 page** | `text-4xl md:text-5xl` | **Smaller** (intentional) |
 
 ---
 
-## Code Analysis
+## Section Headings (h2)
 
-### `useScrollReveal` Hook - KEEP
-Still actively used by:
-- `src/components/about/LeadershipSection.tsx`
-- `src/components/home/AnimatedStatsCounter.tsx`
-- `src/components/home/AboutSection.tsx`
-
-### No Unused Components Found
-All components in the codebase are properly imported and used.
+| Component | Current Size | Status |
+|-----------|--------------|--------|
+| **About page "Our Story"** | `text-4xl md:text-5xl` | **Missing lg size** |
+| **ResourcesSection** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
+| **TestimonialsSection** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
+| **CapabilitiesGrid** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
+| **ProcessTimeline** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
+| **FullPageGallery** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
+| **DivisionFAQ** | `text-3xl md:text-4xl lg:text-5xl` | Standard |
 
 ---
 
-## Implementation Steps
+## Issues to Fix
 
-1. Delete `src/assets/hero-video.mp4`
-2. Delete `src/assets/hero-exhibitions-video.mp4`
-3. Delete `src/assets/hero-whyhox-video.mp4`
-4. Delete `src/assets/skill-decor-finishes.jpg`
+### 1. Contact Page Hero (h1)
+**Current:** `text-5xl md:text-6xl`  
+**Should be:** `text-5xl md:text-6xl lg:text-7xl`
 
-No code changes required - just asset deletions.
+### 2. Blog Post Page Hero (h1)
+**Current:** `text-4xl md:text-5xl lg:text-6xl`  
+**Should be:** `text-5xl md:text-6xl lg:text-7xl`
+
+### 3. WhyHoxVideoSection (h2)
+**Current:** `text-4xl md:text-6xl lg:text-7xl`  
+**Should be:** `text-5xl md:text-6xl lg:text-7xl` (to match hero headings)
+
+### 4. About Page "Our Story" (h2)
+**Current:** `text-4xl md:text-5xl`  
+**Should be:** `text-3xl md:text-4xl lg:text-5xl` (to match other section headings)
+
+---
+
+## Heading Size Standards
+
+After standardization:
+
+| Type | Size Classes |
+|------|--------------|
+| **Hero headings (h1)** | `text-5xl md:text-6xl lg:text-7xl` |
+| **Section headings (h2)** | `text-3xl md:text-4xl lg:text-5xl` |
+
+**Exception:** 404 page heading remains smaller (`text-4xl md:text-5xl`) as this is intentional for that context.
+
+---
+
+## Files to Update
+
+1. `src/pages/ContactPage.tsx` - Add `lg:text-7xl` to h1
+2. `src/pages/BlogPostPage.tsx` - Change h1 to standard hero size
+3. `src/components/home/WhyHoxVideoSection.tsx` - Change h2 to standard hero size
+4. `src/pages/AboutPage.tsx` - Change "Our Story" h2 to standard section size
+
+---
+
+## Summary
+
+- **4 files** need updates
+- All hero banners will use `text-5xl md:text-6xl lg:text-7xl`
+- All section headings will use `text-3xl md:text-4xl lg:text-5xl`
+- Creates consistent typography hierarchy across the entire site
