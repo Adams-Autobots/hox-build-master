@@ -38,13 +38,6 @@ const divisionDescriptions: Record<Division, string> = {
   interiors: "Browse HOX's complete collection of interior design projects. High-quality photography showcasing our fit-out excellence.",
 };
 
-const divisionOgImages: Record<Division, string | undefined> = {
-  exhibitions: '/og-exhibitions.png',
-  events: undefined,
-  retail: undefined,
-  interiors: undefined,
-};
-
 interface DivisionGalleryPageProps {
   division: Division;
 }
@@ -81,7 +74,6 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
         title={`${divisionTitles[division]} Gallery | HOX Projects`}
         description={divisionDescriptions[division]}
         keywords={divisionKeywords[division]}
-        image={divisionOgImages[division]}
       />
       {/* Division wrapper for cursor color */}
       <div data-division={division} className="min-h-screen">
