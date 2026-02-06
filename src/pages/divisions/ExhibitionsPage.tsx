@@ -9,7 +9,7 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages';
 import { Boxes, Hammer, Lightbulb, Truck } from 'lucide-react';
 import heroExhibitions from '@/assets/hero-exhibitions.jpg';
-import heroExhibitionsVideo from '@/assets/hero-exhibitions-video.mp4';
+import heroExhibitionsVideo from '@/assets/hero-exhibitions-video-v2.mp4';
 import { useMemo } from 'react';
 
 const capabilityTitles = [
