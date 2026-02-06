@@ -49,6 +49,7 @@ export default function ExhibitionsPage() {
           title="Exhibition Stand Design & Build | HOX Dubai"
           description="Custom exhibition stands engineered for impact. Double-decker builds, pavilions, and bespoke architecture for trade shows and expos in UAE."
           images={galleryImagesData}
+          ogImage="/og-exhibitions.png"
         />
         <DivisionHero
           division="exhibitions"

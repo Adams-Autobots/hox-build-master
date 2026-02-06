@@ -6,6 +6,7 @@ interface DivisionMetaProps {
   title: string;
   description: string;
   images?: GalleryImage[];
+  ogImage?: string;
 }
 
 const divisionKeywords: Record<Division, string> = {
@@ -15,7 +16,7 @@ const divisionKeywords: Record<Division, string> = {
   interiors: 'interior design, office fit-out, commercial interiors, workspace design, interior construction',
 };
 
-export function DivisionMeta({ division, title, description, images }: DivisionMetaProps) {
+export function DivisionMeta({ division, title, description, images, ogImage }: DivisionMetaProps) {
   useEffect(() => {
     // Set title
     document.title = title;
@@ -42,25 +43,20 @@ export function DivisionMeta({ division, title, description, images }: DivisionM
     setMeta('og:type', 'website', true);
     setMeta('og:url', window.location.href, true);
 
-    // Set OG image from first gallery image
-    if (images && images.length > 0) {
-      setMeta('og:image', images[0].src, true);
-      setMeta('og:image:alt', images[0].alt, true);
-    }
-
-    // Twitter Card tags
-    setMeta('twitter:card', 'summary_large_image');
-    setMeta('twitter:title', title);
-    setMeta('twitter:description', description);
-    if (images && images.length > 0) {
-      setMeta('twitter:image', images[0].src);
+    // Set OG image from custom prop, or fallback to first gallery image
+    const imageUrl = ogImage || (images && images.length > 0 ? images[0].src : undefined);
+    if (imageUrl) {
+      const absoluteImage = imageUrl.startsWith('http') ? imageUrl : `${window.location.origin}${imageUrl}`;
+      setMeta('og:image', absoluteImage, true);
+      setMeta('og:image:alt', images?.[0]?.alt || title, true);
+      setMeta('twitter:image', absoluteImage);
     }
 
     // Cleanup function to reset title
     return () => {
       document.title = 'HOX - Design & Build Excellence';
     };
-  }, [division, title, description, images]);
+  }, [division, title, description, images, ogImage]);
 
   return null;
 }
