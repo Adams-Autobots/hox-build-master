@@ -20,6 +20,7 @@ import RetailGalleryPage from "./pages/gallery/RetailGalleryPage";
 import InteriorsGalleryPage from "./pages/gallery/InteriorsGalleryPage";
 import AuthPage from "./pages/AuthPage";
 import GalleryAdminPage from "./pages/admin/GalleryAdminPage";
+import SitemapPage from "./pages/SitemapPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/gallery/interiors" element={<InteriorsGalleryPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/admin/gallery" element={<GalleryAdminPage />} />
+          <Route path="/sitemap.xml" element={<SitemapPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
