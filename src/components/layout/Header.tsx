@@ -150,6 +150,18 @@ function MobileNav() {
     setIsDivisionsOpen(false);
   }, [location]);
 
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   return (
     <div className="md:hidden">
       <button
@@ -182,7 +194,7 @@ function MobileNav() {
       {/* Mobile Menu Overlay */}
       <div
         className={cn(
-          'fixed inset-0 top-0 bg-background/98 backdrop-blur-xl transition-all duration-500 z-40',
+          'fixed inset-0 bg-background transition-all duration-500 z-[60]',
           isOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'
