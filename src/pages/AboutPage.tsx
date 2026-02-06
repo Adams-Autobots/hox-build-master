@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { PageMeta } from '@/components/seo/PageMeta';
 import { motion } from 'framer-motion';
 
 import { ResourcesSection } from '@/components/about/ResourcesSection';
@@ -14,6 +15,11 @@ const headingAnimation = {
 
 export default function AboutPage() {
   return <Layout>
+      <PageMeta
+        title="About HOX | Our Story & Team | Dubai Production Company"
+        description="Learn about HOX - Dubai's production powerhouse since 2008. Discover our story, capabilities, and commitment to design & build excellence."
+        keywords="about hox, dubai production company, exhibition company uae, event production team"
+      />
       <section className="pt-32 pb-12 lg:pb-16 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-4xl">

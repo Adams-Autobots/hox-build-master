@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import { Layout } from '@/components/layout/Layout';
+import { PageMeta } from '@/components/seo/PageMeta';
 import { DivisionNav } from '@/components/divisions/DivisionNav';
 import { useGalleryImages, type Division } from '@/hooks/useGalleryImages';
 import { supabase } from '@/integrations/supabase/client';
@@ -21,6 +22,20 @@ const divisionTitles: Record<Division, string> = {
   events: 'Events',
   retail: 'Retail',
   interiors: 'Interiors',
+};
+
+const divisionKeywords: Record<Division, string> = {
+  exhibitions: 'exhibition gallery, trade show stands, exhibition portfolio dubai',
+  events: 'event production gallery, corporate events dubai, event design portfolio',
+  retail: 'retail design gallery, shop fit-out portfolio, retail interiors dubai',
+  interiors: 'interior design gallery, office fit-out portfolio, commercial interiors dubai',
+};
+
+const divisionDescriptions: Record<Division, string> = {
+  exhibitions: "Browse HOX's complete collection of exhibition projects. High-quality photography showcasing our stand design and build excellence.",
+  events: "Browse HOX's complete collection of event production projects. High-quality photography showcasing our event design excellence.",
+  retail: "Browse HOX's complete collection of retail design projects. High-quality photography showcasing our retail fit-out excellence.",
+  interiors: "Browse HOX's complete collection of interior design projects. High-quality photography showcasing our fit-out excellence.",
 };
 
 interface DivisionGalleryPageProps {
@@ -55,6 +70,11 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
 
   return (
     <Layout>
+      <PageMeta
+        title={`${divisionTitles[division]} Gallery | HOX Projects`}
+        description={divisionDescriptions[division]}
+        keywords={divisionKeywords[division]}
+      />
       {/* Division wrapper for cursor color */}
       <div data-division={division} className="min-h-screen">
       {/* Division Navigation */}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Instagram, Linkedin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Layout } from '@/components/layout/Layout';
+import { PageMeta } from '@/components/seo/PageMeta';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -37,6 +38,11 @@ export default function ContactPage() {
 
   return (
     <Layout>
+      <PageMeta
+        title="Contact HOX | Get a Quote | Dubai Production Experts"
+        description="Contact HOX for exhibition stands, event production, retail fit-outs, and interior design. Request a proposal from Dubai's leading production company."
+        keywords="contact hox, exhibition quote dubai, event production enquiry, retail fit-out quote"
+      />
       <section className="pt-32 pb-24 lg:pb-32 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">

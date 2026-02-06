@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
+import { PageMeta } from "@/components/seo/PageMeta";
 import { Button } from "@/components/ui/button";
 import { HoverText } from "@/components/ui/HoverText";
 
@@ -14,6 +15,11 @@ const NotFound = () => {
 
   return (
     <Layout>
+      <PageMeta
+        title="Page Not Found | HOX"
+        description="The page you're looking for doesn't exist or has been moved."
+        noIndex={true}
+      />
       <section className="min-h-[80vh] flex items-center justify-center">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-2xl mx-auto text-center">
