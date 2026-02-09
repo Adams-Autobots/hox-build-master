@@ -78,7 +78,7 @@ export function CustomCursor() {
       style={{
         x: cursorX,
         y: cursorY,
-        mixBlendMode: cursorColor ? 'normal' : (isOverHoverText ? 'normal' : 'difference'),
+        mixBlendMode: 'normal',
       }}
     >
       <motion.div
