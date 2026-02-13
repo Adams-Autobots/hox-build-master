@@ -51,6 +51,7 @@ export default function RetailPage() {
           description="Turnkey retail builds from flagship stores to pop-up kiosks. Visual merchandising, custom fixtures, and multi-location rollouts in UAE."
           images={galleryImagesData}
           ogImage="/og-retail.png"
+          canonicalPath="/divisions/retail"
         />
         <DivisionHero
           division="retail"

@@ -50,6 +50,7 @@ export default function EventsPage() {
           description="End-to-end event production from corporate galas to large-scale festivals. Stage design, technical production, and immersive experiences in UAE."
           images={galleryImagesData}
           ogImage="/og-events.png"
+          canonicalPath="/divisions/events"
         />
         <DivisionHero
           division="events"

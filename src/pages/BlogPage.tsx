@@ -18,6 +18,7 @@ export default function BlogPage() {
         title="Blog | HOX Insights | Production & Design Trends"
         description="Insights, trends, and stories from HOX. Read about exhibition design, event production, retail interiors, and fabrication excellence."
         keywords="hox blog, exhibition design trends, event production tips, retail design insights"
+        canonicalPath="/blog"
       />
       <section className="pt-32 pb-16">
         <div className="container mx-auto px-6 lg:px-12">

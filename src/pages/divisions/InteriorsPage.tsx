@@ -50,6 +50,7 @@ export default function InteriorsPage() {
           description="Commercial and residential interior fit-outs with bespoke joinery and premium finishes. Offices, restaurants, and luxury homes in UAE."
           images={galleryImagesData}
           ogImage="/og-interiors.png"
+          canonicalPath="/divisions/interiors"
         />
         <DivisionHero
           division="interiors"

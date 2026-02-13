@@ -50,6 +50,7 @@ export default function ExhibitionsPage() {
           description="Custom exhibition stands engineered for impact. Double-decker builds, pavilions, and bespoke architecture for trade shows and expos in UAE."
           images={galleryImagesData}
           ogImage="/og-exhibitions.png"
+          canonicalPath="/divisions/exhibitions"
         />
         <DivisionHero
           division="exhibitions"

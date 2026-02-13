@@ -74,6 +74,7 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
         title={`${divisionTitles[division]} Gallery | HOX Projects`}
         description={divisionDescriptions[division]}
         keywords={divisionKeywords[division]}
+        canonicalPath={`/gallery/${division}`}
       />
       {/* Division wrapper for cursor color */}
       <div data-division={division} className="min-h-screen">
