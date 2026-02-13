@@ -1,70 +1,23 @@
 
 
-# Page-Specific Canonical URLs with hox.ae Domain
+# Fix Duplicate Structured Data in index.html
 
-## Overview
+## What's wrong
+There are two Organization schemas -- one hardcoded in `index.html` and one dynamically injected by `StructuredData.tsx`. They have conflicting address and phone data.
 
-Add canonical URLs to all public pages using `https://hox.ae` as the base domain, and update `og:url` to match.
+## Resolution
 
-## Technical Changes
+### 1. Remove the Organization schema from `index.html`
+Delete the entire `<script type="application/ld+json">` block (lines 30-49) from `index.html`. The `StructuredData.tsx` component already injects both Organization and LocalBusiness schemas dynamically, so this is redundant.
 
-### 1. Create a shared constant file
+### 2. Update phone number in `StructuredData.tsx`
+Change the `contactPoint.telephone` in the Organization schema from `"+971-4-3477519"` to `"+971-4-345-6789"` (line 19).
 
-**New file: `src/lib/constants.ts`**
-```typescript
-export const CANONICAL_DOMAIN = 'https://hox.ae';
-```
+Also update the `telephone` field in the LocalBusiness schema (line 43) from `"+971-4-3477519"` to `"+971-4-345-6789"` to keep them consistent.
 
-### 2. Update `src/components/seo/PageMeta.tsx`
+The address stays as-is: **"Galadari Group of Warehouses #2, Ras Al Khor Industrial Area 2"**.
 
-- Add optional `canonicalPath` prop
-- Import `CANONICAL_DOMAIN`
-- In `useEffect`, create/update `<link rel="canonical">` in `<head>` using `CANONICAL_DOMAIN + canonicalPath`
-- Set `og:url` to the canonical URL instead of `window.location.href`
-- Clean up link element on unmount
-
-### 3. Update `src/components/seo/DivisionMeta.tsx`
-
-- Add optional `canonicalPath` prop
-- Same canonical link logic as PageMeta
-- Update `og:url` to use canonical URL
-
-### 4. Update `index.html`
-
-- Change `<link rel="canonical" href="https://hox.ae" />` (already set correctly)
-- Update `og:url` to `https://hox.ae` (already set correctly)
-
-### 5. Pass `canonicalPath` from every page
-
-| Page | File | canonicalPath |
-|------|------|---------------|
-| Home | `Index.tsx` | `/` |
-| Projects | `WorkPage.tsx` | `/projects` |
-| About | `AboutPage.tsx` | `/about` |
-| Contact | `ContactPage.tsx` | `/contact` |
-| Blog | `BlogPage.tsx` | `/blog` |
-| Blog Post | `BlogPostPage.tsx` | `/blog/{slug}` (dynamic) |
-| Exhibitions | `ExhibitionsPage.tsx` | `/divisions/exhibitions` |
-| Events | `EventsPage.tsx` | `/divisions/events` |
-| Retail | `RetailPage.tsx` | `/divisions/retail` |
-| Interiors | `InteriorsPage.tsx` | `/divisions/interiors` |
-| Exhibitions Gallery | `ExhibitionsGalleryPage.tsx` | `/gallery/exhibitions` |
-| Events Gallery | `EventsGalleryPage.tsx` | `/gallery/events` |
-| Retail Gallery | `RetailGalleryPage.tsx` | `/gallery/retail` |
-| Interiors Gallery | `InteriorsGalleryPage.tsx` | `/gallery/interiors` |
-
-Pages like `/auth`, `/admin/gallery`, and `NotFound` will be skipped (not indexed).
-
-## Custom Domain Setup
-
-To connect `hox.ae` to this project:
-1. Go to Project Settings then Domains
-2. Click Connect Domain and enter `hox.ae`
-3. Add DNS records at your domain registrar:
-   - **A Record** for `@` pointing to `185.158.133.1`
-   - **A Record** for `www` pointing to `185.158.133.1`
-   - **TXT Record** as provided by the setup flow
-4. Add both `hox.ae` and `www.hox.ae` in the domain settings
-5. Set `hox.ae` as the Primary domain
-6. SSL will be provisioned automatically
+### Files changed
+- `index.html` -- remove duplicate structured data block
+- `src/components/seo/StructuredData.tsx` -- update phone number in both schemas
 
