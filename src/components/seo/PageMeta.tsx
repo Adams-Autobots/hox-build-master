@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { CANONICAL_DOMAIN } from '@/lib/constants';
 
 interface PageMetaProps {
   title: string;
@@ -7,6 +8,7 @@ interface PageMetaProps {
   image?: string;
   type?: 'website' | 'article';
   noIndex?: boolean;
+  canonicalPath?: string;
 }
 
 export function PageMeta({
@@ -16,12 +18,11 @@ export function PageMeta({
   image,
   type = 'website',
   noIndex = false,
+  canonicalPath,
 }: PageMetaProps) {
   useEffect(() => {
-    // Set document title
     document.title = title;
 
-    // Helper to set/update meta tags
     const setMeta = (name: string, content: string, isProperty = false) => {
       const attr = isProperty ? 'property' : 'name';
       let meta = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
@@ -40,14 +41,26 @@ export function PageMeta({
       setMeta('robots', 'noindex, nofollow');
     }
 
+    // Canonical URL
+    const canonicalUrl = canonicalPath ? `${CANONICAL_DOMAIN}${canonicalPath}` : undefined;
+
+    if (canonicalUrl) {
+      let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+      if (!link) {
+        link = document.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        document.head.appendChild(link);
+      }
+      link.href = canonicalUrl;
+    }
+
     // Open Graph tags
     setMeta('og:title', title, true);
     setMeta('og:description', description, true);
     setMeta('og:type', type, true);
-    setMeta('og:url', window.location.href, true);
+    setMeta('og:url', canonicalUrl || window.location.href, true);
     if (image) {
-      // Ensure absolute URL for OG image
-      const absoluteImage = image.startsWith('http') ? image : `${window.location.origin}${image}`;
+      const absoluteImage = image.startsWith('http') ? image : `${CANONICAL_DOMAIN}${image}`;
       setMeta('og:image', absoluteImage, true);
     }
 
@@ -56,15 +69,14 @@ export function PageMeta({
     setMeta('twitter:title', title);
     setMeta('twitter:description', description);
     if (image) {
-      const absoluteImage = image.startsWith('http') ? image : `${window.location.origin}${image}`;
+      const absoluteImage = image.startsWith('http') ? image : `${CANONICAL_DOMAIN}${image}`;
       setMeta('twitter:image', absoluteImage);
     }
 
-    // Cleanup function to reset title
     return () => {
       document.title = 'HOX - Design & Build Excellence';
     };
-  }, [title, description, keywords, image, type, noIndex]);
+  }, [title, description, keywords, image, type, noIndex, canonicalPath]);
 
   return null;
 }

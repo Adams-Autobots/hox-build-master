@@ -85,6 +85,7 @@ export default function WorkPage() {
         description="Explore HOX's portfolio of completed projects across exhibitions, events, retail, and interiors. See our work for leading brands across the UAE."
         keywords="hox projects, exhibition portfolio dubai, event production work, retail fit-out portfolio"
         image="/og-projects.png"
+        canonicalPath="/projects"
       />
       <section className="pt-32 pb-16 lg:pb-24">
         <div className="container mx-auto px-6 lg:px-12">

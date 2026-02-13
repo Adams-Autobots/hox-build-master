@@ -74,6 +74,7 @@ export default function BlogPostPage() {
         keywords={`${post.category.toLowerCase()}, hox blog, dubai production`}
         type="article"
         image={post.image}
+        canonicalPath={`/blog/${slug}`}
       />
       <section className="pt-32 pb-16">
         <div className="container mx-auto px-6 lg:px-12">
