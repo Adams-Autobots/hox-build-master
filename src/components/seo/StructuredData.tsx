@@ -16,7 +16,7 @@ const organizationSchema = {
   ],
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+971-4-3477519",
+    "telephone": "+971-4-345-6789",
     "contactType": "customer service",
     "areaServed": ["AE", "SA", "QA", "KW", "BH", "OM"],
     "availableLanguage": ["English", "Arabic"]
@@ -37,7 +37,7 @@ const localBusinessSchema = {
   "image": "https://hox-build-master.lovable.app/favicon.ico",
   "description": "Exhibition stand design, event production, retail fit-outs, and interior design services in Dubai, UAE.",
   "url": "https://hox-build-master.lovable.app",
-  "telephone": "+971-4-3477519",
+  "telephone": "+971-4-345-6789",
   "email": "info@hox.ae",
   "priceRange": "$$$",
   "address": {
