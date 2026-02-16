@@ -164,11 +164,11 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mb-6"
           >
-            <span className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
               <HoverText className="text-[hsl(var(--hox-red))]">hox</HoverText>
               <HoverText className="text-foreground">creative</HoverText>
               <HoverText className="text-[hsl(var(--hox-red))]">.</HoverText>
-            </span>
+            </h1>
           </motion.div>
 
           <motion.div

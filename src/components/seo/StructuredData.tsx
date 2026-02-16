@@ -1,153 +1,112 @@
 import { useEffect } from 'react';
 
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "HOX",
-  "alternateName": "House of Exhibitions",
-  "url": "https://hox.ae",
-  "logo": "https://hox.ae/favicon.ico",
-  "description": "Dubai's premier production powerhouse delivering precision-built exhibitions, events, retail environments, and interiors since 2008.",
-  "foundingDate": "2008",
-  "sameAs": [
-    "https://www.instagram.com/hox_creativeproductions/",
-    "https://www.linkedin.com/company/house-of-exhibitions/",
-    "https://www.facebook.com/hoxuae"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+971-4-3477519",
-    "contactType": "customer service",
-    "areaServed": ["AE", "SA", "QA", "KW", "BH", "OM"],
-    "availableLanguage": ["English", "Arabic"]
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Galadari Group of Warehouses #2, Ras Al Khor Industrial Area 2",
-    "addressLocality": "Dubai",
-    "addressCountry": "AE"
-  }
-};
-
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "@id": "https://hox.ae/#localbusiness",
-  "name": "HOX - House of Exhibitions",
-  "image": "https://hox.ae/favicon.ico",
-  "description": "Exhibition stand design, event production, retail fit-outs, and interior design services in Dubai, UAE.",
-  "url": "https://hox.ae",
-  "telephone": "+971-4-3477519",
-  "email": "info@hox.ae",
-  "priceRange": "$$$",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Galadari Group of Warehouses #2, Ras Al Khor Industrial Area 2",
-    "addressLocality": "Dubai",
-    "addressRegion": "Dubai",
-    "postalCode": "",
-    "addressCountry": "AE"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 25.1868,
-    "longitude": 55.3632
-  },
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
-      "opens": "08:00",
-      "closes": "18:00"
+const schemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "HOX Creative",
+    "alternateName": "House of Exhibitions",
+    "url": "https://hox.ae",
+    "logo": "https://hox.ae/favicon-512.png",
+    "description": "Dubai's premier production company delivering world-class exhibitions, events, retail environments, and interiors since 2008.",
+    "foundingDate": "2008",
+    "founder": {
+      "@type": "Person",
+      "name": "Adam Nicholson",
+      "jobTitle": "Founder & Managing Director"
     },
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": "Friday",
-      "opens": "08:00",
-      "closes": "12:00"
+    "sameAs": [
+      "https://www.instagram.com/hox_creativeproductions/",
+      "https://www.linkedin.com/company/house-of-exhibitions/"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+971-4-3477519",
+      "contactType": "customer service",
+      "areaServed": ["AE", "SA", "QA", "KW", "BH", "OM"],
+      "availableLanguage": ["English", "Arabic"]
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Galadari Group of Warehouses #2, Ras Al Khor Industrial Area 2",
+      "addressLocality": "Dubai",
+      "addressCountry": "AE"
     }
-  ],
-  "areaServed": {
-    "@type": "GeoCircle",
-    "geoMidpoint": {
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://hox.ae/#localbusiness",
+    "name": "HOX Creative",
+    "image": "https://hox.ae/favicon-512.png",
+    "description": "Exhibition stand design, event production, retail fit-outs, and interior design services in Dubai, UAE.",
+    "url": "https://hox.ae",
+    "telephone": "+971-4-3477519",
+    "email": "info@hox.ae",
+    "priceRange": "$$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Galadari Group of Warehouses #2, Ras Al Khor Industrial Area 2",
+      "addressLocality": "Dubai",
+      "addressRegion": "Dubai",
+      "addressCountry": "AE"
+    },
+    "geo": {
       "@type": "GeoCoordinates",
       "latitude": 25.1868,
       "longitude": 55.3632
     },
-    "geoRadius": "500"
-  },
-  "serviceArea": {
-    "@type": "Place",
-    "name": "Gulf Cooperation Council (GCC)"
-  },
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Production Services",
-    "itemListElement": [
+    "openingHoursSpecification": [
       {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Exhibition Stand Design & Build",
-          "description": "Custom exhibition stands for trade shows and expos across the UAE and GCC."
-        }
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+        "opens": "08:00",
+        "closes": "18:00"
       },
       {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Event Production",
-          "description": "Full-service event production including stage design, fabrication, and installation."
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Retail Fit-Out",
-          "description": "Complete retail interior design and fit-out services for shops and commercial spaces."
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Interior Design & Fit-Out",
-          "description": "Commercial and office interior design with full construction and fit-out capabilities."
-        }
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "08:00",
+        "closes": "18:00"
       }
-    ]
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Production Services",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Exhibition Stand Design & Build" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Event Production" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Retail Fit-Out & Fabrication" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Interior Design & Fit-Out" } }
+      ]
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "HOX Creative",
+    "url": "https://hox.ae",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://hox.ae/projects?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   }
-};
+];
 
 export function StructuredData() {
   useEffect(() => {
-    // Add Organization schema
-    const orgScript = document.createElement('script');
-    orgScript.type = 'application/ld+json';
-    orgScript.id = 'organization-schema';
-    orgScript.textContent = JSON.stringify(organizationSchema);
-    
-    // Add LocalBusiness schema
-    const localScript = document.createElement('script');
-    localScript.type = 'application/ld+json';
-    localScript.id = 'localbusiness-schema';
-    localScript.textContent = JSON.stringify(localBusinessSchema);
-    
-    // Remove existing scripts if they exist
-    const existingOrg = document.getElementById('organization-schema');
-    const existingLocal = document.getElementById('localbusiness-schema');
-    if (existingOrg) existingOrg.remove();
-    if (existingLocal) existingLocal.remove();
-    
-    // Add new scripts to head
-    document.head.appendChild(orgScript);
-    document.head.appendChild(localScript);
-    
-    return () => {
-      orgScript.remove();
-      localScript.remove();
-    };
+    const scriptId = 'hox-structured-data';
+    const existing = document.getElementById(scriptId);
+    if (existing) existing.remove();
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = scriptId;
+    script.textContent = JSON.stringify(schemas);
+    document.head.appendChild(script);
+
+    return () => { script.remove(); };
   }, []);
 
   return null;
