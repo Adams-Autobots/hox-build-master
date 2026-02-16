@@ -5,7 +5,8 @@ import { ArrowRight } from 'lucide-react';
 import { HoverText } from '@/components/ui/HoverText';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { VIDEO_URLS } from '@/lib/video-urls';
-import heroPoster from '@/assets/hero-exhibitions.jpg';
+
+const HERO_POSTER = '/hero-poster.jpg';
 
 const divisions = [
   { name: 'Exhibitions', color: 'hsl(var(--hox-red))', path: '/divisions/exhibitions' },
@@ -110,7 +111,7 @@ export function HeroSection() {
 
         {/* Poster image — shows immediately, fades when video plays */}
         <img
-          src={heroPoster}
+          src={HERO_POSTER}
           alt=""
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
             videoState === 'playing' ? 'opacity-0' : 'opacity-60'
