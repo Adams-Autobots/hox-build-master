@@ -13,23 +13,19 @@ const divisions = [
   { name: 'INTERIORS', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
 ];
 
-// Build the repeated sequence: each word appears 3-4 times, interleaved
-// with bullet separators, running on as continuous text
-function buildTextSequence() {
-  const sequence: Array<{ text: string; divIndex: number; isWord: boolean }> = [];
-  // 4 full cycles = each word appears 4 times = ~16 words wrapping across viewport
-  for (let cycle = 0; cycle < 4; cycle++) {
-    for (let d = 0; d < divisions.length; d++) {
-      if (sequence.length > 0) {
-        sequence.push({ text: ' · ', divIndex: -1, isWord: false });
-      }
-      sequence.push({ text: divisions[d].name, divIndex: d, isWord: true });
-    }
+// Build the continuous text stream — words repeated, joined into one string
+// that will word-break across lines filling edge to edge
+function buildStream(repeats: number): string {
+  const words = divisions.map(d => d.name);
+  const stream: string[] = [];
+  for (let r = 0; r < repeats; r++) {
+    stream.push(...words);
   }
-  return sequence;
+  // Join with narrow separator that CSS will treat as part of the word
+  // Using zero-width joiner between words means CSS word-break will
+  // break mid-word, filling to the right edge
+  return stream.join('·');
 }
-
-const textSequence = buildTextSequence();
 
 function useWindowHeight() {
   const [h, setH] = useState(typeof window !== 'undefined' ? window.innerHeight : 800);
@@ -46,8 +42,9 @@ export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
+  const textRef = useRef<HTMLDivElement>(null);
   const [videoReady, setVideoReady] = useState(false);
-  const [hoveredDiv, setHoveredDiv] = useState<number | null>(null);
+  const [hoveredDiv, setHoveredDiv] = useState<string | null>(null);
   const [frameUrl, setFrameUrl] = useState<string | null>(null);
   const { scrollY } = useScroll();
   const wh = useWindowHeight();
@@ -63,7 +60,6 @@ export function HeroSection() {
     return !(c?.saveData || c?.effectiveType === '2g' || c?.effectiveType === 'slow-2g');
   }, []);
 
-  // Pause/resume on scroll
   useEffect(() => {
     if (!videoRef.current || !videoReady) return;
     return scrollY.on('change', (y) => {
@@ -111,6 +107,26 @@ export function HeroSection() {
 
   const bg = frameUrl || HERO_POSTER;
 
+  /*
+    FULL COVERAGE TEXT BLOCK:
+    
+    One continuous string of division names joined by thin dots:
+    EXHIBITIONS·EVENTS·RETAIL·INTERIORS·EXHIBITIONS·EVENTS...
+    
+    CSS word-break:break-all forces letters to break at the RIGHT
+    EDGE of the viewport. So "EXHIBITI" ends one line and "ONS·EVE"
+    starts the next. Every line fills edge to edge. Zero dead space.
+    
+    The entire h1 has background-clip:text — video shows through
+    every single letter, filling the viewport like a typographic grid.
+    
+    Each division name is wrapped in a <Link> for hover interactivity.
+    On hover, that word lights up with its division colour.
+    
+    text-justify:inter-character spreads characters evenly so each
+    line is perfectly flush left AND right (justified).
+  */
+
   return (
     <section className="relative h-[100svh] flex flex-col overflow-hidden">
       {/* Hidden video + canvas */}
@@ -133,83 +149,72 @@ export function HeroSection() {
         style={{ opacity, zIndex: 0 }}
       />
 
-      {/*
-        CONTINUOUS TEXT BLOCK
-        
-        All 4 division names repeated 4x, running on as one paragraph.
-        Text wraps naturally — every viewport width produces a full,
-        dense block of text with video showing through every letter.
-        
-        No dead space: text fills the entire rectangle.
-        No sizing math per word: one font-size, natural word-wrap.
-        
-        Words are separated by · bullets. On hover/tap, ALL instances
-        of that division light up in their brand colour.
-        
-        overflow-hidden crops any excess — but because it's just
-        wrapping text, it always fills exactly the space available.
-      */}
+      {/* Full coverage text */}
       <motion.div
-        className="relative z-10 flex-1 flex flex-col pt-[72px] md:pt-[80px] overflow-hidden"
+        ref={textRef}
+        className="relative z-10 flex-1 overflow-hidden pt-[60px] md:pt-[68px]"
         style={{ opacity }}
       >
         <h1
-          className="flex-1 font-extrabold uppercase leading-[0.95] select-none overflow-hidden px-2 md:px-4 lg:px-6"
+          className="w-full h-full font-extrabold uppercase select-none overflow-hidden"
           style={{
-            fontSize: 'clamp(54px, 11.5vw, 220px)',
-            letterSpacing: '-0.03em',
-            wordSpacing: '-0.02em',
+            fontSize: 'clamp(48px, 11.5vw, 200px)',
+            lineHeight: 0.92,
+            letterSpacing: '-0.02em',
+            wordBreak: 'break-all',
+            overflowWrap: 'anywhere',
+            textAlign: 'justify',
+            textAlignLast: 'justify',
+            hyphens: 'none',
             backgroundImage: `url(${bg})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundPosition: 'center 30%',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}
         >
-          {textSequence.map((item, i) => {
-            if (!item.isWord) {
+          {/* Render each word as a hoverable span, with dot separators */}
+          {Array.from({ length: 5 }).flatMap((_, repeat) =>
+            divisions.map((div, di) => {
+              const key = `${div.name}-${repeat}`;
+              const isFirst = repeat === 0 && di === 0;
               return (
-                <span
-                  key={i}
-                  className="inline text-muted-foreground/15"
-                  style={{
-                    WebkitTextFillColor: 'hsl(var(--muted-foreground) / 0.15)',
-                    fontSize: '0.5em',
-                    verticalAlign: 'middle',
-                  }}
-                >
-                  {item.text}
+                <span key={key} className="inline">
+                  {!isFirst && (
+                    <span
+                      style={{
+                        WebkitTextFillColor: 'hsl(var(--muted-foreground) / 0.2)',
+                        fontSize: '0.6em',
+                        lineHeight: 'inherit',
+                      }}
+                      aria-hidden="true"
+                    >·</span>
+                  )}
+                  <Link
+                    to={div.path}
+                    className="inline"
+                    onMouseEnter={() => setHoveredDiv(div.name)}
+                    onMouseLeave={() => setHoveredDiv(null)}
+                    onTouchStart={() => setHoveredDiv(div.name)}
+                    onTouchEnd={() => setTimeout(() => setHoveredDiv(null), 500)}
+                    style={{
+                      WebkitTextFillColor: hoveredDiv === div.name ? div.color : 'transparent',
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    {div.name}
+                  </Link>
                 </span>
               );
-            }
-
-            const div = divisions[item.divIndex];
-            const isHovered = hoveredDiv === item.divIndex;
-
-            return (
-              <Link
-                key={i}
-                to={div.path}
-                className="inline transition-all duration-200"
-                onMouseEnter={() => setHoveredDiv(item.divIndex)}
-                onMouseLeave={() => setHoveredDiv(null)}
-                onTouchStart={() => setHoveredDiv(item.divIndex)}
-                onTouchEnd={() => setTimeout(() => setHoveredDiv(null), 600)}
-                style={{
-                  WebkitTextFillColor: isHovered ? div.color : 'transparent',
-                }}
-              >
-                {item.text}
-              </Link>
-            );
-          })}
+            })
+          )}
         </h1>
       </motion.div>
 
-      {/* Scroll indicator — overlaid at bottom right */}
+      {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-4 right-6 lg:bottom-8 lg:right-12 z-20"
+        className="absolute bottom-3 right-5 lg:bottom-6 lg:right-10 z-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.5 }}
@@ -219,8 +224,8 @@ export function HeroSection() {
           animate={{ y: [0, 4, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="text-[8px] text-muted-foreground/25 tracking-[0.3em] uppercase">Scroll</span>
-          <div className="w-px h-4 bg-foreground/15" />
+          <span className="text-[7px] text-muted-foreground/20 tracking-[0.3em] uppercase">Scroll</span>
+          <div className="w-px h-3 bg-foreground/10" />
         </motion.div>
       </motion.div>
     </section>
