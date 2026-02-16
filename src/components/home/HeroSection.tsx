@@ -26,11 +26,8 @@ function useWindowHeight() {
 
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafRef = useRef<number>(0);
   const [videoReady, setVideoReady] = useState(false);
   const [hoveredDiv, setHoveredDiv] = useState<string | null>(null);
-  const [frameUrl, setFrameUrl] = useState<string | null>(null);
   const { scrollY } = useScroll();
   const wh = useWindowHeight();
   const reducedMotion = useReducedMotion();
@@ -45,6 +42,7 @@ export function HeroSection() {
     return !(c?.saveData || c?.effectiveType === '2g' || c?.effectiveType === 'slow-2g');
   }, []);
 
+  // Pause/resume on scroll
   useEffect(() => {
     if (!videoRef.current || !videoReady) return;
     return scrollY.on('change', (y) => {
@@ -54,95 +52,47 @@ export function HeroSection() {
     });
   }, [scrollY, wh, videoReady]);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas || !videoReady) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    canvas.width = 640; canvas.height = 360;
-    let last = 0;
-    const paint = (ts: number) => {
-      rafRef.current = requestAnimationFrame(paint);
-      if (ts - last < 83) return;
-      last = ts;
-      ctx.drawImage(video, 0, 0, 640, 360);
-      try { setFrameUrl(canvas.toDataURL('image/jpeg', 0.65)); } catch {}
-    };
-    rafRef.current = requestAnimationFrame(paint);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [videoReady]);
-
-  useEffect(() => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      const c = document.createElement('canvas');
-      c.width = 640; c.height = 360;
-      const ctx = c.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(img, 0, 0, 640, 360);
-        try { setFrameUrl(c.toDataURL('image/jpeg', 0.7)); } catch {}
-      }
-    };
-    img.src = HERO_POSTER;
-  }, []);
-
-  const bg = frameUrl || HERO_POSTER;
-
   /*
-    TECHNIQUE — Two layers, same text position:
+    SINGLE VIDEO — THREE LAYER STACK (contained in one isolation context):
     
-    Layer 1 (behind): Full video/poster at 30% opacity
-    → gives the "black" areas a dim video wash
+    Layer 1 (bottom): Video/poster at full brightness — object-cover fills viewport
+    Layer 2 (middle): Dark overlay at 90% opacity — dims video to ~10% visible
+    Layer 3 (top):    White text with mix-blend-mode:screen — punches through
+                      the dark overlay, revealing the full-brightness video beneath
     
-    Layer 2 (front): Text with background-clip:text 
-    → letters show video at full brightness
+    How mix-blend-mode:screen works:
+    - White (255) + dark overlay → screen blend = bright → video shows through
+    - The dark overlay is 90% opaque, so background areas show ~10% video
+    - Where white text sits, screen blend cancels the darkness → ~100% video
     
-    Result: dim video everywhere, bright video through letters.
-    Rich, cinematic. No pure black anywhere.
-    
-    BOTTOM LINE FIX:
-    Instead of overflow:hidden which crops mid-line, we use
-    a CSS mask-image gradient that fades the last ~8% to
-    transparent. This means the bottom line gracefully fades
-    out instead of being hard-cropped. Looks intentional.
+    ONE video source. ONE alignment. Text and background always in sync.
+    No canvas, no dataURL, no dual video elements.
   */
 
   return (
-    <section className="relative h-[100svh] overflow-hidden">
-      {/* Hidden video + canvas */}
-      <div className="fixed top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        {shouldLoad && !reducedMotion && (
-          <video
-            ref={videoRef}
-            autoPlay muted loop playsInline preload="metadata"
-            onCanPlay={useCallback(() => setVideoReady(true), [])}
-          >
-            <source src={VIDEO_URLS.heroMain} type="video/mp4" />
-          </video>
-        )}
-        <canvas ref={canvasRef} />
-      </div>
-
-      {/* Layer 1: Dim video background — 30% opacity wash */}
+    <section
+      className="relative h-[100svh] overflow-hidden"
+      style={{ isolation: 'isolate' }}
+    >
+      {/* Layer 1: Video at full brightness */}
       <motion.div
-        className="fixed inset-0 pointer-events-none"
+        className="absolute inset-0"
         style={{ opacity, zIndex: 0 }}
       >
-        <div className="absolute inset-0 bg-background" />
         <img
           src={HERO_POSTER}
           alt=""
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            videoReady ? 'opacity-0' : 'opacity-[0.3]'
+            videoReady ? 'opacity-0' : 'opacity-100'
           }`}
         />
         {shouldLoad && !reducedMotion && (
           <video
-            autoPlay muted loop playsInline
+            ref={videoRef}
+            autoPlay muted loop playsInline preload="auto"
+            onCanPlay={useCallback(() => setVideoReady(true), [])}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${
-              videoReady ? 'opacity-[0.3]' : 'opacity-0'
+              videoReady ? 'opacity-100' : 'opacity-0'
             }`}
           >
             <source src={VIDEO_URLS.heroMain} type="video/mp4" />
@@ -150,18 +100,26 @@ export function HeroSection() {
         )}
       </motion.div>
 
-      {/* Layer 2: Text with full-brightness video via background-clip:text */}
+      {/* Layer 2: Dark overlay — 90% opacity = video shows at ~10% behind */}
       <motion.div
-        className="relative z-10 w-full h-full pt-[60px] md:pt-[68px]"
+        className="absolute inset-0 bg-background/[0.90]"
+        style={{ opacity, zIndex: 1 }}
+      />
+
+      {/* Layer 3: White text with mix-blend-mode:screen — punches through overlay */}
+      <motion.div
+        className="absolute inset-0 pt-[60px] md:pt-[68px]"
         style={{
           opacity,
-          // Fade bottom 10% to transparent — no hard crop on partial lines
-          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
-          maskImage: 'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
+          zIndex: 2,
+          mixBlendMode: 'screen',
+          // Fade bottom 12% — no hard crop on partial lines
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 86%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 0%, black 86%, transparent 100%)',
         }}
       >
         <h1
-          className="w-full h-full font-extrabold uppercase select-none"
+          className="w-full h-full font-extrabold uppercase text-white select-none"
           style={{
             fontSize: 'clamp(48px, 11.5vw, 200px)',
             lineHeight: 0.92,
@@ -171,12 +129,6 @@ export function HeroSection() {
             textAlign: 'justify',
             textAlignLast: 'justify',
             hyphens: 'none',
-            backgroundImage: `url(${bg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center 30%',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
           }}
         >
           {Array.from({ length: 5 }).flatMap((_, repeat) =>
@@ -187,24 +139,20 @@ export function HeroSection() {
                 <span key={key} className="inline">
                   {!isFirst && (
                     <span
-                      style={{
-                        WebkitTextFillColor: 'hsl(var(--muted-foreground) / 0.15)',
-                        fontSize: '0.55em',
-                        lineHeight: 'inherit',
-                      }}
+                      className="inline text-white/20"
+                      style={{ fontSize: '0.55em', lineHeight: 'inherit' }}
                       aria-hidden="true"
                     >·</span>
                   )}
                   <Link
                     to={div.path}
-                    className="inline"
+                    className="inline transition-colors duration-200"
                     onMouseEnter={() => setHoveredDiv(div.name)}
                     onMouseLeave={() => setHoveredDiv(null)}
                     onTouchStart={() => setHoveredDiv(div.name)}
                     onTouchEnd={() => setTimeout(() => setHoveredDiv(null), 500)}
                     style={{
-                      WebkitTextFillColor: hoveredDiv === div.name ? div.color : 'transparent',
-                      transition: 'all 0.2s ease',
+                      color: hoveredDiv === div.name ? div.color : 'white',
                     }}
                   >
                     {div.name}
@@ -216,9 +164,13 @@ export function HeroSection() {
         </h1>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Interactive layer — sits above blend context for clickability */}
+      {/* The links are inside the blend layer which should still be clickable
+          since mix-blend-mode doesn't affect pointer events */}
+
+      {/* Scroll indicator — above everything */}
       <motion.div
-        className="absolute bottom-3 right-5 lg:bottom-6 lg:right-10 z-20"
+        className="absolute bottom-3 right-5 lg:bottom-6 lg:right-10 z-30"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.5 }}
@@ -228,8 +180,8 @@ export function HeroSection() {
           animate={{ y: [0, 4, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="text-[7px] text-muted-foreground/20 tracking-[0.3em] uppercase">Scroll</span>
-          <div className="w-px h-3 bg-foreground/10" />
+          <span className="text-[7px] text-white/20 tracking-[0.3em] uppercase mix-blend-normal">Scroll</span>
+          <div className="w-px h-3 bg-white/10 mix-blend-normal" />
         </motion.div>
       </motion.div>
     </section>
