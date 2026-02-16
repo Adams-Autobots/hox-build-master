@@ -60,6 +60,38 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Forward email via Resend
+    const resendKey = Deno.env.get('RESEND_API_KEY');
+    if (resendKey) {
+      try {
+        const d = parsed.data;
+        const emailRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: 'HOX Website <noreply@hox.ae>',
+            to: ['info@hox.ae'],
+            subject: `New enquiry from ${d.name}${d.division ? ` – ${d.division}` : ''}`,
+            html: `<h2>New Contact Form Submission</h2>
+<table style="border-collapse:collapse;width:100%;max-width:600px;">
+<tr><td style="padding:8px;font-weight:bold;">Name</td><td style="padding:8px;">${d.name}</td></tr>
+<tr><td style="padding:8px;font-weight:bold;">Company</td><td style="padding:8px;">${d.company || '—'}</td></tr>
+<tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;"><a href="mailto:${d.email}">${d.email}</a></td></tr>
+<tr><td style="padding:8px;font-weight:bold;">Phone</td><td style="padding:8px;">${d.phone || '—'}</td></tr>
+<tr><td style="padding:8px;font-weight:bold;">Division</td><td style="padding:8px;">${d.division || '—'}</td></tr>
+<tr><td style="padding:8px;font-weight:bold;">Message</td><td style="padding:8px;">${d.message}</td></tr>
+</table>`,
+            reply_to: d.email,
+          }),
+        });
+        if (!emailRes.ok) {
+          console.error('Resend error:', await emailRes.text());
+        }
+      } catch (emailErr) {
+        console.error('Email forwarding failed:', emailErr);
+      }
+    }
+
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
