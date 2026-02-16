@@ -9,7 +9,7 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages';
 import { Home, Store, Building2, Hammer } from 'lucide-react';
 import heroInteriors from '@/assets/hero-interiors.jpg';
-import heroInteriorsVideo from '@/assets/hero-interiors-video.mp4';
+import { VIDEO_URLS } from '@/lib/video-urls';
 import { useMemo } from 'react';
 
 const capabilityTitles = [
@@ -52,7 +52,7 @@ export default function InteriorsPage() {
           description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
           ctaText="Get in touch"
           heroImage={heroInteriors}
-          heroVideo={heroInteriorsVideo}
+          heroVideo={VIDEO_URLS.heroInteriors}
           cropLeft
         />
         

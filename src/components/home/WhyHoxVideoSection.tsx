@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import whyHoxVideo from '@/assets/hero-whyhox-video-v2.mp4';
+import { VIDEO_URLS } from '@/lib/video-urls';
 import { HoverText } from '@/components/ui/HoverText';
 
 const values = [
@@ -46,7 +46,7 @@ export function WhyHoxVideoSection() {
           aria-label="Behind the scenes of HOX production and fabrication capabilities"
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src={whyHoxVideo} type="video/mp4" />
+          <source src={VIDEO_URLS.heroWhyHox} type="video/mp4" />
         </video>
         
         {/* Dark overlay for readability */}
