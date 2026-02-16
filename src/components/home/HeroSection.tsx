@@ -81,7 +81,7 @@ export function HeroSection() {
       {/* Hidden canvas for frame capture */}
       <canvas ref={canvasRef} className="hidden" aria-hidden="true" />
 
-      {/* Layer 1: Video at 10% opacity — dim wash, no pure black */}
+      {/* Layer 1: Video at 25% opacity — dim wash, no pure black */}
       <motion.div className="absolute inset-0" style={{ opacity, zIndex: 0 }}>
         <div className="absolute inset-0 bg-background" />
         <img
