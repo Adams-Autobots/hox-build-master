@@ -43,6 +43,7 @@ export function WhyHoxVideoSection() {
           muted
           loop
           playsInline
+          aria-label="Behind the scenes of HOX production and fabrication capabilities"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={whyHoxVideo} type="video/mp4" />

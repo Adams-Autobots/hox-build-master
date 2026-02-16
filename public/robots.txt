@@ -15,4 +15,4 @@ Allow: /
 Disallow: /auth
 Disallow: /admin/
 
-Sitemap: https://hox-build-master.lovable.app/sitemap.xml
+Sitemap: https://hox.ae/sitemap.xml

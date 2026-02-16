@@ -69,7 +69,7 @@ export function HeroSection() {
         className="fixed inset-0 w-full h-screen pointer-events-none" 
         style={{ opacity: videoOpacity, zIndex: 0 }}
       >
-        <video ref={videoRef} src={heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+        <video ref={videoRef} src={heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" aria-label="HOX showreel featuring exhibitions, events, retail and interiors projects in Dubai" />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/30" />
         {/* Subtle red brand tint */}

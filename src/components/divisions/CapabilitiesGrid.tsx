@@ -143,6 +143,7 @@ function CapabilityCard({ capability, index, iconColor, accentColor, division }:
           muted
           loop
           playsInline
+          aria-label={`${capability.title} capability demonstration`}
           preload="none"
         />
       )}
