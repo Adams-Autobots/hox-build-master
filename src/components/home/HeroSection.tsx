@@ -13,6 +13,15 @@ const divisions = [
   { name: 'Interiors', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
 ];
 
+// Per-word vw sizing based on character count — fills viewport width
+function getWordSize(length: number) {
+  if (length <= 5) return '24';
+  if (length <= 6) return '21';
+  if (length <= 7) return '18';
+  if (length <= 9) return '15.5';
+  return '13';
+}
+
 function useWindowHeight() {
   const [height, setHeight] = useState(typeof window !== 'undefined' ? window.innerHeight : 800);
   useEffect(() => {
@@ -36,11 +45,8 @@ function useShouldLoadVideo() {
 
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animFrameRef = useRef<number>(0);
-  const [videoState, setVideoState] = useState<'loading' | 'playing' | 'failed'>('loading');
+  const [videoReady, setVideoReady] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [bgUrl, setBgUrl] = useState<string>(HERO_POSTER);
   const { scrollY } = useScroll();
   const windowHeight = useWindowHeight();
   const prefersReducedMotion = useReducedMotion();
@@ -52,7 +58,7 @@ export function HeroSection() {
 
   // Pause video when scrolled out
   useEffect(() => {
-    if (!videoRef.current || videoState !== 'playing') return;
+    if (!videoRef.current || !videoReady) return;
     const unsubscribe = scrollY.on('change', (y) => {
       const video = videoRef.current;
       if (!video) return;
@@ -60,66 +66,58 @@ export function HeroSection() {
       else { if (video.paused) video.play().catch(() => {}); }
     });
     return unsubscribe;
-  }, [scrollY, windowHeight, videoState]);
+  }, [scrollY, windowHeight, videoReady]);
 
-  // Paint video frames → single dataURL for entire text block
-  useEffect(() => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas || videoState !== 'playing') return;
-
-    const ctx = canvas.getContext('2d', { willReadFrequently: false });
-    if (!ctx) return;
-    canvas.width = 640;
-    canvas.height = 360;
-
-    let lastTime = 0;
-    const interval = 1000 / 12; // 12fps — enough for texture
-
-    const paint = (timestamp: number) => {
-      animFrameRef.current = requestAnimationFrame(paint);
-      if (timestamp - lastTime < interval) return;
-      lastTime = timestamp;
-      ctx.drawImage(video, 0, 0, 640, 360);
-      try { setBgUrl(canvas.toDataURL('image/jpeg', 0.65)); } catch {}
-    };
-
-    animFrameRef.current = requestAnimationFrame(paint);
-    return () => cancelAnimationFrame(animFrameRef.current);
-  }, [videoState]);
-
-  const handleCanPlay = useCallback(() => setVideoState('playing'), []);
-  const handleError = useCallback(() => setVideoState('failed'), []);
+  const handleCanPlay = useCallback(() => setVideoReady(true), []);
 
   return (
     <section className="relative h-[100svh] flex flex-col overflow-hidden">
-      {/* Hidden video + canvas */}
-      <div className="fixed top-0 left-0 w-0 h-0 overflow-hidden" aria-hidden="true">
-        {shouldLoadVideo && !prefersReducedMotion && videoState !== 'failed' && (
+      {/*
+        TECHNIQUE — No canvas, no dataURL, fully CSS:
+
+        Layer 1 (bottom): Video/poster playing full-screen
+        Layer 2 (middle): bg-background dark overlay (the "mask")
+        Layer 3 (top): Text with background-clip:text using the
+                       poster as background — punches through
+                       the dark overlay via the text shapes.
+
+        The video plays behind the dark overlay, visible as subtle
+        ambient movement. The poster fills the text letterforms
+        as a static high-contrast image.
+
+        When hovering a word, it fills with the division colour.
+      */}
+
+      {/* Layer 1: Video/poster — plays behind everything */}
+      <motion.div
+        className="fixed inset-0 w-full h-[100svh] pointer-events-none"
+        style={{ opacity: heroOpacity, zIndex: 0 }}
+      >
+        <div className="absolute inset-0 bg-background" />
+        <img
+          src={HERO_POSTER}
+          alt=""
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            videoReady ? 'opacity-0' : 'opacity-60'
+          }`}
+        />
+        {shouldLoadVideo && !prefersReducedMotion && (
           <video
             ref={videoRef}
             autoPlay muted loop playsInline preload="metadata"
             onCanPlay={handleCanPlay}
-            onError={handleError}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${
+              videoReady ? 'opacity-60' : 'opacity-0'
+            }`}
           >
             <source src={VIDEO_URLS.heroMain} type="video/mp4" />
           </video>
         )}
-        <canvas ref={canvasRef} />
-      </div>
+        {/* Dark overlay — dims the video so text pops */}
+        <div className="absolute inset-0 bg-background/60" />
+      </motion.div>
 
-      {/* Fixed dark bg — fades on scroll */}
-      <motion.div
-        className="fixed inset-0 w-full h-[100svh] bg-background pointer-events-none"
-        style={{ opacity: heroOpacity, zIndex: 0 }}
-      />
-
-      {/* 
-        SINGLE TEXT BLOCK — one background-clip:text container
-        Video covers all four words as one continuous image.
-        Words packed tight with negative leading so they fill
-        the viewport and maximise the video vitrine area.
-      */}
+      {/* Layer 2: Text vitrine — poster image fills the letterforms */}
       <motion.div
         className="relative z-10 flex-1 flex flex-col justify-center overflow-hidden"
         style={{ opacity: heroOpacity }}
@@ -128,7 +126,7 @@ export function HeroSection() {
           className="font-extrabold uppercase tracking-tighter select-none
             leading-[0.82] px-3 md:px-6 lg:px-10"
           style={{
-            backgroundImage: `url(${bgUrl})`,
+            backgroundImage: `url(${HERO_POSTER})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center 40%',
             WebkitBackgroundClip: 'text',
@@ -156,12 +154,7 @@ export function HeroSection() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 + index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
                 style={{
-                  fontSize: `clamp(48px, ${
-                    division.name.length <= 5 ? '24' :
-                    division.name.length <= 6 ? '21' :
-                    division.name.length <= 7 ? '18' :
-                    division.name.length <= 9 ? '15.5' : '13'
-                  }vw, 240px)`,
+                  fontSize: `clamp(48px, ${getWordSize(division.name.length)}vw, 240px)`,
                 }}
               >
                 {division.name}
@@ -171,7 +164,7 @@ export function HeroSection() {
         </h1>
       </motion.div>
 
-      {/* Scroll indicator only — no redundant wordmark */}
+      {/* Scroll indicator */}
       <motion.div
         className="relative z-10 flex justify-end px-6 lg:px-12 pb-6 lg:pb-8"
         initial={{ opacity: 0 }}
