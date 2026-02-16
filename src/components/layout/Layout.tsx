@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { Header } from './Header';
 import { Footer } from './Footer';
-import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 import { CustomCursor } from '@/components/ui/CustomCursor';
 import { StructuredData } from '@/components/seo/StructuredData';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
@@ -20,7 +19,6 @@ export function Layout({ children }: LayoutProps) {
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }
