@@ -13,6 +13,18 @@ const divisions = [
   { name: 'Interiors', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
 ];
 
+// Build the running text sequence — words repeat to fill the viewport
+// Separated by bullet dividers so it reads as a continuous stream
+function buildTextSequence(repeats: number) {
+  const seq: Array<{ name: string; color: string; path: string; id: string }> = [];
+  for (let r = 0; r < repeats; r++) {
+    for (const div of divisions) {
+      seq.push({ ...div, id: `${div.name}-${r}` });
+    }
+  }
+  return seq;
+}
+
 function useWindowHeight() {
   const [h, setH] = useState(typeof window !== 'undefined' ? window.innerHeight : 800);
   useEffect(() => {
@@ -29,7 +41,7 @@ export function HeroSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
   const [videoReady, setVideoReady] = useState(false);
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [frameUrl, setFrameUrl] = useState<string | null>(null);
   const { scrollY } = useScroll();
   const wh = useWindowHeight();
@@ -45,6 +57,7 @@ export function HeroSection() {
     return !(c?.saveData || c?.effectiveType === '2g' || c?.effectiveType === 'slow-2g');
   }, []);
 
+  // Pause/resume on scroll
   useEffect(() => {
     if (!videoRef.current || !videoReady) return;
     return scrollY.on('change', (y) => {
@@ -54,7 +67,7 @@ export function HeroSection() {
     });
   }, [scrollY, wh, videoReady]);
 
-  // Capture video frames → dataURL
+  // Capture video frames
   useEffect(() => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -91,24 +104,25 @@ export function HeroSection() {
   }, []);
 
   const bg = frameUrl || HERO_POSTER;
+  const sequence = useMemo(() => buildTextSequence(4), []);
 
   /*
-    LAYOUT STRATEGY:
-    - 4 words must ALL be visible (no cropping)
-    - Pack tight as a centred block (no black bands between words)
-    - Each word as wide as possible
+    RUNNING TEXT BLOCK TECHNIQUE:
     
-    Solution: Use a SINGLE font size for all words based on the longest
-    word (EXHIBITIONS = 11 chars). This means shorter words (EVENTS = 6)
-    don't fill the full width — BUT the text block is uniform and neat,
-    and the shorter words create visual interest with the black space
-    appearing on the RIGHT side only (like a ragged-left typographic block).
+    The 4 division names repeat 4× as a continuous inline text flow:
+    EXHIBITIONS EVENTS RETAIL INTERIORS EXHIBITIONS EVENTS...
     
-    Font size: limited by whichever is tighter:
-    - Width: 92vw / 11 chars / 0.62 avg-char-width ≈ 13.5vw
-    - Height: (100svh - 80px header - 60px bottom) / 4 lines / 0.85 leading ≈ 19vh
+    The h1 has overflow:hidden and a fixed height (100svh minus
+    header/footer). Text wraps naturally within this box. The entire
+    block has background-clip:text so video shows through ALL the
+    letters as one continuous vitrine.
     
-    Use min() to pick the tighter constraint per viewport.
+    Words are separated by thin bullet dividers (·) styled smaller.
+    Each word is a link. On hover, that word fills with its division colour.
+    
+    Result: the viewport is PACKED with text. Minimal dead space.
+    Video visible through a dense typographic texture. The repetition
+    becomes the design — it reads as a bold statement of capability.
   */
 
   return (
@@ -133,54 +147,62 @@ export function HeroSection() {
         style={{ opacity, zIndex: 0 }}
       />
 
-      {/* Text vitrine */}
+      {/* Dense text block */}
       <motion.div
-        className="relative z-10 flex-1 flex flex-col justify-center pt-[76px] md:pt-[84px] px-3 md:px-5 lg:px-8"
+        className="relative z-10 flex-1 flex flex-col pt-[72px] md:pt-[80px] overflow-hidden"
         style={{ opacity }}
       >
         <h1
-          className="font-extrabold uppercase leading-[0.92] select-none"
+          className="flex-1 overflow-hidden font-extrabold uppercase leading-[0.88] select-none"
           style={{
-            fontSize: 'clamp(48px, min(13.5vw, 19vh), 260px)',
-            letterSpacing: '-0.04em',
+            fontSize: 'clamp(44px, 11.5vw, 200px)',
+            letterSpacing: '-0.03em',
+            wordSpacing: '0.05em',
             backgroundImage: `url(${bg})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center 40%',
+            backgroundPosition: 'center 30%',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}
         >
-          {divisions.map((div, i) => (
-            <motion.span
-              key={div.name}
-              className="block"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.45, delay: 0.1 + i * 0.07 }}
-            >
+          {sequence.map((item, i) => (
+            <span key={item.id} className="inline">
+              {i > 0 && (
+                <span
+                  className="inline-block mx-[0.12em] opacity-30"
+                  style={{
+                    fontSize: '0.5em',
+                    verticalAlign: 'middle',
+                    WebkitTextFillColor: 'hsl(var(--muted-foreground))',
+                  }}
+                  aria-hidden="true"
+                >
+                  ·
+                </span>
+              )}
               <Link
-                to={div.path}
-                className="block"
-                onMouseEnter={() => setHoveredIdx(i)}
-                onMouseLeave={() => setHoveredIdx(null)}
-                onTouchStart={() => setHoveredIdx(i)}
-                onTouchEnd={() => setTimeout(() => setHoveredIdx(null), 500)}
+                to={item.path}
+                className="inline hover:opacity-100 transition-all duration-200"
+                onMouseEnter={() => setHoveredId(item.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                onTouchStart={() => setHoveredId(item.id)}
+                onTouchEnd={() => setTimeout(() => setHoveredId(null), 500)}
                 style={{
-                  WebkitTextFillColor: hoveredIdx === i ? div.color : 'transparent',
-                  transition: 'all 0.25s ease',
+                  WebkitTextFillColor: hoveredId === item.id ? item.color : 'transparent',
+                  transition: 'all 0.2s ease',
                 }}
               >
-                {div.name}
+                {item.name}
               </Link>
-            </motion.span>
+            </span>
           ))}
         </h1>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — overlaid bottom right */}
       <motion.div
-        className="relative z-10 flex justify-end px-6 lg:px-12 pb-5 lg:pb-8"
+        className="absolute bottom-4 right-6 lg:bottom-8 lg:right-12 z-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
@@ -190,8 +212,8 @@ export function HeroSection() {
           animate={{ y: [0, 4, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="text-[8px] text-muted-foreground/20 tracking-[0.3em] uppercase">Scroll</span>
-          <div className="w-px h-4 bg-foreground/10" />
+          <span className="text-[8px] text-muted-foreground/30 tracking-[0.3em] uppercase">Scroll</span>
+          <div className="w-px h-4 bg-foreground/15" />
         </motion.div>
       </motion.div>
     </section>
