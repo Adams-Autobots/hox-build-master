@@ -5,8 +5,8 @@ const organizationSchema = {
   "@type": "Organization",
   "name": "HOX",
   "alternateName": "House of Exhibitions",
-  "url": "https://hox-build-master.lovable.app",
-  "logo": "https://hox-build-master.lovable.app/favicon.ico",
+  "url": "https://hox.ae",
+  "logo": "https://hox.ae/favicon.ico",
   "description": "Dubai's premier production powerhouse delivering precision-built exhibitions, events, retail environments, and interiors since 2008.",
   "foundingDate": "2008",
   "sameAs": [
@@ -16,7 +16,7 @@ const organizationSchema = {
   ],
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+971-4-345-6789",
+    "telephone": "+971-4-3477519",
     "contactType": "customer service",
     "areaServed": ["AE", "SA", "QA", "KW", "BH", "OM"],
     "availableLanguage": ["English", "Arabic"]
@@ -32,12 +32,12 @@ const organizationSchema = {
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "https://hox-build-master.lovable.app/#localbusiness",
+  "@id": "https://hox.ae/#localbusiness",
   "name": "HOX - House of Exhibitions",
-  "image": "https://hox-build-master.lovable.app/favicon.ico",
+  "image": "https://hox.ae/favicon.ico",
   "description": "Exhibition stand design, event production, retail fit-outs, and interior design services in Dubai, UAE.",
-  "url": "https://hox-build-master.lovable.app",
-  "telephone": "+971-4-345-6789",
+  "url": "https://hox.ae",
+  "telephone": "+971-4-3477519",
   "email": "info@hox.ae",
   "priceRange": "$$$",
   "address": {

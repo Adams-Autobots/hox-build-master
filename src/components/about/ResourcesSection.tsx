@@ -79,7 +79,7 @@ export function ResourcesSection() {
               <div className="aspect-[16/10] overflow-hidden">
                 <img
                   src={skill.image}
-                  alt={skill.title}
+                  alt={`${skill.title} - HOX core capability`}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>

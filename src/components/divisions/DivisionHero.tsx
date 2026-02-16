@@ -89,6 +89,7 @@ export function DivisionHero({
             muted
             loop
             playsInline
+            aria-label={`HOX ${division} division showcase video`}
             className={cn(
               "absolute inset-0 w-full h-full object-cover",
               division === 'retail' && "scale-[1.15] origin-top",
@@ -114,7 +115,7 @@ export function DivisionHero({
         <div className="absolute inset-0 z-0">
           <img
             src={heroImage}
-            alt={`${division} hero`}
+            alt={`HOX ${division} project showcase`}
             className="w-full h-full object-cover"
           />
           {/* Dark overlay for text readability */}

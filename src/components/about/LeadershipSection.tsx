@@ -104,7 +104,7 @@ export function LeadershipSection() {
                 <div className="relative aspect-[3/4] mb-6 overflow-hidden rounded-lg">
                   <img
                     src={member.image}
-                    alt={member.name}
+                    alt={`${member.name}, ${member.role} at HOX`}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   
