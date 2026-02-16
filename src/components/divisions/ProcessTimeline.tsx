@@ -73,7 +73,7 @@ export function ProcessTimeline({ division }: ProcessTimelineProps) {
         <div className="max-w-3xl mb-10">
           <motion.span
             className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-4',
+              'inline-flex items-center gap-2 text-sm font-medium tracking-wider mb-4',
               divisionColors[division]
             )}
             initial={{ opacity: 0, x: -20 }}

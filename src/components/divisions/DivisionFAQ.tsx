@@ -82,7 +82,7 @@ export function DivisionFAQ({ division }: DivisionFAQProps) {
           <div className="text-center mb-16">
             <motion.span
               className={cn(
-                'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6',
+                'inline-flex items-center gap-2 text-sm font-medium tracking-wider mb-6',
                 divisionColors[division]
               )}
               initial={{ opacity: 0, y: 20 }}

@@ -164,7 +164,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <Link to="/projects" className="group inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors duration-300">
+            <Link to="/projects" className="group inline-flex items-center gap-2 text-sm font-medium tracking-wider uppercase text-muted-foreground hover:text-primary transition-colors duration-300">
               Explore our work
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>

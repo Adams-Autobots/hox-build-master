@@ -22,15 +22,15 @@ export function ContactCTA() {
       <div className="container mx-auto px-6 lg:px-12 relative">
         <div className="max-w-4xl mx-auto text-center">
           <motion.span
-            className="inline-flex items-center justify-center gap-2 text-sm font-medium tracking-widest text-primary mb-6"
+            className="inline-flex items-center justify-center gap-2 text-sm font-medium tracking-wider text-primary mb-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="w-8 h-px bg-primary" />
+            <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
             Start your project
-            <span className="w-8 h-px bg-primary" />
+            <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
           </motion.span>
 
           <motion.h2

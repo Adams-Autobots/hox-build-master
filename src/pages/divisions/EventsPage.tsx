@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { WhatHappensNext } from '@/components/divisions/WhatHappensNext';
 import { FloatingCTABar } from '@/components/divisions/FloatingCTABar';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
 
@@ -67,7 +68,8 @@ export default function EventsPage() {
 
         <DivisionFAQ division="events" />
       </div>
-            <FloatingCTABar division="events" divisionColor="hox-blue" />
+            <WhatHappensNext division="events" />
+        <FloatingCTABar division="events" divisionColor="hox-blue" />
       </Layout>
   );
 }

@@ -39,13 +39,13 @@ export function ResourcesSection() {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="mb-12">
           <motion.span 
-            className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6"
+            className="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-primary mb-6"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="w-8 h-px bg-primary" />
+            <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
             What We Do Best
           </motion.span>
           <motion.h2 
