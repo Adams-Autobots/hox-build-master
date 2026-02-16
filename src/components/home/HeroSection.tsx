@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { HoverText } from '@/components/ui/HoverText';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { VIDEO_URLS } from '@/lib/video-urls';
 
 const divisions = [
@@ -12,13 +13,37 @@ const divisions = [
   { name: 'Interiors', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
 ];
 
+function useWindowHeight() {
+  const [height, setHeight] = useState(typeof window !== 'undefined' ? window.innerHeight : 800);
+
+  useEffect(() => {
+    const update = () => setHeight(window.innerHeight);
+    window.addEventListener('resize', update, { passive: true });
+    window.addEventListener('orientationchange', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+    };
+  }, []);
+
+  return height;
+}
+
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const { scrollY } = useScroll();
+  const windowHeight = useWindowHeight();
+  const prefersReducedMotion = useReducedMotion();
 
-  // Video fades out as user scrolls (starts at 60% of viewport, fully faded at 120%)
-  const videoOpacity = useTransform(scrollY, [0, window.innerHeight * 0.6, window.innerHeight * 1.2], [1, 1, 0]);
+  const fadeStart = useMemo(() => windowHeight * 0.6, [windowHeight]);
+  const fadeEnd = useMemo(() => windowHeight * 1.2, [windowHeight]);
+  const videoOpacity = useTransform(
+    scrollY,
+    [0, fadeStart, fadeEnd],
+    prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]
+  );
 
   useEffect(() => {
     const video = videoRef.current;
@@ -27,13 +52,8 @@ export function HeroSection() {
     let interval: NodeJS.Timeout;
 
     const startCycle = () => {
-      // Reset to first division when video starts/loops
       setActiveIndex(0);
-      
-      // Clear any existing interval
       if (interval) clearInterval(interval);
-      
-      // Start the 4-second cycle
       interval = setInterval(() => {
         setActiveIndex(prev => (prev + 1) % divisions.length);
       }, 4000);
@@ -41,19 +61,12 @@ export function HeroSection() {
 
     const handlePlay = () => startCycle();
     const handleSeeked = () => {
-      // When video loops back to start, reset the cycle
-      if (video.currentTime < 0.1) {
-        startCycle();
-      }
+      if (video.currentTime < 0.1) startCycle();
     };
 
     video.addEventListener('play', handlePlay);
     video.addEventListener('seeked', handleSeeked);
-    
-    // If video is already playing (autoplay), start immediately
-    if (!video.paused) {
-      startCycle();
-    }
+    if (!video.paused) startCycle();
 
     return () => {
       video.removeEventListener('play', handlePlay);
@@ -64,20 +77,29 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-visible">
-      {/* Fixed Background Video - stays constant while content scrolls */}
+      {/* Fixed Background Video */}
       <motion.div 
         className="fixed inset-0 w-full h-screen pointer-events-none" 
         style={{ opacity: videoOpacity, zIndex: 0 }}
       >
-        <video ref={videoRef} src={VIDEO_URLS.heroMain} autoPlay muted loop playsInline className="w-full h-full object-cover" aria-label="HOX showreel featuring exhibitions, events, retail and interiors projects in Dubai" />
-        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-background" />
+        
+        <video
+          ref={videoRef}
+          src={VIDEO_URLS.heroMain}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          onCanPlay={() => setVideoLoaded(true)}
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+          aria-label="HOX showreel featuring exhibitions, events, retail and interiors projects in Dubai"
+        />
         <div className="absolute inset-0 bg-background/30" />
-        {/* Subtle red brand tint */}
         <div className="absolute inset-0 bg-[hsl(var(--hox-red)/0.04)]" />
-        {/* Gradient overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-background/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-background/15" />
-        {/* Bottom fade gradient for smooth bleed transition */}
         <div className="absolute bottom-0 left-0 right-0 h-[40vh] bg-gradient-to-t from-background via-background/40 to-transparent" />
       </motion.div>
 
@@ -89,7 +111,6 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} 
           className="max-w-3xl"
         >
-          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -103,7 +124,6 @@ export function HeroSection() {
             </span>
           </motion.div>
 
-          {/* Division Names */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
@@ -111,34 +131,19 @@ export function HeroSection() {
             className="grid grid-cols-2 md:flex md:flex-wrap gap-4 md:gap-6 mb-8 max-w-xs md:max-w-none"
           >
             {divisions.map((division, index) => (
-              <Link
-                key={division.name}
-                to={division.path}
-                className="relative group"
-              >
+              <Link key={division.name} to={division.path} className="relative group">
                 <motion.span
                   className="text-lg md:text-2xl lg:text-3xl font-semibold transition-all duration-300"
                   style={{
                     color: activeIndex === index ? division.color : 'hsl(var(--foreground))',
                     textShadow: activeIndex === index ? `0 0 20px ${division.color}` : 'none',
                   }}
-                  animate={activeIndex === index ? {
-                    scale: [1, 1.08, 1],
-                  } : {}}
-                  transition={activeIndex === index ? {
-                    duration: 0.6,
-                    ease: "easeInOut",
-                  } : { duration: 0.2 }}
-                  whileHover={{ 
-                    scale: 1.15,
-                    color: division.color,
-                    textShadow: `0 0 25px ${division.color}`,
-                  }}
+                  animate={activeIndex === index ? { scale: [1, 1.08, 1] } : {}}
+                  transition={activeIndex === index ? { duration: 0.6, ease: "easeInOut" } : { duration: 0.2 }}
+                  whileHover={{ scale: 1.15, color: division.color, textShadow: `0 0 25px ${division.color}` }}
                 >
                   {division.name.split('').map((char, charIndex) => (
-                    <span key={charIndex} className="hover-letter">
-                      {char}
-                    </span>
+                    <span key={charIndex} className="hover-letter">{char}</span>
                   ))}
                 </motion.span>
               </Link>

@@ -116,6 +116,7 @@ export function DivisionHero({
           <img
             src={heroImage}
             alt={`HOX ${division} project showcase`}
+            loading="eager"
             className="w-full h-full object-cover"
           />
           {/* Dark overlay for text readability */}
