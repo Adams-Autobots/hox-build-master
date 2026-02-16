@@ -6,6 +6,12 @@ const corsHeaders = {
 };
 
 // Static routes with their priorities and change frequencies
+const ALLOWED_DOMAINS = [
+  'https://hox.ae',
+  'https://www.hox.ae',
+  'https://hox-build-master.lovable.app',
+];
+
 const staticRoutes = [
   { path: '/', priority: 1.0, changefreq: 'weekly' },
   { path: '/about', priority: 0.8, changefreq: 'monthly' },
@@ -20,6 +26,8 @@ const staticRoutes = [
   { path: '/gallery/events', priority: 0.8, changefreq: 'weekly' },
   { path: '/gallery/retail', priority: 0.8, changefreq: 'weekly' },
   { path: '/gallery/interiors', priority: 0.8, changefreq: 'weekly' },
+  { path: '/privacy', priority: 0.3, changefreq: 'yearly' },
+  { path: '/terms', priority: 0.3, changefreq: 'yearly' },
 ];
 
 // Blog posts - these would ideally come from a database, but for now they're hardcoded
@@ -39,7 +47,8 @@ Deno.serve(async (req) => {
   try {
     // Get the base URL from the request or use the published URL
     const url = new URL(req.url);
-    const baseUrl = url.searchParams.get('baseUrl') || 'https://hox-build-master.lovable.app';
+    const requestedBase = url.searchParams.get('baseUrl') || 'https://hox.ae';
+    const baseUrl = ALLOWED_DOMAINS.includes(requestedBase) ? requestedBase : 'https://hox.ae';
     
     const today = new Date().toISOString().split('T')[0];
 

@@ -311,11 +311,24 @@ export default function GalleryAdminPage() {
     setLocalImages(images);
   }, [images]);
 
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/auth');
+      return;
     }
-  }, [user, authLoading, navigate]);
+    if (user) {
+      supabase.rpc('has_role', { _user_id: user.id, _role: 'admin' }).then(({ data }) => {
+        if (!data) {
+          toast({ title: 'Access denied', description: 'You do not have admin privileges.', variant: 'destructive' });
+          navigate('/');
+        } else {
+          setIsAdmin(true);
+        }
+      });
+    }
+  }, [user, authLoading, navigate, toast]);
 
   const fetchImages = useCallback(async () => {
     setLoading(true);
@@ -689,7 +702,7 @@ export default function GalleryAdminPage() {
     navigate('/');
   };
 
-  if (authLoading) {
+  if (authLoading || isAdmin === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
