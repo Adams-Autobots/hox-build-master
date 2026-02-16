@@ -51,7 +51,7 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
   const labels = divisionLabels[division] || { label: 'Services', heading: 'What we', highlight: 'Deliver.' };
 
   return (
-    <section className="py-16 lg:py-20 bg-card" data-division={division}>
+    <section className="py-20 lg:py-28 bg-card" data-division={division}>
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
           className="mb-12"
@@ -120,7 +120,7 @@ function CapabilityCard({ capability, index, iconColor, accentColor, division }:
   return (
     <motion.div
       data-division={division}
-      className="relative aspect-[3/4] rounded-xl overflow-hidden group cursor-pointer"
+      className="relative aspect-[3/4] rounded-lg overflow-hidden group cursor-pointer"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -171,12 +171,6 @@ function CapabilityCard({ capability, index, iconColor, accentColor, division }:
           {capability.title}
         </h3>
       </div>
-
-      {/* Hover Border Glow */}
-      <div className={cn(
-        "absolute inset-0 rounded-xl border-2 border-transparent transition-colors duration-300",
-        `group-hover:border-current ${iconColor}`
-      )} style={{ opacity: 0.3 }} />
     </motion.div>
   );
 }

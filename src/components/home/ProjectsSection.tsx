@@ -97,7 +97,7 @@ export function ProjectsSection() {
   }, [allFeaturedImages]);
 
   return (
-    <section className="py-16 lg:py-20 bg-card relative overflow-hidden">
+    <section className="py-24 lg:py-32 bg-card relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 lg:mb-24 gap-8">

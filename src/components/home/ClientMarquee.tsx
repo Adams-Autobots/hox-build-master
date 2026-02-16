@@ -63,7 +63,7 @@ export function ClientMarquee() {
   const row2 = clients.slice(midpoint);
 
   return (
-    <section className="py-16 lg:py-20 bg-gradient-to-b from-background via-card/50 to-card overflow-hidden">
+    <section className="py-20 lg:py-28 bg-gradient-to-b from-background via-card/50 to-card overflow-hidden">
       <style>{`
         @keyframes marquee-left {
           from { transform: translateX(0); }
