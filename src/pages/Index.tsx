@@ -1,11 +1,10 @@
 import { Layout } from '@/components/layout/Layout';
 import { PageMeta } from '@/components/seo/PageMeta';
 import { HeroSection } from '@/components/home/HeroSection';
-import { AboutSection } from '@/components/home/AboutSection';
 import { DivisionsSection } from '@/components/home/DivisionsSection';
 import { ProjectsSection } from '@/components/home/ProjectsSection';
-import { WhyHoxSection } from '@/components/home/WhyHoxSection';
 import { ClientMarquee } from '@/components/home/ClientMarquee';
+import { WhyHoxSection } from '@/components/home/WhyHoxSection';
 import { ContactCTA } from '@/components/home/ContactCTA';
 
 const Index = () => {
@@ -20,7 +19,6 @@ const Index = () => {
       />
       <HeroSection />
       <div className="relative z-10">
-        <AboutSection />
         <DivisionsSection />
         <ProjectsSection />
         <ClientMarquee />
