@@ -1,85 +1,124 @@
 
 
-# Header Navigation -- Premium UI Overhaul
+# Full Pre-Launch Review -- hox.ae
 
-## What Changes
-
-Aesthetic-only upgrade to the desktop nav links, divisions dropdown, and mobile menu. All routing, logic, scroll behavior, and state management remain untouched.
+## Status: Almost Ready -- Issues Found Below
 
 ---
 
-## Desktop Navigation
+## 1. CRITICAL -- Contact Form is Non-Functional
 
-### Typography
-- Nav links change from generic `text-sm` to `text-[13px] uppercase tracking-[0.2em] font-medium` -- matches the architectural, engineered typographic language used across the rest of the site (Porsche Design / Rimowa reference)
-- Increase link spacing from `gap-8` to `gap-10`
+The contact form on `/contact` does NOT actually send data anywhere. It simulates a submission with a `setTimeout` and shows a success toast, but no data is captured or emailed.
 
-### Active and Hover States
-- Replace the red underline-on-hover with a centered red dot (`w-1 h-1 rounded-full bg-primary`) beneath the active link, matching the division dot language already used in the dropdown and mobile menu
-- On hover (non-active): dot appears at `scale-0 -> scale-100` with a smooth 300ms transition
-
-### Scrolled Header
-- Swap `glass py-4` for `bg-background/90 backdrop-blur-xl border-b border-white/[0.06] py-3`
-- Add a 1px red gradient accent line across the top edge when scrolled (via a `::before` pseudo-element in CSS)
-
-### Logo
-- Add `hover:scale-110 transition-transform duration-300` for subtle presence on hover
+**Fix:** Create a backend function to receive form submissions and either store them in the database or forward via email. Add server-side validation with zod.
 
 ---
 
-## Divisions Dropdown
+## 2. CRITICAL -- Sitemap Default URL is Wrong
 
-### Panel Styling
-- Replace `rounded-lg` with `rounded-none` (sharp edges, consistent with the site's `--radius: 0.25rem` minimal approach)
-- Add `border-t-2 border-primary` as a red accent line at the top of the panel
-- Increase item padding from `px-3 py-2` to `px-4 py-3` for generous touch targets
-- Replace `hover:bg-muted/50` with a left-border accent on hover: `border-l-2 border-transparent hover:border-l-2 hover:border-[currentColor]` so the division color appears as a side accent
-- Each dropdown item gets a staggered entry delay (50ms per item) via inline `transition-delay`
+The sitemap edge function at `supabase/functions/sitemap/index.ts` defaults to `https://hox-build-master.lovable.app` instead of `https://hox.ae`. Additionally, the `baseUrl` parameter accepts any arbitrary domain (security warning).
 
-### Division Color Dots
-- Increase from `w-2 h-2` to `w-2.5 h-2.5` for slightly more visual weight
+**Fix:**
+- Change default URL to `https://hox.ae`
+- Whitelist allowed domains: `https://hox.ae`, `https://www.hox.ae`, `https://hox-build-master.lovable.app`
+- Reject any other baseUrl value
 
 ---
 
-## Mobile Menu
+## 3. MODERATE -- Admin Page Lacks Role Check on Client Side
 
-### Hamburger
-- Thin lines from `h-0.5` to `h-px` for more refined elegance
+The `/admin/gallery` page only checks if a user is authenticated (`!user`), not whether they have the `admin` role. While the RLS policies now block non-admin writes at the database level, any authenticated user can still see the admin UI.
 
-### Overlay
-- Add a 1px red gradient line at the top of the mobile overlay (same accent as desktop scrolled state)
-- Division sub-items: increase from `text-xl` to `text-2xl` for better hierarchy contrast against the `text-4xl` parent links
+**Fix:** Add a client-side role check in `GalleryAdminPage.tsx` using the `has_role` function or querying `user_roles` to redirect non-admins.
 
 ---
 
-## CSS Addition (index.css)
+## 4. MODERATE -- Privacy/Terms Pages Missing from Sitemap
 
-A single utility class for the red gradient accent line:
+The sitemap does not include `/privacy` or `/terms` routes.
 
-```text
-.header-accent-line::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, hsl(var(--hox-red)), transparent);
-  pointer-events: none;
-}
-```
+**Fix:** Add both routes to the `staticRoutes` array in the sitemap edge function.
 
 ---
 
-## Files Modified
-- **src/components/layout/Header.tsx** -- all styling class changes (no logic changes)
-- **src/index.css** -- add `.header-accent-line` utility
+## 5. MINOR -- Blog Footer Link Points to Placeholder Content
 
-## What Does NOT Change
-- All routing and Link destinations
-- Scroll detection logic
-- Dropdown open/close state management
-- Mobile menu open/close and body scroll lock
-- Location-based active state detection
-- All division data arrays
+The blog page exists at `/blog` and is linked from the footer. Confirm blog posts are real content and not placeholder/hardcoded dummy entries before launch.
+
+---
+
+## 6. VISUAL -- No Console Errors
+
+No JavaScript errors detected. Only benign postMessage warnings from the Lovable preview environment (will not appear in production).
+
+---
+
+## 7. VISUAL -- Header and Dropdown Look Good
+
+The desktop nav with the cinematic dropdown, red gradient accent line, and staggered division items all render correctly. Active states and hover interactions work as expected.
+
+---
+
+## 8. SEO Checklist
+
+| Item | Status |
+|------|--------|
+| index.html meta tags | OK -- title, description, OG, Twitter all set |
+| Canonical domain | OK -- `https://hox.ae` |
+| PageMeta on all pages | OK -- each page sets unique title/description |
+| robots.txt | OK -- blocks /auth and /admin/ |
+| Sitemap | NEEDS FIX -- wrong default domain |
+| Favicon | OK -- PNG favicon configured |
+| Structured data (JSON-LD) | OK -- StructuredData component renders globally |
+
+---
+
+## 9. Security Summary
+
+| Issue | Level | Status |
+|-------|-------|--------|
+| Gallery RLS (admin-only writes) | error | FIXED in last session |
+| Storage RLS (admin-only uploads) | error | FIXED in last session |
+| Admin page client-side check | warn | Needs fix |
+| Sitemap baseUrl validation | warn | Needs fix |
+| Contact form no backend | warn | Needs fix |
+| Leaked password protection | warn | Enable in auth settings |
+
+---
+
+## Recommended Fix Priority for Launch
+
+1. **Contact form** -- make it functional (edge function + database table)
+2. **Sitemap default URL** -- change to `https://hox.ae` and add domain whitelist
+3. **Admin role check** -- add client-side `user_roles` verification
+4. **Sitemap routes** -- add `/privacy` and `/terms`
+5. **Leaked password protection** -- enable via auth configuration
+
+---
+
+## Technical Implementation Details
+
+### Contact Form (edge function approach)
+- Create `contact_submissions` table with fields: name, company, email, phone, division, message, created_at
+- Enable RLS with public INSERT (anon) and admin-only SELECT
+- Create `submit-contact` edge function with zod validation, rate limiting, and optional email forwarding
+- Update `ContactPage.tsx` to call the edge function
+
+### Sitemap Fix
+- Update line 42 of `supabase/functions/sitemap/index.ts` to default to `https://hox.ae`
+- Add domain whitelist validation
+- Add `/privacy` and `/terms` to staticRoutes
+
+### Admin Role Check
+- In `GalleryAdminPage.tsx`, after auth check, query `user_roles` table to verify admin role
+- Redirect non-admins to home page with a toast message
+
+### Files to Modify
+- `supabase/functions/sitemap/index.ts`
+- `src/pages/ContactPage.tsx`
+- `src/pages/admin/GalleryAdminPage.tsx`
+
+### Files to Create
+- `supabase/functions/submit-contact/index.ts`
+- Database migration for `contact_submissions` table
 
