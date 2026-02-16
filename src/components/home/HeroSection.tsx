@@ -88,7 +88,7 @@ export function HeroSection() {
           src={HERO_POSTER}
           alt=""
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            videoReady ? 'opacity-0' : 'opacity-[0.12]'
+            videoReady ? 'opacity-0' : 'opacity-[0.25]'
           }`}
         />
         {shouldLoad && !reducedMotion && (
@@ -97,7 +97,7 @@ export function HeroSection() {
             autoPlay muted loop playsInline preload="auto"
             onCanPlay={useCallback(() => setVideoReady(true), [])}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${
-              videoReady ? 'opacity-[0.12]' : 'opacity-0'
+              videoReady ? 'opacity-[0.25]' : 'opacity-0'
             }`}
           >
             <source src={VIDEO_URLS.heroMain} type="video/mp4" />
