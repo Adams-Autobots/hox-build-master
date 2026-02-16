@@ -13,15 +13,6 @@ const divisions = [
   { name: 'Interiors', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
 ];
 
-// Size each word to fill viewport width proportionally
-function getVw(len: number) {
-  if (len <= 5) return 22;
-  if (len <= 6) return 18;
-  if (len <= 7) return 16;
-  if (len <= 9) return 13.5;
-  return 11.5;
-}
-
 function useWindowHeight() {
   const [h, setH] = useState(typeof window !== 'undefined' ? window.innerHeight : 800);
   useEffect(() => {
@@ -48,7 +39,13 @@ export function HeroSection() {
   const fadeEnd = useMemo(() => wh * 0.9, [wh]);
   const opacity = useTransform(scrollY, [0, fadeStart, fadeEnd], reducedMotion ? [1, 1, 1] : [1, 1, 0]);
 
-  // Pause/resume video based on scroll
+  const shouldLoad = useMemo(() => {
+    if (typeof navigator === 'undefined') return true;
+    const c = (navigator as any).connection;
+    return !(c?.saveData || c?.effectiveType === '2g' || c?.effectiveType === 'slow-2g');
+  }, []);
+
+  // Pause/resume on scroll
   useEffect(() => {
     if (!videoRef.current || !videoReady) return;
     return scrollY.on('change', (y) => {
@@ -58,21 +55,19 @@ export function HeroSection() {
     });
   }, [scrollY, wh, videoReady]);
 
-  // Capture video frames to canvas → dataURL for background-clip:text
+  // Capture frames
   useEffect(() => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas || !videoReady) return;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    canvas.width = 640;
-    canvas.height = 360;
+    canvas.width = 640; canvas.height = 360;
 
     let last = 0;
     const paint = (ts: number) => {
       rafRef.current = requestAnimationFrame(paint);
-      if (ts - last < 83) return; // ~12fps
+      if (ts - last < 83) return;
       last = ts;
       ctx.drawImage(video, 0, 0, 640, 360);
       try { setFrameUrl(canvas.toDataURL('image/jpeg', 0.6)); } catch {}
@@ -97,17 +92,11 @@ export function HeroSection() {
     img.src = HERO_POSTER;
   }, []);
 
-  const shouldLoad = useMemo(() => {
-    if (typeof navigator === 'undefined') return true;
-    const c = (navigator as any).connection;
-    return !(c?.saveData || c?.effectiveType === '2g' || c?.effectiveType === 'slow-2g');
-  }, []);
-
   const bg = frameUrl || HERO_POSTER;
 
   return (
     <section className="relative h-[100svh] flex flex-col overflow-hidden">
-      {/* Hidden video + canvas — zero layout impact */}
+      {/* Hidden video + canvas */}
       <div className="fixed top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
         {shouldLoad && !reducedMotion && (
           <video
@@ -121,19 +110,27 @@ export function HeroSection() {
         <canvas ref={canvasRef} />
       </div>
 
-      {/* Dark background — fades on scroll */}
+      {/* Dark bg — fades on scroll */}
       <motion.div
         className="fixed inset-0 bg-background pointer-events-none"
         style={{ opacity, zIndex: 0 }}
       />
 
-      {/* Text vitrine — single h1, one background covers all words */}
+      {/*
+        TEXT VITRINE
+        - pt-[72px] clears the header (~56px + breathing room)
+        - h1 uses flex-1 to fill remaining space
+        - justify-between spreads 4 words evenly across full height
+        - Each word sized to fill viewport WIDTH
+        - leading-none + negative margin to pack lines tight
+        - Result: text fills the entire viewport, minimal dead space
+      */}
       <motion.div
-        className="relative z-10 flex-1 flex flex-col justify-end px-3 md:px-6 lg:px-10 pb-12 md:pb-16 lg:pb-20"
+        className="relative z-10 flex-1 flex flex-col pt-[72px] md:pt-[80px] pb-6 md:pb-10 lg:pb-12 px-2 md:px-4 lg:px-8"
         style={{ opacity }}
       >
         <h1
-          className="font-extrabold uppercase tracking-tighter leading-[0.84] select-none"
+          className="flex-1 flex flex-col justify-between font-extrabold uppercase tracking-[-0.04em] leading-none select-none overflow-hidden"
           style={{
             backgroundImage: `url(${bg})`,
             backgroundSize: 'cover',
@@ -146,13 +143,14 @@ export function HeroSection() {
           {divisions.map((div, i) => (
             <motion.span
               key={div.name}
-              initial={{ opacity: 0, x: -30 }}
+              className="block"
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.12 + i * 0.08 }}
+              transition={{ duration: 0.45, delay: 0.1 + i * 0.07 }}
             >
               <Link
                 to={div.path}
-                className="block"
+                className="block whitespace-nowrap"
                 onMouseEnter={() => setHoveredIdx(i)}
                 onMouseLeave={() => setHoveredIdx(null)}
                 onTouchStart={() => setHoveredIdx(i)}
@@ -160,7 +158,13 @@ export function HeroSection() {
                 style={{
                   WebkitTextFillColor: hoveredIdx === i ? div.color : 'transparent',
                   transition: 'all 0.25s ease',
-                  fontSize: `clamp(44px, ${getVw(div.name.length)}vw, 220px)`,
+                  /*
+                    Each word fills ~90% of viewport width.
+                    vh cap prevents vertical overflow.
+                    On landscape (desktop), vh is the tighter constraint.
+                    On portrait (mobile), vw is the tighter constraint.
+                  */
+                  fontSize: `clamp(40px, min(${Math.round(140 / div.name.length)}vw, ${Math.round(190 / div.name.length)}vh), 340px)`,
                 }}
               >
                 {div.name}
@@ -169,20 +173,20 @@ export function HeroSection() {
           ))}
         </h1>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator — inline at bottom right */}
         <motion.div
-          className="flex justify-end mt-8"
+          className="flex justify-end mt-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
+          transition={{ delay: 1, duration: 0.5 }}
         >
           <motion.div
             className="flex flex-col items-center gap-1"
             animate={{ y: [0, 4, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <span className="text-[8px] text-muted-foreground/25 tracking-[0.3em] uppercase">Scroll</span>
-            <div className="w-px h-5 bg-foreground/10" />
+            <span className="text-[8px] text-muted-foreground/20 tracking-[0.3em] uppercase">Scroll</span>
+            <div className="w-px h-4 bg-foreground/10" />
           </motion.div>
         </motion.div>
       </motion.div>
