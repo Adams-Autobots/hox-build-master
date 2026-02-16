@@ -91,42 +91,57 @@ export function Header() {
                   {/* Dropdown */}
                   <div
                     className={cn(
-                      'absolute top-full left-0 pt-3 transition-all duration-300',
+                      'absolute top-full right-0 pt-4 transition-all duration-500',
                       isDivisionsOpen
                         ? 'opacity-100 translate-y-0 pointer-events-auto'
-                        : 'opacity-0 -translate-y-2 pointer-events-none'
+                        : 'opacity-0 -translate-y-3 pointer-events-none'
                     )}
                   >
-                    <div className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-none border-t-2 border-t-primary p-2 min-w-52">
-                      {divisions.map((division, i) => (
-                        <Link
-                          key={division.name}
-                          to={division.path}
-                          className={cn(
-                            'flex items-center gap-3 px-4 py-3 text-sm font-medium tracking-wide text-muted-foreground hover:text-foreground transition-all duration-300 border-l-2 border-transparent hox-brand group',
-                            division.color === 'hox-red' && 'hover:border-l-hox-red',
-                            division.color === 'hox-blue' && 'hover:border-l-hox-blue',
-                            division.color === 'hox-orange' && 'hover:border-l-hox-orange',
-                            division.color === 'hox-green' && 'hover:border-l-hox-green'
-                          )}
-                          style={{
-                            transitionDelay: isDivisionsOpen ? `${i * 50}ms` : '0ms',
-                            opacity: isDivisionsOpen ? 1 : 0,
-                            transform: isDivisionsOpen ? 'translateX(0)' : 'translateX(-8px)',
-                          }}
-                        >
-                          <span
+                    <div className="bg-background border border-border/30 rounded-sm overflow-hidden min-w-64 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]">
+                      {/* Red accent line */}
+                      <div className="h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
+                      
+                      <div className="p-1.5">
+                        {divisions.map((division, i) => (
+                          <Link
+                            key={division.name}
+                            to={division.path}
                             className={cn(
-                              'w-2.5 h-2.5 rounded-full transition-transform duration-300 group-hover:scale-150',
-                              division.color === 'hox-red' && 'bg-hox-red',
-                              division.color === 'hox-blue' && 'bg-hox-blue',
-                              division.color === 'hox-orange' && 'bg-hox-orange',
-                              division.color === 'hox-green' && 'bg-hox-green'
+                              'flex items-center gap-4 px-5 py-3.5 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 rounded-sm group relative overflow-hidden',
+                              'hover:bg-white/[0.03]'
                             )}
-                          />
-                          {division.name}
-                        </Link>
-                      ))}
+                            style={{
+                              transitionDelay: isDivisionsOpen ? `${i * 60}ms` : '0ms',
+                              opacity: isDivisionsOpen ? 1 : 0,
+                              transform: isDivisionsOpen ? 'translateY(0)' : 'translateY(-6px)',
+                            }}
+                          >
+                            {/* Division color bar on hover */}
+                            <span
+                              className={cn(
+                                'absolute left-0 top-0 bottom-0 w-0.5 transition-all duration-300 opacity-0 group-hover:opacity-100',
+                                division.color === 'hox-red' && 'bg-hox-red',
+                                division.color === 'hox-blue' && 'bg-hox-blue',
+                                division.color === 'hox-orange' && 'bg-hox-orange',
+                                division.color === 'hox-green' && 'bg-hox-green'
+                              )}
+                            />
+                            <span
+                              className={cn(
+                                'w-2 h-2 rounded-full transition-all duration-300 group-hover:scale-125 group-hover:shadow-lg',
+                                division.color === 'hox-red' && 'bg-hox-red group-hover:shadow-hox-red/40',
+                                division.color === 'hox-blue' && 'bg-hox-blue group-hover:shadow-hox-blue/40',
+                                division.color === 'hox-orange' && 'bg-hox-orange group-hover:shadow-hox-orange/40',
+                                division.color === 'hox-green' && 'bg-hox-green group-hover:shadow-hox-green/40'
+                              )}
+                            />
+                            <span className="font-medium tracking-wide">{division.name}</span>
+                          </Link>
+                        ))}
+                      </div>
+                      
+                      {/* Bottom accent */}
+                      <div className="h-px w-full bg-gradient-to-r from-transparent via-border/30 to-transparent" />
                     </div>
                   </div>
                 </div>
