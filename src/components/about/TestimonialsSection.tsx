@@ -1,5 +1,5 @@
-import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { Quote } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { HoverText } from '@/components/ui/HoverText';
 
@@ -35,13 +35,42 @@ const testimonials = [
 
 export function TestimonialsSection() {
   const [isPaused, setIsPaused] = useState(false);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const [contentWidth, setContentWidth] = useState(0);
 
-  // Card width estimation: ~450px on desktop, ~350px on mobile + 24px gap
-  const cardWidth = 470; // approximate card width + gap
-  const totalWidth = cardWidth * testimonials.length;
+  useEffect(() => {
+    if (!rowRef.current) return;
+    // Measure one set of testimonial cards
+    const oneSetCount = testimonials.length;
+    const children = rowRef.current.children;
+    let width = 0;
+    const style = getComputedStyle(rowRef.current);
+    const gap = parseFloat(style.columnGap) || 24;
+    for (let i = 0; i < oneSetCount && i < children.length; i++) {
+      width += (children[i] as HTMLElement).offsetWidth;
+      if (i < oneSetCount - 1) width += gap;
+    }
+    setContentWidth(width);
+  }, []);
+
+  const animationStyle = contentWidth > 0 ? {
+    animationName: 'testimonial-scroll',
+    animationDuration: '40s',
+    animationTimingFunction: 'linear',
+    animationIterationCount: 'infinite',
+    animationPlayState: isPaused ? 'paused' : 'running',
+    '--scroll-distance': `${contentWidth}px`,
+  } as React.CSSProperties : {};
 
   return (
     <section className="py-12 lg:py-16 bg-background">
+      <style>{`
+        @keyframes testimonial-scroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(calc(-1 * var(--scroll-distance))); }
+        }
+      `}</style>
+
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-end justify-between mb-12">
           <div>
@@ -64,7 +93,6 @@ export function TestimonialsSection() {
               <span className="text-primary"><HoverText>Say.</HoverText></span>
             </motion.h2>
           </div>
-
         </div>
 
         {/* Continuous Scroll Container */}
@@ -73,42 +101,29 @@ export function TestimonialsSection() {
           onMouseLeave={() => setIsPaused(false)}
           className="overflow-hidden"
         >
-          <motion.div
-            className="flex gap-6"
-            animate={{
-              x: isPaused ? undefined : [0, -totalWidth],
-            }}
-            transition={{
-              x: {
-                repeat: Infinity,
-                repeatType: "loop",
-                duration: 40,
-                ease: "linear",
-              },
-            }}
+          <div
+            ref={rowRef}
+            className="flex gap-6 w-max will-change-transform"
+            style={animationStyle}
           >
             {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
-            <motion.div
-              key={index}
-              className="relative flex-shrink-0 w-[340px] md:w-[450px] p-8 rounded-xl bg-card border border-border transition-all duration-500 group hover:border-primary/30"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: (index % testimonials.length) * 0.1 }}
-            >
-              <Quote className="w-10 h-10 text-primary/20 mb-6 transition-colors duration-300 group-hover:text-primary/40" />
-              
-              <blockquote className="text-muted-foreground italic leading-loose mb-6 text-xs md:text-sm whitespace-pre-line">
-                "{testimonial.quote}"
-              </blockquote>
-              
-              <div className="border-t border-border pt-6">
-                <p className="font-bold text-foreground">{testimonial.author}</p>
-                <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+              <div
+                key={index}
+                className="relative flex-shrink-0 w-[340px] md:w-[450px] p-8 rounded-xl bg-card border border-border transition-all duration-500 group hover:border-primary/30"
+              >
+                <Quote className="w-10 h-10 text-primary/20 mb-6 transition-colors duration-300 group-hover:text-primary/40" />
+                
+                <blockquote className="text-muted-foreground italic leading-loose mb-6 text-xs md:text-sm whitespace-pre-line">
+                  "{testimonial.quote}"
+                </blockquote>
+                
+                <div className="border-t border-border pt-6">
+                  <p className="font-bold text-foreground">{testimonial.author}</p>
+                  <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+                </div>
               </div>
-            </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

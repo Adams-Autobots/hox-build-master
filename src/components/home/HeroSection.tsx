@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { HoverText } from '@/components/ui/HoverText';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import heroVideo from '@/assets/hero-video-v3.mp4';
 
 const divisions = [
@@ -12,13 +13,39 @@ const divisions = [
   { name: 'Interiors', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
 ];
 
+function useWindowHeight() {
+  const [height, setHeight] = useState(typeof window !== 'undefined' ? window.innerHeight : 800);
+
+  useEffect(() => {
+    const update = () => setHeight(window.innerHeight);
+    window.addEventListener('resize', update, { passive: true });
+    // Also handle mobile URL bar show/hide
+    window.addEventListener('orientationchange', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+    };
+  }, []);
+
+  return height;
+}
+
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const { scrollY } = useScroll();
+  const windowHeight = useWindowHeight();
+  const prefersReducedMotion = useReducedMotion();
 
-  // Video fades out as user scrolls (starts at 60% of viewport, fully faded at 120%)
-  const videoOpacity = useTransform(scrollY, [0, window.innerHeight * 0.6, window.innerHeight * 1.2], [1, 1, 0]);
+  // Dynamic fade thresholds that respond to actual viewport height
+  const fadeStart = useMemo(() => windowHeight * 0.6, [windowHeight]);
+  const fadeEnd = useMemo(() => windowHeight * 1.2, [windowHeight]);
+  const videoOpacity = useTransform(
+    scrollY, 
+    [0, fadeStart, fadeEnd], 
+    prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]
+  );
 
   useEffect(() => {
     const video = videoRef.current;
@@ -27,13 +54,8 @@ export function HeroSection() {
     let interval: NodeJS.Timeout;
 
     const startCycle = () => {
-      // Reset to first division when video starts/loops
       setActiveIndex(0);
-      
-      // Clear any existing interval
       if (interval) clearInterval(interval);
-      
-      // Start the 4-second cycle
       interval = setInterval(() => {
         setActiveIndex(prev => (prev + 1) % divisions.length);
       }, 4000);
@@ -41,19 +63,12 @@ export function HeroSection() {
 
     const handlePlay = () => startCycle();
     const handleSeeked = () => {
-      // When video loops back to start, reset the cycle
-      if (video.currentTime < 0.1) {
-        startCycle();
-      }
+      if (video.currentTime < 0.1) startCycle();
     };
 
     video.addEventListener('play', handlePlay);
     video.addEventListener('seeked', handleSeeked);
-    
-    // If video is already playing (autoplay), start immediately
-    if (!video.paused) {
-      startCycle();
-    }
+    if (!video.paused) startCycle();
 
     return () => {
       video.removeEventListener('play', handlePlay);
@@ -64,12 +79,26 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-visible">
-      {/* Fixed Background Video - stays constant while content scrolls */}
+      {/* Fixed Background Video */}
       <motion.div 
         className="fixed inset-0 w-full h-screen pointer-events-none" 
         style={{ opacity: videoOpacity, zIndex: 0 }}
       >
-        <video ref={videoRef} src={heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" aria-label="HOX showreel featuring exhibitions, events, retail and interiors projects in Dubai" />
+        {/* Solid background colour shown immediately while video loads */}
+        <div className="absolute inset-0 bg-background" />
+        
+        <video
+          ref={videoRef}
+          src={heroVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          onCanPlay={() => setVideoLoaded(true)}
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+          aria-label="HOX showreel featuring exhibitions, events, retail and interiors projects in Dubai"
+        />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/30" />
         {/* Subtle red brand tint */}

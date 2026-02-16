@@ -187,6 +187,7 @@ function DivisionCard({
           key={src}
           src={src}
           alt={division.headline}
+          loading="lazy"
           className={cn(
             'absolute inset-0 w-full h-full object-cover transition-all duration-1000',
             imgIndex === activeIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105',

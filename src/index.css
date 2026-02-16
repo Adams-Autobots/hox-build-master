@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+/* Font loaded via <link> in index.html for non-blocking render */
 
 /* HOX.AE Design System - Ultra Premium Black Interface */
 
@@ -283,21 +283,20 @@
   }
 }
 
-/* Scroll Snap Styles */
-.scroll-snap-container {
-  scroll-snap-type: y proximity;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-}
+/* Scroll Snap Styles — desktop only, mobile browsers fight snap with URL bar */
+@media (min-width: 768px) {
+  .scroll-snap-container {
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+  }
 
-.scroll-snap-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
+  .scroll-snap-section {
+    scroll-snap-align: start;
+  }
 
-.scroll-snap-section-auto {
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
+  .scroll-snap-section-auto {
+    scroll-snap-align: start;
+  }
 }
 
 /* Smooth scroll for all anchor links */

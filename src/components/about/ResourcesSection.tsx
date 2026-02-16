@@ -80,6 +80,7 @@ export function ResourcesSection() {
                 <img
                   src={skill.image}
                   alt={`${skill.title} - HOX core capability`}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
