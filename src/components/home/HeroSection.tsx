@@ -40,7 +40,7 @@ export function HeroSection() {
   const animFrameRef = useRef<number>(0);
   const [videoState, setVideoState] = useState<'loading' | 'playing' | 'failed'>('loading');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [posterDataUrl, setPosterDataUrl] = useState<string | null>(null);
+  const [bgUrl, setBgUrl] = useState<string>(HERO_POSTER);
   const { scrollY } = useScroll();
   const windowHeight = useWindowHeight();
   const prefersReducedMotion = useReducedMotion();
@@ -50,7 +50,7 @@ export function HeroSection() {
   const fadeEnd = useMemo(() => windowHeight * 0.9, [windowHeight]);
   const heroOpacity = useTransform(scrollY, [0, fadeStart, fadeEnd], prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]);
 
-  // Pause video when scrolled out of view
+  // Pause video when scrolled out
   useEffect(() => {
     if (!videoRef.current || videoState !== 'playing') return;
     const unsubscribe = scrollY.on('change', (y) => {
@@ -62,8 +62,7 @@ export function HeroSection() {
     return unsubscribe;
   }, [scrollY, windowHeight, videoState]);
 
-  // Paint video frames to canvas → export as data URL for background-image
-  // This is how we get LIVE video inside background-clip:text
+  // Paint video frames → single dataURL for entire text block
   useEffect(() => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -71,57 +70,30 @@ export function HeroSection() {
 
     const ctx = canvas.getContext('2d', { willReadFrequently: false });
     if (!ctx) return;
-
-    canvas.width = 480;  // Low res is fine — it's behind text
-    canvas.height = 270;
+    canvas.width = 640;
+    canvas.height = 360;
 
     let lastTime = 0;
-    const fps = 15; // 15fps is enough for a background texture
-    const interval = 1000 / fps;
+    const interval = 1000 / 12; // 12fps — enough for texture
 
     const paint = (timestamp: number) => {
       animFrameRef.current = requestAnimationFrame(paint);
       if (timestamp - lastTime < interval) return;
       lastTime = timestamp;
-
-      ctx.drawImage(video, 0, 0, 480, 270);
-      try {
-        const url = canvas.toDataURL('image/jpeg', 0.6);
-        setPosterDataUrl(url);
-      } catch {
-        // Canvas tainted — fall back to poster
-      }
+      ctx.drawImage(video, 0, 0, 640, 360);
+      try { setBgUrl(canvas.toDataURL('image/jpeg', 0.65)); } catch {}
     };
 
     animFrameRef.current = requestAnimationFrame(paint);
     return () => cancelAnimationFrame(animFrameRef.current);
   }, [videoState]);
 
-  // Generate poster data URL on load for initial background
-  useEffect(() => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      const c = document.createElement('canvas');
-      c.width = 480;
-      c.height = 270;
-      const ctx = c.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(img, 0, 0, 480, 270);
-        try { setPosterDataUrl(c.toDataURL('image/jpeg', 0.7)); } catch {}
-      }
-    };
-    img.src = HERO_POSTER;
-  }, []);
-
   const handleCanPlay = useCallback(() => setVideoState('playing'), []);
   const handleError = useCallback(() => setVideoState('failed'), []);
 
-  const bgImage = posterDataUrl ? `url(${posterDataUrl})` : `url(${HERO_POSTER})`;
-
   return (
     <section className="relative h-[100svh] flex flex-col overflow-hidden">
-      {/* Hidden video + canvas — video plays offscreen, canvas captures frames */}
+      {/* Hidden video + canvas */}
       <div className="fixed top-0 left-0 w-0 h-0 overflow-hidden" aria-hidden="true">
         {shouldLoadVideo && !prefersReducedMotion && videoState !== 'failed' && (
           <video
@@ -136,82 +108,76 @@ export function HeroSection() {
         <canvas ref={canvasRef} />
       </div>
 
-      {/* Fixed background — solid dark, fades on scroll */}
+      {/* Fixed dark bg — fades on scroll */}
       <motion.div
         className="fixed inset-0 w-full h-[100svh] bg-background pointer-events-none"
         style={{ opacity: heroOpacity, zIndex: 0 }}
       />
 
-      {/* Text block — video plays inside the letterforms via background-clip:text */}
+      {/* 
+        SINGLE TEXT BLOCK — one background-clip:text container
+        Video covers all four words as one continuous image.
+        Words packed tight with negative leading so they fill
+        the viewport and maximise the video vitrine area.
+      */}
       <motion.div
-        className="relative z-10 flex-1 flex flex-col justify-center px-4 md:px-8 lg:px-12"
+        className="relative z-10 flex-1 flex flex-col justify-center overflow-hidden"
         style={{ opacity: heroOpacity }}
       >
-        <div className="flex flex-col">
+        <h1
+          className="font-extrabold uppercase tracking-tighter select-none
+            leading-[0.82] px-3 md:px-6 lg:px-10"
+          style={{
+            backgroundImage: `url(${bgUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center 40%',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
           {divisions.map((division, index) => (
-            <motion.div
+            <Link
               key={division.name}
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 + index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+              to={division.path}
+              className="block relative"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onTouchStart={() => setHoveredIndex(index)}
+              onTouchEnd={() => setTimeout(() => setHoveredIndex(null), 600)}
+              style={{
+                WebkitTextFillColor: hoveredIndex === index ? division.color : 'transparent',
+                transition: 'all 0.3s ease',
+              }}
             >
-              <Link
-                to={division.path}
-                className="group block relative"
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onTouchStart={() => setHoveredIndex(index)}
-                onTouchEnd={() => setTimeout(() => setHoveredIndex(null), 600)}
+              <motion.span
+                className="block"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 + index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
+                style={{
+                  fontSize: `clamp(48px, ${
+                    division.name.length <= 5 ? '24' :
+                    division.name.length <= 6 ? '21' :
+                    division.name.length <= 7 ? '18' :
+                    division.name.length <= 9 ? '15.5' : '13'
+                  }vw, 240px)`,
+                }}
               >
-                {/* Video-through-text layer */}
-                <span
-                  className="block font-extrabold uppercase leading-[0.88] tracking-tighter select-none
-                    transition-opacity duration-300"
-                  style={{
-                    fontSize: `clamp(30px, ${division.name.length <= 5 ? '22' : division.name.length <= 6 ? '19' : division.name.length <= 7 ? '17' : '13.5'}vw, 200px)`,
-                    backgroundImage: bgImage,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    WebkitBackgroundClip: 'text',
-                    backgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    opacity: hoveredIndex === index ? 0 : 1,
-                  }}
-                  aria-hidden="true"
-                >
-                  {division.name}
-                </span>
-
-                {/* Division colour layer — shows on hover/tap */}
-                <span
-                  className="absolute inset-0 block font-extrabold uppercase leading-[0.88] tracking-tighter select-none
-                    transition-opacity duration-300"
-                  style={{
-                    fontSize: `clamp(30px, ${division.name.length <= 5 ? '22' : division.name.length <= 6 ? '19' : division.name.length <= 7 ? '17' : '13.5'}vw, 200px)`,
-                    color: division.color,
-                    opacity: hoveredIndex === index ? 1 : 0,
-                  }}
-                >
-                  {division.name}
-                </span>
-              </Link>
-            </motion.div>
+                {division.name}
+              </motion.span>
+            </Link>
           ))}
-        </div>
+        </h1>
       </motion.div>
 
-      {/* Bottom bar — wordmark + scroll indicator */}
+      {/* Scroll indicator only — no redundant wordmark */}
       <motion.div
-        className="relative z-10 px-6 lg:px-12 pb-6 lg:pb-8 flex items-end justify-between"
+        className="relative z-10 flex justify-end px-6 lg:px-12 pb-6 lg:pb-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.8 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
       >
-        <h1 className="text-base md:text-lg font-bold tracking-tight">
-          <span className="text-[hsl(var(--hox-red))]">hox</span>
-          <span className="text-foreground">creative</span>
-          <span className="text-[hsl(var(--hox-red))]">.</span>
-        </h1>
         <motion.div
           className="flex flex-col items-center gap-1.5"
           animate={{ y: [0, 5, 0] }}

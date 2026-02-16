@@ -263,11 +263,37 @@ export function Header() {
           <X className="w-5 h-5" />
         </button>
 
-        {/* Content */}
-        <div className="relative z-10 h-full flex flex-col justify-center">
+        {/* Content — scrollable on mobile */}
+        <div className="relative z-10 h-full overflow-y-auto overscroll-contain">
+          <div className="min-h-full flex flex-col justify-center py-20 md:py-12">
           <div className="container mx-auto px-6 lg:px-12">
-            {/* Division Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-12 lg:mb-16">
+            {/* Division links — compact on mobile */}
+            <div
+              className={cn(
+                'md:hidden flex flex-col gap-5 mb-10 transition-all duration-700',
+                isOverlayOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              )}
+              style={{ transitionDelay: isOverlayOpen ? '100ms' : '0ms' }}
+            >
+              {divisions.map((division) => (
+                <Link
+                  key={division.slug}
+                  to={division.path}
+                  className="group flex items-center justify-between py-2 border-b border-border/10"
+                >
+                  <span className="text-2xl font-bold tracking-tight">
+                    <span className="text-foreground/70 group-hover:text-foreground transition-colors">hox</span>
+                    <span style={{ color: `hsl(var(--${division.cssVar}))` }}>{division.slug}.</span>
+                  </span>
+                  <ArrowRight
+                    className="w-4 h-4 text-muted-foreground/40 group-hover:text-foreground transition-all group-hover:translate-x-1"
+                  />
+                </Link>
+              ))}
+            </div>
+
+            {/* Division cards — thumbnail grid on desktop only */}
+            <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-12 lg:mb-16">
               {divisions.map((division, index) => (
                 <Link
                   key={division.slug}
@@ -371,6 +397,7 @@ export function Header() {
                 WhatsApp Us
               </a>
             </div>
+          </div>
           </div>
         </div>
       </div>
