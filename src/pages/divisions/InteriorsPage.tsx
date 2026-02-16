@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { FloatingCTABar } from '@/components/divisions/FloatingCTABar';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
 
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
@@ -50,7 +51,7 @@ export default function InteriorsPage() {
           headline="Interiors crafted"
           highlightText="With precision."
           description="We transform spaces into experiences. From corporate offices to luxury residences, every interior reflects meticulous craftsmanship and design excellence."
-          ctaText="Get in touch"
+          ctaText="Get a Quote"
           heroImage={heroInteriors}
           heroVideo={VIDEO_URLS.heroInteriors}
           cropLeft
@@ -67,6 +68,7 @@ export default function InteriorsPage() {
 
         <DivisionFAQ division="interiors" />
       </div>
-    </Layout>
+            <FloatingCTABar division="interiors" divisionColor="hox-green" />
+      </Layout>
   );
 }
