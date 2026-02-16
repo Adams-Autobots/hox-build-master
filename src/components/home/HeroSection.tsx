@@ -7,23 +7,29 @@ import { VIDEO_URLS } from '@/lib/video-urls';
 const HERO_POSTER = '/hero-poster.jpg';
 
 const divisions = [
-  { name: 'Exhibitions', color: 'hsl(var(--hox-red))', path: '/divisions/exhibitions' },
-  { name: 'Events', color: 'hsl(var(--hox-blue))', path: '/divisions/events' },
-  { name: 'Retail', color: 'hsl(var(--hox-orange))', path: '/divisions/retail' },
-  { name: 'Interiors', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
+  { name: 'EXHIBITIONS', color: 'hsl(var(--hox-red))', path: '/divisions/exhibitions' },
+  { name: 'EVENTS', color: 'hsl(var(--hox-blue))', path: '/divisions/events' },
+  { name: 'RETAIL', color: 'hsl(var(--hox-orange))', path: '/divisions/retail' },
+  { name: 'INTERIORS', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
 ];
 
-// Build the running text sequence — words repeat to fill the viewport
-// Separated by bullet dividers so it reads as a continuous stream
-function buildTextSequence(repeats: number) {
-  const seq: Array<{ name: string; color: string; path: string; id: string }> = [];
-  for (let r = 0; r < repeats; r++) {
-    for (const div of divisions) {
-      seq.push({ ...div, id: `${div.name}-${r}` });
+// Build the repeated sequence: each word appears 3-4 times, interleaved
+// with bullet separators, running on as continuous text
+function buildTextSequence() {
+  const sequence: Array<{ text: string; divIndex: number; isWord: boolean }> = [];
+  // 4 full cycles = each word appears 4 times = ~16 words wrapping across viewport
+  for (let cycle = 0; cycle < 4; cycle++) {
+    for (let d = 0; d < divisions.length; d++) {
+      if (sequence.length > 0) {
+        sequence.push({ text: ' · ', divIndex: -1, isWord: false });
+      }
+      sequence.push({ text: divisions[d].name, divIndex: d, isWord: true });
     }
   }
-  return seq;
+  return sequence;
 }
+
+const textSequence = buildTextSequence();
 
 function useWindowHeight() {
   const [h, setH] = useState(typeof window !== 'undefined' ? window.innerHeight : 800);
@@ -41,7 +47,7 @@ export function HeroSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
   const [videoReady, setVideoReady] = useState(false);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [hoveredDiv, setHoveredDiv] = useState<number | null>(null);
   const [frameUrl, setFrameUrl] = useState<string | null>(null);
   const { scrollY } = useScroll();
   const wh = useWindowHeight();
@@ -104,26 +110,6 @@ export function HeroSection() {
   }, []);
 
   const bg = frameUrl || HERO_POSTER;
-  const sequence = useMemo(() => buildTextSequence(4), []);
-
-  /*
-    RUNNING TEXT BLOCK TECHNIQUE:
-    
-    The 4 division names repeat 4× as a continuous inline text flow:
-    EXHIBITIONS EVENTS RETAIL INTERIORS EXHIBITIONS EVENTS...
-    
-    The h1 has overflow:hidden and a fixed height (100svh minus
-    header/footer). Text wraps naturally within this box. The entire
-    block has background-clip:text so video shows through ALL the
-    letters as one continuous vitrine.
-    
-    Words are separated by thin bullet dividers (·) styled smaller.
-    Each word is a link. On hover, that word fills with its division colour.
-    
-    Result: the viewport is PACKED with text. Minimal dead space.
-    Video visible through a dense typographic texture. The repetition
-    becomes the design — it reads as a bold statement of capability.
-  */
 
   return (
     <section className="relative h-[100svh] flex flex-col overflow-hidden">
@@ -147,72 +133,93 @@ export function HeroSection() {
         style={{ opacity, zIndex: 0 }}
       />
 
-      {/* Dense text block */}
+      {/*
+        CONTINUOUS TEXT BLOCK
+        
+        All 4 division names repeated 4x, running on as one paragraph.
+        Text wraps naturally — every viewport width produces a full,
+        dense block of text with video showing through every letter.
+        
+        No dead space: text fills the entire rectangle.
+        No sizing math per word: one font-size, natural word-wrap.
+        
+        Words are separated by · bullets. On hover/tap, ALL instances
+        of that division light up in their brand colour.
+        
+        overflow-hidden crops any excess — but because it's just
+        wrapping text, it always fills exactly the space available.
+      */}
       <motion.div
         className="relative z-10 flex-1 flex flex-col pt-[72px] md:pt-[80px] overflow-hidden"
         style={{ opacity }}
       >
         <h1
-          className="flex-1 overflow-hidden font-extrabold uppercase leading-[0.88] select-none"
+          className="flex-1 font-extrabold uppercase leading-[0.95] select-none overflow-hidden px-2 md:px-4 lg:px-6"
           style={{
-            fontSize: 'clamp(44px, 11.5vw, 200px)',
+            fontSize: 'clamp(54px, 11.5vw, 220px)',
             letterSpacing: '-0.03em',
-            wordSpacing: '0.05em',
+            wordSpacing: '-0.02em',
             backgroundImage: `url(${bg})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center 30%',
+            backgroundPosition: 'center',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}
         >
-          {sequence.map((item, i) => (
-            <span key={item.id} className="inline">
-              {i > 0 && (
+          {textSequence.map((item, i) => {
+            if (!item.isWord) {
+              return (
                 <span
-                  className="inline-block mx-[0.12em] opacity-30"
+                  key={i}
+                  className="inline text-muted-foreground/15"
                   style={{
+                    WebkitTextFillColor: 'hsl(var(--muted-foreground) / 0.15)',
                     fontSize: '0.5em',
                     verticalAlign: 'middle',
-                    WebkitTextFillColor: 'hsl(var(--muted-foreground))',
                   }}
-                  aria-hidden="true"
                 >
-                  ·
+                  {item.text}
                 </span>
-              )}
+              );
+            }
+
+            const div = divisions[item.divIndex];
+            const isHovered = hoveredDiv === item.divIndex;
+
+            return (
               <Link
-                to={item.path}
-                className="inline hover:opacity-100 transition-all duration-200"
-                onMouseEnter={() => setHoveredId(item.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                onTouchStart={() => setHoveredId(item.id)}
-                onTouchEnd={() => setTimeout(() => setHoveredId(null), 500)}
+                key={i}
+                to={div.path}
+                className="inline transition-all duration-200"
+                onMouseEnter={() => setHoveredDiv(item.divIndex)}
+                onMouseLeave={() => setHoveredDiv(null)}
+                onTouchStart={() => setHoveredDiv(item.divIndex)}
+                onTouchEnd={() => setTimeout(() => setHoveredDiv(null), 600)}
                 style={{
-                  WebkitTextFillColor: hoveredId === item.id ? item.color : 'transparent',
-                  transition: 'all 0.2s ease',
+                  WebkitTextFillColor: isHovered ? div.color : 'transparent',
                 }}
               >
-                {item.name}
+                {item.text}
               </Link>
-            </span>
-          ))}
+            );
+          })}
         </h1>
       </motion.div>
 
-      {/* Scroll indicator — overlaid bottom right */}
+      {/* Scroll indicator — overlaid at bottom right */}
       <motion.div
         className="absolute bottom-4 right-6 lg:bottom-8 lg:right-12 z-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.5 }}
+        transition={{ delay: 0.8, duration: 0.5 }}
       >
         <motion.div
           className="flex flex-col items-center gap-1"
           animate={{ y: [0, 4, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="text-[8px] text-muted-foreground/30 tracking-[0.3em] uppercase">Scroll</span>
+          <span className="text-[8px] text-muted-foreground/25 tracking-[0.3em] uppercase">Scroll</span>
           <div className="w-px h-4 bg-foreground/15" />
         </motion.div>
       </motion.div>
