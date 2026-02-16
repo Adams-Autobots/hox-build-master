@@ -36,8 +36,11 @@ function useShouldLoadVideo() {
 
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animFrameRef = useRef<number>(0);
   const [videoState, setVideoState] = useState<'loading' | 'playing' | 'failed'>('loading');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [posterDataUrl, setPosterDataUrl] = useState<string | null>(null);
   const { scrollY } = useScroll();
   const windowHeight = useWindowHeight();
   const prefersReducedMotion = useReducedMotion();
@@ -47,6 +50,7 @@ export function HeroSection() {
   const fadeEnd = useMemo(() => windowHeight * 0.9, [windowHeight]);
   const heroOpacity = useTransform(scrollY, [0, fadeStart, fadeEnd], prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]);
 
+  // Pause video when scrolled out of view
   useEffect(() => {
     if (!videoRef.current || videoState !== 'playing') return;
     const unsubscribe = scrollY.on('change', (y) => {
@@ -58,95 +62,132 @@ export function HeroSection() {
     return unsubscribe;
   }, [scrollY, windowHeight, videoState]);
 
+  // Paint video frames to canvas → export as data URL for background-image
+  // This is how we get LIVE video inside background-clip:text
+  useEffect(() => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (!video || !canvas || videoState !== 'playing') return;
+
+    const ctx = canvas.getContext('2d', { willReadFrequently: false });
+    if (!ctx) return;
+
+    canvas.width = 480;  // Low res is fine — it's behind text
+    canvas.height = 270;
+
+    let lastTime = 0;
+    const fps = 15; // 15fps is enough for a background texture
+    const interval = 1000 / fps;
+
+    const paint = (timestamp: number) => {
+      animFrameRef.current = requestAnimationFrame(paint);
+      if (timestamp - lastTime < interval) return;
+      lastTime = timestamp;
+
+      ctx.drawImage(video, 0, 0, 480, 270);
+      try {
+        const url = canvas.toDataURL('image/jpeg', 0.6);
+        setPosterDataUrl(url);
+      } catch {
+        // Canvas tainted — fall back to poster
+      }
+    };
+
+    animFrameRef.current = requestAnimationFrame(paint);
+    return () => cancelAnimationFrame(animFrameRef.current);
+  }, [videoState]);
+
+  // Generate poster data URL on load for initial background
+  useEffect(() => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = 480;
+      c.height = 270;
+      const ctx = c.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, 480, 270);
+        try { setPosterDataUrl(c.toDataURL('image/jpeg', 0.7)); } catch {}
+      }
+    };
+    img.src = HERO_POSTER;
+  }, []);
+
   const handleCanPlay = useCallback(() => setVideoState('playing'), []);
   const handleError = useCallback(() => setVideoState('failed'), []);
 
-  return (
-    <section className="relative min-h-screen flex flex-col overflow-hidden">
-      {/*
-        VIDEO-THROUGH-TEXT TECHNIQUE using SVG mask:
-        - Video plays behind an SVG that has text cut out
-        - The SVG is filled with the background colour
-        - Where text is, the SVG is transparent → video shows through
-        - This gives a solid, reliable cross-browser mask effect
-      */}
+  const bgImage = posterDataUrl ? `url(${posterDataUrl})` : `url(${HERO_POSTER})`;
 
-      {/* Fixed video layer */}
-      <motion.div
-        className="fixed inset-0 w-full h-screen pointer-events-none"
-        style={{ opacity: heroOpacity, zIndex: 0 }}
-      >
-        <div className="absolute inset-0 bg-background" />
-        <img
-          src={HERO_POSTER}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${videoState === 'playing' ? 'opacity-0' : 'opacity-70'}`}
-        />
+  return (
+    <section className="relative h-[100svh] flex flex-col overflow-hidden">
+      {/* Hidden video + canvas — video plays offscreen, canvas captures frames */}
+      <div className="fixed top-0 left-0 w-0 h-0 overflow-hidden" aria-hidden="true">
         {shouldLoadVideo && !prefersReducedMotion && videoState !== 'failed' && (
           <video
             ref={videoRef}
             autoPlay muted loop playsInline preload="metadata"
             onCanPlay={handleCanPlay}
             onError={handleError}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${videoState === 'playing' ? 'opacity-100' : 'opacity-0'}`}
           >
             <source src={VIDEO_URLS.heroMain} type="video/mp4" />
           </video>
         )}
-        {/* Slight overlay to add contrast to text edges */}
-        <div className="absolute inset-0 bg-background/10" />
-      </motion.div>
+        <canvas ref={canvasRef} />
+      </div>
 
-      {/* SVG text mask — dark background with text cut out to reveal video */}
+      {/* Fixed background — solid dark, fades on scroll */}
       <motion.div
-        className="relative z-10 flex-1 flex flex-col justify-center pointer-events-none"
+        className="fixed inset-0 w-full h-[100svh] bg-background pointer-events-none"
+        style={{ opacity: heroOpacity, zIndex: 0 }}
+      />
+
+      {/* Text block — video plays inside the letterforms via background-clip:text */}
+      <motion.div
+        className="relative z-10 flex-1 flex flex-col justify-center px-4 md:px-8 lg:px-12"
         style={{ opacity: heroOpacity }}
       >
-        <svg
-          className="w-full h-auto"
-          viewBox="0 0 1200 600"
-          preserveAspectRatio="xMidYMid slice"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <defs>
-            <mask id="text-mask">
-              {/* White = visible, Black = hidden */}
-              <rect width="100%" height="100%" fill="white" />
-              <text x="40" y="155" className="hero-mask-text" fill="black" fontSize="145" fontWeight="800" fontFamily="'Outfit', sans-serif" letterSpacing="-4">EXHIBITIONS</text>
-              <text x="40" y="290" className="hero-mask-text" fill="black" fontSize="145" fontWeight="800" fontFamily="'Outfit', sans-serif" letterSpacing="-4">EVENTS</text>
-              <text x="40" y="425" className="hero-mask-text" fill="black" fontSize="145" fontWeight="800" fontFamily="'Outfit', sans-serif" letterSpacing="-4">RETAIL</text>
-              <text x="40" y="560" className="hero-mask-text" fill="black" fontSize="145" fontWeight="800" fontFamily="'Outfit', sans-serif" letterSpacing="-4">INTERIORS</text>
-            </mask>
-          </defs>
-          {/* This rect is the background colour — masked so text areas are transparent (video shows through) */}
-          <rect width="100%" height="100%" fill="hsl(var(--background))" mask="url(#text-mask)" />
-        </svg>
-      </motion.div>
-
-      {/* Interactive hover layer — positioned over the SVG text areas */}
-      <div className="absolute inset-0 z-20 flex flex-col justify-center">
-        <div className="w-full" style={{ aspectRatio: '1200/600' }}>
-          <div className="relative w-full h-full">
-            {divisions.map((division, index) => (
+        <div className="flex flex-col">
+          {divisions.map((division, index) => (
+            <motion.div
+              key={division.name}
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 + index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
               <Link
-                key={division.name}
                 to={division.path}
-                className="absolute left-0 w-full block"
-                style={{
-                  top: `${(index * 135 + 25) / 600 * 100}%`,
-                  height: `${145 / 600 * 100}%`,
-                }}
+                className="group block relative"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
+                onTouchStart={() => setHoveredIndex(index)}
+                onTouchEnd={() => setTimeout(() => setHoveredIndex(null), 600)}
               >
-                {/* Colour fill on hover */}
+                {/* Video-through-text layer */}
                 <span
-                  className="absolute inset-0 flex items-center pl-[3.3%] font-extrabold uppercase transition-opacity duration-400"
+                  className="block font-extrabold uppercase leading-[0.88] tracking-tighter select-none
+                    transition-opacity duration-300"
                   style={{
-                    fontSize: 'min(12vw, 145px)',
-                    letterSpacing: '-0.03em',
-                    lineHeight: 1,
+                    fontSize: `clamp(30px, ${division.name.length <= 5 ? '22' : division.name.length <= 6 ? '19' : division.name.length <= 7 ? '17' : '13.5'}vw, 200px)`,
+                    backgroundImage: bgImage,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    WebkitBackgroundClip: 'text',
+                    backgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    opacity: hoveredIndex === index ? 0 : 1,
+                  }}
+                  aria-hidden="true"
+                >
+                  {division.name}
+                </span>
+
+                {/* Division colour layer — shows on hover/tap */}
+                <span
+                  className="absolute inset-0 block font-extrabold uppercase leading-[0.88] tracking-tighter select-none
+                    transition-opacity duration-300"
+                  style={{
+                    fontSize: `clamp(30px, ${division.name.length <= 5 ? '22' : division.name.length <= 6 ? '19' : division.name.length <= 7 ? '17' : '13.5'}vw, 200px)`,
                     color: division.color,
                     opacity: hoveredIndex === index ? 1 : 0,
                   }}
@@ -154,14 +195,14 @@ export function HeroSection() {
                   {division.name}
                 </span>
               </Link>
-            ))}
-          </div>
+            </motion.div>
+          ))}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Bottom bar — wordmark + scroll */}
+      {/* Bottom bar — wordmark + scroll indicator */}
       <motion.div
-        className="relative z-20 container mx-auto px-6 lg:px-12 pb-6 lg:pb-8 flex items-end justify-between"
+        className="relative z-10 px-6 lg:px-12 pb-6 lg:pb-8 flex items-end justify-between"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.8 }}
