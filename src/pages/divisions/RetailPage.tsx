@@ -9,7 +9,7 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages';
 import { Store, Palette, Package, Wrench } from 'lucide-react';
 import heroRetail from '@/assets/hero-retail.jpg';
-import heroRetailVideo from '@/assets/hero-retail-video.mp4';
+import { VIDEO_URLS } from '@/lib/video-urls';
 import retailDisplaysCard from '@/assets/retail-displays-card.png';
 import { useMemo } from 'react';
 
@@ -53,7 +53,7 @@ export default function RetailPage() {
           description="We build retail environments that drive foot traffic and conversions. From flagship stores to pop-up activations, every detail is designed to sell."
           ctaText="Get in touch"
           heroImage={heroRetail}
-          heroVideo={heroRetailVideo}
+          heroVideo={VIDEO_URLS.heroRetail}
         />
         
         <CapabilitiesGrid

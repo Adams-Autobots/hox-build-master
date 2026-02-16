@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { HoverText } from '@/components/ui/HoverText';
-import heroVideo from '@/assets/hero-video-v3.mp4';
+import { VIDEO_URLS } from '@/lib/video-urls';
 
 const divisions = [
   { name: 'Exhibitions', color: 'hsl(var(--hox-red))', path: '/divisions/exhibitions' },
@@ -69,7 +69,7 @@ export function HeroSection() {
         className="fixed inset-0 w-full h-screen pointer-events-none" 
         style={{ opacity: videoOpacity, zIndex: 0 }}
       >
-        <video ref={videoRef} src={heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover" aria-label="HOX showreel featuring exhibitions, events, retail and interiors projects in Dubai" />
+        <video ref={videoRef} src={VIDEO_URLS.heroMain} autoPlay muted loop playsInline className="w-full h-full object-cover" aria-label="HOX showreel featuring exhibitions, events, retail and interiors projects in Dubai" />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/30" />
         {/* Subtle red brand tint */}

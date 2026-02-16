@@ -9,7 +9,7 @@ import { DivisionMeta } from '@/components/seo/DivisionMeta';
 import { useGalleryImages, useCapabilityImages } from '@/hooks/useGalleryImages';
 import { Heart, Users, Theater, Palette } from 'lucide-react';
 import heroEvents from '@/assets/hero-events.jpg';
-import heroEventsVideo from '@/assets/hero-events-video-v2.mp4';
+import { VIDEO_URLS } from '@/lib/video-urls';
 import { useMemo } from 'react';
 
 const capabilityTitles = [
@@ -52,7 +52,7 @@ export default function EventsPage() {
           description="From corporate galas to product launches, we create immersive event experiences that leave lasting impressions. Precision production meets creative excellence."
           ctaText="Get in touch"
           heroImage={heroEvents}
-          heroVideo={heroEventsVideo}
+          heroVideo={VIDEO_URLS.heroEvents}
         />
         
         <CapabilitiesGrid
