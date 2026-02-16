@@ -1,10 +1,11 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { HoverText } from '@/components/ui/HoverText';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { VIDEO_URLS } from '@/lib/video-urls';
+import heroPoster from '@/assets/hero-exhibitions.jpg';
 
 const divisions = [
   { name: 'Exhibitions', color: 'hsl(var(--hox-red))', path: '/divisions/exhibitions' },
@@ -15,7 +16,6 @@ const divisions = [
 
 function useWindowHeight() {
   const [height, setHeight] = useState(typeof window !== 'undefined' ? window.innerHeight : 800);
-
   useEffect(() => {
     const update = () => setHeight(window.innerHeight);
     window.addEventListener('resize', update, { passive: true });
@@ -25,17 +25,29 @@ function useWindowHeight() {
       window.removeEventListener('orientationchange', update);
     };
   }, []);
-
   return height;
+}
+
+// Detect if we should even attempt video
+function useShouldLoadVideo() {
+  return useMemo(() => {
+    if (typeof navigator === 'undefined') return true;
+    // Skip video on data-saver or slow connections
+    const conn = (navigator as any).connection;
+    if (conn?.saveData) return false;
+    if (conn?.effectiveType === '2g' || conn?.effectiveType === 'slow-2g') return false;
+    return true;
+  }, []);
 }
 
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoState, setVideoState] = useState<'loading' | 'playing' | 'failed'>('loading');
   const { scrollY } = useScroll();
   const windowHeight = useWindowHeight();
   const prefersReducedMotion = useReducedMotion();
+  const shouldLoadVideo = useShouldLoadVideo();
 
   const fadeStart = useMemo(() => windowHeight * 0.6, [windowHeight]);
   const fadeEnd = useMemo(() => windowHeight * 1.2, [windowHeight]);
@@ -45,70 +57,105 @@ export function HeroSection() {
     prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]
   );
 
+  // Pause video when scrolled out of view (saves GPU)
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    if (!videoRef.current || videoState !== 'playing') return;
+    const unsubscribe = scrollY.on('change', (y) => {
+      const video = videoRef.current;
+      if (!video) return;
+      if (y > windowHeight * 1.3) {
+        if (!video.paused) video.pause();
+      } else {
+        if (video.paused) video.play().catch(() => {});
+      }
+    });
+    return unsubscribe;
+  }, [scrollY, windowHeight, videoState]);
 
-    let interval: NodeJS.Timeout;
+  // Division name cycle
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex(prev => (prev + 1) % divisions.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
-    const startCycle = () => {
-      setActiveIndex(0);
-      if (interval) clearInterval(interval);
-      interval = setInterval(() => {
-        setActiveIndex(prev => (prev + 1) % divisions.length);
-      }, 4000);
-    };
+  const handleCanPlay = useCallback(() => {
+    setVideoState('playing');
+  }, []);
 
-    const handlePlay = () => startCycle();
-    const handleSeeked = () => {
-      if (video.currentTime < 0.1) startCycle();
-    };
+  const handleError = useCallback(() => {
+    setVideoState('failed');
+  }, []);
 
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('seeked', handleSeeked);
-    if (!video.paused) startCycle();
-
-    return () => {
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('seeked', handleSeeked);
-      if (interval) clearInterval(interval);
-    };
+  const handleStalled = useCallback(() => {
+    // If stalled for too long, fall back to poster
+    const timer = setTimeout(() => {
+      if (videoRef.current?.readyState === 0) {
+        setVideoState('failed');
+      }
+    }, 8000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <section className="relative min-h-screen flex items-center overflow-visible">
-      {/* Fixed Background Video */}
-      <motion.div 
-        className="fixed inset-0 w-full h-screen pointer-events-none" 
+      {/* Background */}
+      <motion.div
+        className="fixed inset-0 w-full h-screen pointer-events-none"
         style={{ opacity: videoOpacity, zIndex: 0 }}
       >
+        {/* Solid fallback colour — always present */}
         <div className="absolute inset-0 bg-background" />
-        
-        <video
-          ref={videoRef}
-          src={VIDEO_URLS.heroMain}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          onCanPlay={() => setVideoLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
-          aria-label="HOX showreel featuring exhibitions, events, retail and interiors projects in Dubai"
+
+        {/* Poster image — shows immediately, fades when video plays */}
+        <img
+          src={heroPoster}
+          alt=""
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            videoState === 'playing' ? 'opacity-0' : 'opacity-60'
+          }`}
         />
-        <div className="absolute inset-0 bg-background/30" />
-        <div className="absolute inset-0 bg-[hsl(var(--hox-red)/0.04)]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-background/20 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-background/15" />
-        <div className="absolute bottom-0 left-0 right-0 h-[40vh] bg-gradient-to-t from-background via-background/40 to-transparent" />
+
+        {/* Video — lazy loaded, with error handling */}
+        {shouldLoadVideo && !prefersReducedMotion && videoState !== 'failed' && (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            onCanPlay={handleCanPlay}
+            onError={handleError}
+            onStalled={handleStalled}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1500 ${
+              videoState === 'playing' ? 'opacity-100' : 'opacity-0'
+            }`}
+            aria-label="HOX showreel featuring exhibitions, events, retail and interiors projects"
+          >
+            <source src={VIDEO_URLS.heroMain} type="video/mp4" />
+          </video>
+        )}
+
+        {/* Single combined overlay instead of 5 separate layers */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `
+              linear-gradient(to right, hsl(var(--background) / 0.55), hsl(var(--background) / 0.15), transparent),
+              linear-gradient(to top, hsl(var(--background)) 0%, hsl(var(--background) / 0.4) 40%, transparent 70%, hsl(var(--background) / 0.15) 100%)
+            `,
+          }}
+        />
       </motion.div>
 
       {/* Content */}
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} 
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="max-w-3xl"
         >
           <motion.div
@@ -124,9 +171,9 @@ export function HeroSection() {
             </span>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="grid grid-cols-2 md:flex md:flex-wrap gap-4 md:gap-6 mb-8 max-w-xs md:max-w-none"
           >
@@ -139,7 +186,7 @@ export function HeroSection() {
                     textShadow: activeIndex === index ? `0 0 20px ${division.color}` : 'none',
                   }}
                   animate={activeIndex === index ? { scale: [1, 1.08, 1] } : {}}
-                  transition={activeIndex === index ? { duration: 0.6, ease: "easeInOut" } : { duration: 0.2 }}
+                  transition={activeIndex === index ? { duration: 0.6, ease: 'easeInOut' } : { duration: 0.2 }}
                   whileHover={{ scale: 1.15, color: division.color, textShadow: `0 0 25px ${division.color}` }}
                 >
                   {division.name.split('').map((char, charIndex) => (
@@ -150,18 +197,18 @@ export function HeroSection() {
             ))}
           </motion.div>
 
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.6, delay: 0.3 }} 
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-lg mb-10"
           >
             Dubai based production, design and technical planning delivering world class exhibitions, events, retail and interior environments.
           </motion.p>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <Link to="/projects" className="group inline-flex items-center gap-2 text-sm font-medium tracking-wider uppercase text-muted-foreground hover:text-primary transition-colors duration-300">
