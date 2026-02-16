@@ -49,7 +49,7 @@ export function WhyHoxSection() {
             <div>
               <h3 className="text-sm font-semibold tracking-wider uppercase text-foreground mb-3">In-house</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                25,000 sq ft workshop, CNC routing, large-format print, spray booth, carpentry, metalwork. We don't outsource the things that matter.
+                CNC routing, large-format print, spray booth, carpentry, metalwork — all under one roof. We don't outsource the things that matter.
               </p>
             </div>
             <div>
