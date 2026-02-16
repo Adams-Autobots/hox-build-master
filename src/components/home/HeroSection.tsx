@@ -43,8 +43,8 @@ export function HeroSection() {
   const prefersReducedMotion = useReducedMotion();
   const shouldLoadVideo = useShouldLoadVideo();
 
-  const fadeStart = useMemo(() => windowHeight * 0.5, [windowHeight]);
-  const fadeEnd = useMemo(() => windowHeight * 1.0, [windowHeight]);
+  const fadeStart = useMemo(() => windowHeight * 0.4, [windowHeight]);
+  const fadeEnd = useMemo(() => windowHeight * 0.9, [windowHeight]);
   const heroOpacity = useTransform(scrollY, [0, fadeStart, fadeEnd], prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]);
 
   useEffect(() => {
@@ -62,116 +62,115 @@ export function HeroSection() {
   const handleError = useCallback(() => setVideoState('failed'), []);
 
   return (
-    <section className="relative h-screen overflow-hidden">
-      {/* 
-        Technique: 
-        Layer 1 (bottom): Video/poster at full brightness
-        Layer 2 (middle): Dark mask (bg-background/85) — makes everything dark
-        Layer 3 (top): Division text in WHITE with mix-blend-mode: multiply
-        
-        Result: Where the white text is, the dark mask is "punched through" 
-        and the video shows. Everywhere else stays dark.
-        
-        We use a wrapper with isolation:isolate to contain the blend.
+    <section className="relative min-h-screen flex flex-col overflow-hidden">
+      {/*
+        VIDEO-THROUGH-TEXT TECHNIQUE using SVG mask:
+        - Video plays behind an SVG that has text cut out
+        - The SVG is filled with the background colour
+        - Where text is, the SVG is transparent → video shows through
+        - This gives a solid, reliable cross-browser mask effect
       */}
 
-      <motion.div className="fixed inset-0 w-full h-screen" style={{ opacity: heroOpacity, zIndex: 0, isolation: 'isolate' }}>
-        {/* Layer 1: Video/poster */}
-        <div className="absolute inset-0">
-          <img
-            src={HERO_POSTER}
-            alt=""
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${videoState === 'playing' ? 'opacity-0' : 'opacity-100'}`}
-          />
-          {shouldLoadVideo && !prefersReducedMotion && videoState !== 'failed' && (
-            <video
-              ref={videoRef}
-              autoPlay muted loop playsInline preload="metadata"
-              onCanPlay={handleCanPlay}
-              onError={handleError}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${videoState === 'playing' ? 'opacity-100' : 'opacity-0'}`}
-            >
-              <source src={VIDEO_URLS.heroMain} type="video/mp4" />
-            </video>
-          )}
-        </div>
+      {/* Fixed video layer */}
+      <motion.div
+        className="fixed inset-0 w-full h-screen pointer-events-none"
+        style={{ opacity: heroOpacity, zIndex: 0 }}
+      >
+        <div className="absolute inset-0 bg-background" />
+        <img
+          src={HERO_POSTER}
+          alt=""
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${videoState === 'playing' ? 'opacity-0' : 'opacity-70'}`}
+        />
+        {shouldLoadVideo && !prefersReducedMotion && videoState !== 'failed' && (
+          <video
+            ref={videoRef}
+            autoPlay muted loop playsInline preload="metadata"
+            onCanPlay={handleCanPlay}
+            onError={handleError}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${videoState === 'playing' ? 'opacity-100' : 'opacity-0'}`}
+          >
+            <source src={VIDEO_URLS.heroMain} type="video/mp4" />
+          </video>
+        )}
+        {/* Slight overlay to add contrast to text edges */}
+        <div className="absolute inset-0 bg-background/10" />
+      </motion.div>
 
-        {/* Layer 2: Dark mask */}
-        <div className="absolute inset-0 bg-[hsl(var(--background)/0.82)]" />
+      {/* SVG text mask — dark background with text cut out to reveal video */}
+      <motion.div
+        className="relative z-10 flex-1 flex flex-col justify-center pointer-events-none"
+        style={{ opacity: heroOpacity }}
+      >
+        <svg
+          className="w-full h-auto"
+          viewBox="0 0 1200 600"
+          preserveAspectRatio="xMidYMid slice"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <defs>
+            <mask id="text-mask">
+              {/* White = visible, Black = hidden */}
+              <rect width="100%" height="100%" fill="white" />
+              <text x="40" y="155" className="hero-mask-text" fill="black" fontSize="145" fontWeight="800" fontFamily="'Outfit', sans-serif" letterSpacing="-4">EXHIBITIONS</text>
+              <text x="40" y="290" className="hero-mask-text" fill="black" fontSize="145" fontWeight="800" fontFamily="'Outfit', sans-serif" letterSpacing="-4">EVENTS</text>
+              <text x="40" y="425" className="hero-mask-text" fill="black" fontSize="145" fontWeight="800" fontFamily="'Outfit', sans-serif" letterSpacing="-4">RETAIL</text>
+              <text x="40" y="560" className="hero-mask-text" fill="black" fontSize="145" fontWeight="800" fontFamily="'Outfit', sans-serif" letterSpacing="-4">INTERIORS</text>
+            </mask>
+          </defs>
+          {/* This rect is the background colour — masked so text areas are transparent (video shows through) */}
+          <rect width="100%" height="100%" fill="hsl(var(--background))" mask="url(#text-mask)" />
+        </svg>
+      </motion.div>
 
-        {/* Layer 3: White text — mix-blend-mode: screen punches through the dark mask */}
-        <div className="absolute inset-0 mix-blend-screen pointer-events-none">
-          <div className="h-full flex flex-col justify-center container mx-auto px-4 md:px-6 lg:px-12">
+      {/* Interactive hover layer — positioned over the SVG text areas */}
+      <div className="absolute inset-0 z-20 flex flex-col justify-center">
+        <div className="w-full" style={{ aspectRatio: '1200/600' }}>
+          <div className="relative w-full h-full">
             {divisions.map((division, index) => (
-              <div key={division.name} className="relative overflow-hidden">
+              <Link
+                key={division.name}
+                to={division.path}
+                className="absolute left-0 w-full block"
+                style={{
+                  top: `${(index * 135 + 25) / 600 * 100}%`,
+                  height: `${145 / 600 * 100}%`,
+                }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                {/* Colour fill on hover */}
                 <span
-                  className="block font-bold uppercase leading-[0.88] tracking-tighter text-white select-none
-                    text-[16vw] md:text-[14vw] lg:text-[12.5vw]"
+                  className="absolute inset-0 flex items-center pl-[3.3%] font-extrabold uppercase transition-opacity duration-400"
+                  style={{
+                    fontSize: 'min(12vw, 145px)',
+                    letterSpacing: '-0.03em',
+                    lineHeight: 1,
+                    color: division.color,
+                    opacity: hoveredIndex === index ? 1 : 0,
+                  }}
                 >
                   {division.name}
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Interactive hover layer — sits above the blend, captures clicks */}
+      {/* Bottom bar — wordmark + scroll */}
       <motion.div
-        className="relative z-10 h-full flex flex-col justify-center container mx-auto px-4 md:px-6 lg:px-12"
-        style={{ opacity: heroOpacity }}
-      >
-        {divisions.map((division, index) => (
-          <motion.div
-            key={division.name}
-            initial={{ opacity: 0, x: -60 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 + index * 0.12, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            <Link
-              to={division.path}
-              className="block relative"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              {/* Transparent text for hitbox sizing */}
-              <span
-                className="block font-bold uppercase leading-[0.88] tracking-tighter select-none
-                  text-[16vw] md:text-[14vw] lg:text-[12.5vw] text-transparent"
-              >
-                {division.name}
-              </span>
-
-              {/* Coloured text — appears on hover */}
-              <span
-                className="absolute inset-0 block font-bold uppercase leading-[0.88] tracking-tighter select-none
-                  text-[16vw] md:text-[14vw] lg:text-[12.5vw] transition-opacity duration-400"
-                style={{
-                  color: division.color,
-                  opacity: hoveredIndex === index ? 1 : 0,
-                }}
-                aria-hidden="true"
-              >
-                {division.name}
-              </span>
-            </Link>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* Bottom bar */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 z-20 container mx-auto px-6 lg:px-12 pb-6 lg:pb-8 flex items-end justify-between"
+        className="relative z-20 container mx-auto px-6 lg:px-12 pb-6 lg:pb-8 flex items-end justify-between"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
+        transition={{ delay: 1, duration: 0.8 }}
       >
         <h1 className="text-base md:text-lg font-bold tracking-tight">
           <span className="text-[hsl(var(--hox-red))]">hox</span>
           <span className="text-foreground">creative</span>
           <span className="text-[hsl(var(--hox-red))]">.</span>
         </h1>
-
         <motion.div
           className="flex flex-col items-center gap-1.5"
           animate={{ y: [0, 5, 0] }}
