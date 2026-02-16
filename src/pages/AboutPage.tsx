@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ResourcesSection } from '@/components/about/ResourcesSection';
 import { TestimonialsSection } from '@/components/about/TestimonialsSection';
 import { HoverText } from '@/components/ui/HoverText';
+import founderPhoto from '@/assets/founder-adam-nicholson.png';
 
 const headingAnimation = {
   initial: { opacity: 0, y: 30 },
@@ -107,13 +108,14 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
-              <div className="aspect-[3/4] rounded-lg overflow-hidden bg-muted border border-border/30">
-                {/* Placeholder until real photo is provided */}
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-card via-muted to-card">
-                  <div className="text-center">
-                    <span className="text-6xl font-bold text-primary/20">AN</span>
-                  </div>
-                </div>
+              <div className="aspect-[3/4] rounded-lg overflow-hidden bg-muted border border-border/30 relative">
+                <img
+                  src={founderPhoto}
+                  alt="Adam Nicholson — Founder, HOX Creative"
+                  className="w-full h-full object-cover object-top grayscale brightness-75 contrast-110"
+                />
+                {/* Subtle dark overlay — keeps it understated */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-background/10 to-background/20" />
               </div>
               {/* Accent line */}
               <div className="absolute -bottom-3 -right-3 w-24 h-24 border-r-2 border-b-2 border-primary/30 rounded-br-lg" />
