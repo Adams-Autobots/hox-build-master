@@ -133,7 +133,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
             <div>
               <motion.span
                 className={cn(
-                  'inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-6',
+                  'inline-flex items-center gap-2 text-sm font-medium tracking-wider mb-6',
                   divisionColors[division]
                 )}
                 initial={{ opacity: 0, x: -20 }}
@@ -214,7 +214,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                   <Link
                     to={divisionRoutes[division]}
                     className={cn(
-                      'group inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase text-muted-foreground transition-colors duration-300',
+                      'group inline-flex items-center gap-2 text-sm font-medium tracking-wider uppercase text-muted-foreground transition-colors duration-300',
                       division === 'exhibitions' && 'hover:text-[hsl(var(--hox-red))]',
                       division === 'events' && 'hover:text-[hsl(var(--hox-blue))]',
                       division === 'retail' && 'hover:text-[hsl(var(--hox-orange))]',

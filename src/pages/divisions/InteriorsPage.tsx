@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { WhatHappensNext } from '@/components/divisions/WhatHappensNext';
 import { FloatingCTABar } from '@/components/divisions/FloatingCTABar';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
 
@@ -68,7 +69,8 @@ export default function InteriorsPage() {
 
         <DivisionFAQ division="interiors" />
       </div>
-            <FloatingCTABar division="interiors" divisionColor="hox-green" />
+            <WhatHappensNext division="interiors" />
+        <FloatingCTABar division="interiors" divisionColor="hox-green" />
       </Layout>
   );
 }

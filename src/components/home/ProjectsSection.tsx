@@ -103,13 +103,13 @@ export function ProjectsSection() {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 lg:mb-24 gap-8">
           <div>
             <motion.span
-              className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6"
+              className="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-primary mb-6"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <span className="w-8 h-px bg-primary" />
+              <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
               Featured work
             </motion.span>
 
@@ -171,7 +171,7 @@ export function ProjectsSection() {
         >
           <Link
             to="/projects"
-            className="group inline-flex items-center gap-2 text-sm font-medium tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors duration-300"
+            className="group inline-flex items-center gap-2 text-sm font-medium tracking-wider uppercase text-muted-foreground hover:text-primary transition-colors duration-300"
           >
             View all projects
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

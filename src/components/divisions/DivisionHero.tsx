@@ -126,19 +126,6 @@ export function DivisionHero({
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="max-w-4xl">
-          {/* Division Badge */}
-          <motion.div
-            className="flex items-center gap-3 mb-6"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className={cn('w-3 h-3 rounded-full', config.bg)} />
-            <span className={cn('text-sm font-medium tracking-wide hox-brand', `text-${config.color}`)}>
-              hox{division}.
-            </span>
-          </motion.div>
-
           {/* Headline */}
           <motion.h1
             className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] mb-8"

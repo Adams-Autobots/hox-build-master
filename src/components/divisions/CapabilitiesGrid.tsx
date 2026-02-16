@@ -42,6 +42,14 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
   const iconColor = divisionIconColors[division];
   const accentColor = divisionAccentColors[division];
 
+  const divisionLabels: Record<string, { label: string; heading: string; highlight: string }> = {
+    exhibitions: { label: 'Services', heading: 'We build stands', highlight: 'that perform.' },
+    events: { label: 'Services', heading: 'End-to-end event', highlight: 'production.' },
+    retail: { label: 'Services', heading: 'Retail environments', highlight: 'that sell.' },
+    interiors: { label: 'Services', heading: 'Spaces designed', highlight: 'to work.' },
+  };
+  const labels = divisionLabels[division] || { label: 'Services', heading: 'What we', highlight: 'Deliver.' };
+
   return (
     <section className="py-16 lg:py-20 bg-card" data-division={division}>
       <div className="container mx-auto px-6 lg:px-12">
@@ -52,16 +60,16 @@ export function CapabilitiesGrid({ division, capabilities }: CapabilitiesGridPro
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className={cn('inline-flex items-center gap-2 text-sm font-medium tracking-widest mb-4', iconColor)}>
-            <span className="w-8 h-px bg-current" />
-            Capabilities
+          <span className={cn('inline-flex items-center gap-2 text-sm font-medium tracking-wider mb-4', iconColor)}>
+            <span className="w-12 h-px bg-gradient-to-r from-current to-transparent" />
+            {labels.label}
           </span>
           <motion.h2 
             className="text-4xl md:text-5xl lg:text-6xl font-bold"
             {...headingAnimation}
           >
-            <span className="hox-brand"><HoverText>What we</HoverText> </span>
-            <span className={iconColor}><HoverText>Deliver.</HoverText></span>
+            <span className="hox-brand"><HoverText>{labels.heading}</HoverText> </span>
+            <span className={iconColor}><HoverText>{labels.highlight}</HoverText></span>
           </motion.h2>
         </motion.div>
 

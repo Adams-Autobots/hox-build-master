@@ -15,11 +15,11 @@ export function LeadershipSection() {
         <div className="max-w-3xl mb-16">
           <span
             className={cn(
-              'inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6 transition-all duration-700',
+              'inline-flex items-center gap-2 text-sm font-medium tracking-wider text-primary mb-6 transition-all duration-700',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            <span className="w-8 h-px bg-primary" />
+            <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
             Leadership
           </span>
 

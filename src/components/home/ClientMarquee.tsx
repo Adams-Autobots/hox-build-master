@@ -75,8 +75,8 @@ export function ClientMarquee() {
         }
       `}</style>
       <div className="container mx-auto px-6 lg:px-12 mb-10">
-        <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-4">
-          <span className="w-8 h-px bg-primary" />
+        <span className="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-primary mb-4">
+          <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
           Our Clients
         </span>
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">

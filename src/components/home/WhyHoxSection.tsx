@@ -51,13 +51,13 @@
            {/* Content */}
            <div>
              <motion.span 
-               className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6"
+               className="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-primary mb-6"
                initial={{ opacity: 0, x: -20 }}
                whileInView={{ opacity: 1, x: 0 }}
                viewport={{ once: true }}
                transition={{ duration: 0.6 }}
              >
-               <span className="w-8 h-px bg-primary" />
+               <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
                Why hox
              </motion.span>
              <motion.h2 
@@ -98,7 +98,7 @@
                  {/* Background Glow Effect */}
                  <div className="absolute inset-0 rounded-lg bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                  
-                 <p className="relative text-sm md:text-base font-semibold uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors duration-500 text-center leading-relaxed">
+                 <p className="relative text-sm md:text-base font-semibold uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors duration-500 text-center leading-relaxed">
                    {feature}
                  </p>
                </motion.div>
