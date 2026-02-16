@@ -13,20 +13,6 @@ const divisions = [
   { name: 'INTERIORS', color: 'hsl(var(--hox-green))', path: '/divisions/interiors' },
 ];
 
-// Build the continuous text stream — words repeated, joined into one string
-// that will word-break across lines filling edge to edge
-function buildStream(repeats: number): string {
-  const words = divisions.map(d => d.name);
-  const stream: string[] = [];
-  for (let r = 0; r < repeats; r++) {
-    stream.push(...words);
-  }
-  // Join with narrow separator that CSS will treat as part of the word
-  // Using zero-width joiner between words means CSS word-break will
-  // break mid-word, filling to the right edge
-  return stream.join('·');
-}
-
 function useWindowHeight() {
   const [h, setH] = useState(typeof window !== 'undefined' ? window.innerHeight : 800);
   useEffect(() => {
@@ -42,7 +28,6 @@ export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
-  const textRef = useRef<HTMLDivElement>(null);
   const [videoReady, setVideoReady] = useState(false);
   const [hoveredDiv, setHoveredDiv] = useState<string | null>(null);
   const [frameUrl, setFrameUrl] = useState<string | null>(null);
@@ -69,7 +54,6 @@ export function HeroSection() {
     });
   }, [scrollY, wh, videoReady]);
 
-  // Capture video frames
   useEffect(() => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -89,7 +73,6 @@ export function HeroSection() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [videoReady]);
 
-  // Poster as initial frame
   useEffect(() => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -108,27 +91,26 @@ export function HeroSection() {
   const bg = frameUrl || HERO_POSTER;
 
   /*
-    FULL COVERAGE TEXT BLOCK:
+    TECHNIQUE — Two layers, same text position:
     
-    One continuous string of division names joined by thin dots:
-    EXHIBITIONS·EVENTS·RETAIL·INTERIORS·EXHIBITIONS·EVENTS...
+    Layer 1 (behind): Full video/poster at 30% opacity
+    → gives the "black" areas a dim video wash
     
-    CSS word-break:break-all forces letters to break at the RIGHT
-    EDGE of the viewport. So "EXHIBITI" ends one line and "ONS·EVE"
-    starts the next. Every line fills edge to edge. Zero dead space.
+    Layer 2 (front): Text with background-clip:text 
+    → letters show video at full brightness
     
-    The entire h1 has background-clip:text — video shows through
-    every single letter, filling the viewport like a typographic grid.
+    Result: dim video everywhere, bright video through letters.
+    Rich, cinematic. No pure black anywhere.
     
-    Each division name is wrapped in a <Link> for hover interactivity.
-    On hover, that word lights up with its division colour.
-    
-    text-justify:inter-character spreads characters evenly so each
-    line is perfectly flush left AND right (justified).
+    BOTTOM LINE FIX:
+    Instead of overflow:hidden which crops mid-line, we use
+    a CSS mask-image gradient that fades the last ~8% to
+    transparent. This means the bottom line gracefully fades
+    out instead of being hard-cropped. Looks intentional.
   */
 
   return (
-    <section className="relative h-[100svh] flex flex-col overflow-hidden">
+    <section className="relative h-[100svh] overflow-hidden">
       {/* Hidden video + canvas */}
       <div className="fixed top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
         {shouldLoad && !reducedMotion && (
@@ -143,20 +125,43 @@ export function HeroSection() {
         <canvas ref={canvasRef} />
       </div>
 
-      {/* Dark bg */}
+      {/* Layer 1: Dim video background — 30% opacity wash */}
       <motion.div
-        className="fixed inset-0 bg-background pointer-events-none"
+        className="fixed inset-0 pointer-events-none"
         style={{ opacity, zIndex: 0 }}
-      />
+      >
+        <div className="absolute inset-0 bg-background" />
+        <img
+          src={HERO_POSTER}
+          alt=""
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            videoReady ? 'opacity-0' : 'opacity-[0.3]'
+          }`}
+        />
+        {shouldLoad && !reducedMotion && (
+          <video
+            autoPlay muted loop playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${
+              videoReady ? 'opacity-[0.3]' : 'opacity-0'
+            }`}
+          >
+            <source src={VIDEO_URLS.heroMain} type="video/mp4" />
+          </video>
+        )}
+      </motion.div>
 
-      {/* Full coverage text */}
+      {/* Layer 2: Text with full-brightness video via background-clip:text */}
       <motion.div
-        ref={textRef}
-        className="relative z-10 flex-1 overflow-hidden pt-[60px] md:pt-[68px]"
-        style={{ opacity }}
+        className="relative z-10 w-full h-full pt-[60px] md:pt-[68px]"
+        style={{
+          opacity,
+          // Fade bottom 10% to transparent — no hard crop on partial lines
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 0%, black 88%, transparent 100%)',
+        }}
       >
         <h1
-          className="w-full h-full font-extrabold uppercase select-none overflow-hidden"
+          className="w-full h-full font-extrabold uppercase select-none"
           style={{
             fontSize: 'clamp(48px, 11.5vw, 200px)',
             lineHeight: 0.92,
@@ -174,7 +179,6 @@ export function HeroSection() {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          {/* Render each word as a hoverable span, with dot separators */}
           {Array.from({ length: 5 }).flatMap((_, repeat) =>
             divisions.map((div, di) => {
               const key = `${div.name}-${repeat}`;
@@ -184,8 +188,8 @@ export function HeroSection() {
                   {!isFirst && (
                     <span
                       style={{
-                        WebkitTextFillColor: 'hsl(var(--muted-foreground) / 0.2)',
-                        fontSize: '0.6em',
+                        WebkitTextFillColor: 'hsl(var(--muted-foreground) / 0.15)',
+                        fontSize: '0.55em',
                         lineHeight: 'inherit',
                       }}
                       aria-hidden="true"
