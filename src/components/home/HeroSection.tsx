@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { HoverText } from '@/components/ui/HoverText';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { VIDEO_URLS } from '@/lib/video-urls';
 
@@ -37,8 +36,8 @@ function useShouldLoadVideo() {
 
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [videoState, setVideoState] = useState<'loading' | 'playing' | 'failed'>('loading');
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { scrollY } = useScroll();
   const windowHeight = useWindowHeight();
   const prefersReducedMotion = useReducedMotion();
@@ -46,7 +45,7 @@ export function HeroSection() {
 
   const fadeStart = useMemo(() => windowHeight * 0.5, [windowHeight]);
   const fadeEnd = useMemo(() => windowHeight * 1.0, [windowHeight]);
-  const videoOpacity = useTransform(scrollY, [0, fadeStart, fadeEnd], prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]);
+  const heroOpacity = useTransform(scrollY, [0, fadeStart, fadeEnd], prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]);
 
   useEffect(() => {
     if (!videoRef.current || videoState !== 'playing') return;
@@ -59,91 +58,128 @@ export function HeroSection() {
     return unsubscribe;
   }, [scrollY, windowHeight, videoState]);
 
-  useEffect(() => {
-    const interval = setInterval(() => setActiveIndex(prev => (prev + 1) % divisions.length), 4000);
-    return () => clearInterval(interval);
-  }, []);
-
   const handleCanPlay = useCallback(() => setVideoState('playing'), []);
   const handleError = useCallback(() => setVideoState('failed'), []);
 
   return (
-    <section className="relative h-screen flex items-end overflow-visible">
-      {/* Background */}
-      <motion.div className="fixed inset-0 w-full h-screen pointer-events-none" style={{ opacity: videoOpacity, zIndex: 0 }}>
-        <div className="absolute inset-0 bg-background" />
-        <img
-          src={HERO_POSTER}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${videoState === 'playing' ? 'opacity-0' : 'opacity-60'}`}
-        />
-        {shouldLoadVideo && !prefersReducedMotion && videoState !== 'failed' && (
-          <video
-            ref={videoRef}
-            autoPlay muted loop playsInline preload="metadata"
-            onCanPlay={handleCanPlay}
-            onError={handleError}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${videoState === 'playing' ? 'opacity-100' : 'opacity-0'}`}
-            aria-label="HOX showreel"
-          >
-            <source src={VIDEO_URLS.heroMain} type="video/mp4" />
-          </video>
-        )}
-        <div className="absolute inset-0" style={{
-          background: `linear-gradient(to right, hsl(var(--background) / 0.6), hsl(var(--background) / 0.15), transparent),
-                       linear-gradient(to top, hsl(var(--background)) 0%, hsl(var(--background) / 0.3) 40%, transparent 70%, hsl(var(--background) / 0.1) 100%)`
-        }} />
-      </motion.div>
+    <section className="relative h-screen overflow-hidden">
+      {/* 
+        Technique: 
+        Layer 1 (bottom): Video/poster at full brightness
+        Layer 2 (middle): Dark mask (bg-background/85) — makes everything dark
+        Layer 3 (top): Division text in WHITE with mix-blend-mode: multiply
+        
+        Result: Where the white text is, the dark mask is "punched through" 
+        and the video shows. Everywhere else stays dark.
+        
+        We use a wrapper with isolation:isolate to contain the blend.
+      */}
 
-      {/* Content — pushed to bottom of viewport */}
-      <div className="container mx-auto px-6 lg:px-12 relative z-10 pb-16 lg:pb-24">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}>
-          
-          {/* Wordmark */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="mb-6">
-            <h1 className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight leading-none">
-              <HoverText className="text-[hsl(var(--hox-red))]">hox</HoverText>
-              <HoverText className="text-foreground">creative</HoverText>
-              <HoverText className="text-[hsl(var(--hox-red))]">.</HoverText>
-            </h1>
-          </motion.div>
+      <motion.div className="fixed inset-0 w-full h-screen" style={{ opacity: heroOpacity, zIndex: 0, isolation: 'isolate' }}>
+        {/* Layer 1: Video/poster */}
+        <div className="absolute inset-0">
+          <img
+            src={HERO_POSTER}
+            alt=""
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${videoState === 'playing' ? 'opacity-0' : 'opacity-100'}`}
+          />
+          {shouldLoadVideo && !prefersReducedMotion && videoState !== 'failed' && (
+            <video
+              ref={videoRef}
+              autoPlay muted loop playsInline preload="metadata"
+              onCanPlay={handleCanPlay}
+              onError={handleError}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${videoState === 'playing' ? 'opacity-100' : 'opacity-0'}`}
+            >
+              <source src={VIDEO_URLS.heroMain} type="video/mp4" />
+            </video>
+          )}
+        </div>
 
-          {/* Division names */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap gap-4 md:gap-8 mb-0"
-          >
+        {/* Layer 2: Dark mask */}
+        <div className="absolute inset-0 bg-[hsl(var(--background)/0.82)]" />
+
+        {/* Layer 3: White text — mix-blend-mode: screen punches through the dark mask */}
+        <div className="absolute inset-0 mix-blend-screen pointer-events-none">
+          <div className="h-full flex flex-col justify-center container mx-auto px-4 md:px-6 lg:px-12">
             {divisions.map((division, index) => (
-              <Link key={division.name} to={division.path} className="group">
-                <motion.span
-                  className="text-base md:text-xl lg:text-2xl font-medium transition-all duration-300"
-                  style={{
-                    color: activeIndex === index ? division.color : 'hsl(var(--muted-foreground) / 0.5)',
-                  }}
-                  animate={activeIndex === index ? { scale: [1, 1.05, 1] } : {}}
-                  transition={activeIndex === index ? { duration: 0.6 } : { duration: 0.2 }}
-                  whileHover={{ color: division.color }}
+              <div key={division.name} className="relative overflow-hidden">
+                <span
+                  className="block font-bold uppercase leading-[0.88] tracking-tighter text-white select-none
+                    text-[16vw] md:text-[14vw] lg:text-[12.5vw]"
                 >
                   {division.name}
-                </motion.span>
-              </Link>
+                </span>
+              </div>
             ))}
-          </motion.div>
-        </motion.div>
-      </div>
+          </div>
+        </div>
+      </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Interactive hover layer — sits above the blend, captures clicks */}
       <motion.div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.4 }}
-        transition={{ delay: 2, duration: 1 }}
+        className="relative z-10 h-full flex flex-col justify-center container mx-auto px-4 md:px-6 lg:px-12"
+        style={{ opacity: heroOpacity }}
       >
+        {divisions.map((division, index) => (
+          <motion.div
+            key={division.name}
+            initial={{ opacity: 0, x: -60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 + index * 0.12, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <Link
+              to={division.path}
+              className="block relative"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              {/* Transparent text for hitbox sizing */}
+              <span
+                className="block font-bold uppercase leading-[0.88] tracking-tighter select-none
+                  text-[16vw] md:text-[14vw] lg:text-[12.5vw] text-transparent"
+              >
+                {division.name}
+              </span>
+
+              {/* Coloured text — appears on hover */}
+              <span
+                className="absolute inset-0 block font-bold uppercase leading-[0.88] tracking-tighter select-none
+                  text-[16vw] md:text-[14vw] lg:text-[12.5vw] transition-opacity duration-400"
+                style={{
+                  color: division.color,
+                  opacity: hoveredIndex === index ? 1 : 0,
+                }}
+                aria-hidden="true"
+              >
+                {division.name}
+              </span>
+            </Link>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Bottom bar */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 z-20 container mx-auto px-6 lg:px-12 pb-6 lg:pb-8 flex items-end justify-between"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
+      >
+        <h1 className="text-base md:text-lg font-bold tracking-tight">
+          <span className="text-[hsl(var(--hox-red))]">hox</span>
+          <span className="text-foreground">creative</span>
+          <span className="text-[hsl(var(--hox-red))]">.</span>
+        </h1>
+
         <motion.div
-          className="w-px h-10 bg-foreground/40"
-          animate={{ scaleY: [1, 0.5, 1] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          style={{ transformOrigin: 'bottom' }}
-        />
+          className="flex flex-col items-center gap-1.5"
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <span className="text-[9px] text-muted-foreground/30 tracking-[0.25em] uppercase">Scroll</span>
+          <div className="w-px h-6 bg-foreground/15" />
+        </motion.div>
       </motion.div>
     </section>
   );

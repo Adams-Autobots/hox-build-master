@@ -5,7 +5,6 @@ import { FeaturedProjects } from '@/components/home/FeaturedProjects';
 import { DivisionsSection } from '@/components/home/DivisionsSection';
 import { CredibilitySection } from '@/components/home/CredibilitySection';
 import { WhyHoxSection } from '@/components/home/WhyHoxSection';
-import { ContactCTA } from '@/components/home/ContactCTA';
 
 const Index = () => {
   return (
@@ -23,7 +22,6 @@ const Index = () => {
         <DivisionsSection />
         <CredibilitySection />
         <WhyHoxSection />
-        <ContactCTA />
       </div>
     </Layout>
   );

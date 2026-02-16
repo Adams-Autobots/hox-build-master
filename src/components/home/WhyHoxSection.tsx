@@ -1,5 +1,7 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 import { HoverText } from '@/components/ui/HoverText';
 
 export function WhyHoxSection() {
@@ -12,11 +14,12 @@ export function WhyHoxSection() {
   const backgroundOpacity = useSpring(rawOpacity, { stiffness: 100, damping: 30 });
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-36 relative overflow-hidden">
+    <section ref={sectionRef} className="py-28 lg:py-40 relative overflow-hidden">
       <motion.div className="absolute inset-0 bg-card" style={{ opacity: backgroundOpacity }} />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="max-w-4xl">
+          {/* Why HOX header */}
           <motion.span
             className="inline-flex items-center gap-3 text-sm font-medium tracking-wider text-primary mb-8"
             initial={{ opacity: 0, x: -20 }}
@@ -39,6 +42,7 @@ export function WhyHoxSection() {
             <span className="text-muted-foreground/50"><HoverText>Design. Fabrication. Logistics. Installation. When everything is under one roof, nothing falls through the cracks.</HoverText></span>
           </motion.h2>
 
+          {/* Capabilities columns */}
           <motion.div
             className="grid md:grid-cols-3 gap-12 mt-16 pt-12 border-t border-border/20"
             initial={{ opacity: 0, y: 20 }}
@@ -63,6 +67,40 @@ export function WhyHoxSection() {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 3,000+ projects across 17 years. National Geographic, Rolls-Royce, Mubadala, RTA. The work speaks for itself.
               </p>
+            </div>
+          </motion.div>
+
+          {/* CTA — integrated, not a separate section */}
+          <motion.div
+            className="mt-24 lg:mt-32 pt-16 border-t border-border/10"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] mb-6">
+              <HoverText>Ready to build something</HoverText>{' '}
+              <span className="text-primary"><HoverText>exceptional?</HoverText></span>
+            </h3>
+            <p className="text-base text-muted-foreground max-w-xl mb-10 leading-relaxed">
+              Tell us what you need. We'll respond within 24 hours with a proposal, 3D concepts, and transparent pricing.
+            </p>
+            <div className="flex flex-wrap items-center gap-6">
+              <Link
+                to="/contact"
+                className="group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wide text-white bg-primary rounded-sm hover:opacity-90 transition-opacity"
+              >
+                Talk to our team
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <a
+                href="https://wa.me/971588950056?text=Hi%2C%20I%27d%20like%20to%20discuss%20a%20project%20with%20HOX"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                or WhatsApp us →
+              </a>
             </div>
           </motion.div>
         </div>
