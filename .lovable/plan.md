@@ -1,74 +1,85 @@
 
 
-# Pre-Launch Fixes: SEO, Legal Pages, Phone Consistency, and Alt Tags
+# Header Navigation -- Premium UI Overhaul
 
-## Overview
-Four fixes to finalize the site before publishing on hox.ae.
+## What Changes
 
----
-
-## 1. Update All Domain References to hox.ae
-
-**StructuredData.tsx** -- Replace all `hox-build-master.lovable.app` URLs with `https://hox.ae`:
-- Line 8: Organization `url`
-- Line 9: Organization `logo` (change to `https://hox.ae/favicon.ico`)
-- Line 35: LocalBusiness `@id`
-- Line 37: LocalBusiness `image`
-- Line 39: LocalBusiness `url`
-
-**robots.txt** -- Update sitemap URL from `hox-build-master.lovable.app` to `hox.ae`.
-
-**index.html** -- Replace the placeholder Lovable OG/Twitter images (`lovable.dev/opengraph-image-p98pqg.png`) with `https://hox.ae/og-home.png` (lines 16 and 21).
+Aesthetic-only upgrade to the desktop nav links, divisions dropdown, and mobile menu. All routing, logic, scroll behavior, and state management remain untouched.
 
 ---
 
-## 2. Fix Phone Number in Structured Data
+## Desktop Navigation
 
-The footer's landline (`+971 4 3477519`) is the correct number. Revert the structured data phone back:
-- **StructuredData.tsx line 19**: Change `"+971-4-345-6789"` to `"+971-4-3477519"`
-- **StructuredData.tsx line 40**: Change `"+971-4-345-6789"` to `"+971-4-3477519"`
+### Typography
+- Nav links change from generic `text-sm` to `text-[13px] uppercase tracking-[0.2em] font-medium` -- matches the architectural, engineered typographic language used across the rest of the site (Porsche Design / Rimowa reference)
+- Increase link spacing from `gap-8` to `gap-10`
+
+### Active and Hover States
+- Replace the red underline-on-hover with a centered red dot (`w-1 h-1 rounded-full bg-primary`) beneath the active link, matching the division dot language already used in the dropdown and mobile menu
+- On hover (non-active): dot appears at `scale-0 -> scale-100` with a smooth 300ms transition
+
+### Scrolled Header
+- Swap `glass py-4` for `bg-background/90 backdrop-blur-xl border-b border-white/[0.06] py-3`
+- Add a 1px red gradient accent line across the top edge when scrolled (via a `::before` pseudo-element in CSS)
+
+### Logo
+- Add `hover:scale-110 transition-transform duration-300` for subtle presence on hover
 
 ---
 
-## 3. Create Privacy Policy and Terms of Service Pages
+## Divisions Dropdown
 
-- Create `src/pages/PrivacyPolicyPage.tsx` with standard privacy policy content tailored to HOX (data collection, cookies, contact info).
-- Create `src/pages/TermsPage.tsx` with standard terms of service content.
-- Add routes in `src/App.tsx` for `/privacy` and `/terms`.
-- Update `src/components/layout/Footer.tsx` to link the existing "Privacy Policy" and "Terms of Service" anchors to `/privacy` and `/terms` instead of `#`.
+### Panel Styling
+- Replace `rounded-lg` with `rounded-none` (sharp edges, consistent with the site's `--radius: 0.25rem` minimal approach)
+- Add `border-t-2 border-primary` as a red accent line at the top of the panel
+- Increase item padding from `px-3 py-2` to `px-4 py-3` for generous touch targets
+- Replace `hover:bg-muted/50` with a left-border accent on hover: `border-l-2 border-transparent hover:border-l-2 hover:border-[currentColor]` so the division color appears as a side accent
+- Each dropdown item gets a staggered entry delay (50ms per item) via inline `transition-delay`
+
+### Division Color Dots
+- Increase from `w-2 h-2` to `w-2.5 h-2.5` for slightly more visual weight
 
 ---
 
-## 4. Add Descriptive Alt Text for All Media
+## Mobile Menu
 
-Auto-generate contextual alt text for the 18 identified items:
+### Hamburger
+- Thin lines from `h-0.5` to `h-px` for more refined elegance
 
-**Videos (aria-label additions):**
-- HeroSection.tsx: `"HOX showreel featuring exhibitions, events, retail and interiors projects in Dubai"`
-- WhyHoxVideoSection.tsx: `"Behind the scenes of HOX production and fabrication capabilities"`
-- DivisionHero.tsx: Dynamic label using division prop, e.g. `"HOX ${division} division showcase video"`
-- CapabilitiesGrid.tsx: Dynamic label using capability title, e.g. `"${capability.title} capability demonstration"`
+### Overlay
+- Add a 1px red gradient line at the top of the mobile overlay (same accent as desktop scrolled state)
+- Division sub-items: increase from `text-xl` to `text-2xl` for better hierarchy contrast against the `text-4xl` parent links
 
-**Images (alt text updates):**
-- DivisionsSection.tsx: Already uses `division.headline` -- adequate, no change needed.
-- DivisionHero.tsx: Change from `"${division} hero"` to `"HOX ${division} project showcase"`
-- CapabilitiesGrid.tsx: Already uses `capability.title` -- adequate, no change needed.
-- LeadershipSection.tsx: Already uses `member.name` -- enhance to `"${member.name}, ${member.role} at HOX"`
-- ResourcesSection.tsx: Already uses `skill.title` -- enhance to `"${skill.title} - HOX core capability"`
+---
+
+## CSS Addition (index.css)
+
+A single utility class for the red gradient accent line:
+
+```text
+.header-accent-line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--hox-red)), transparent);
+  pointer-events: none;
+}
+```
 
 ---
 
 ## Files Modified
-- `src/components/seo/StructuredData.tsx` -- domain URLs and phone number
-- `public/robots.txt` -- sitemap URL
-- `index.html` -- OG/Twitter image URLs
-- `src/pages/PrivacyPolicyPage.tsx` -- new file
-- `src/pages/TermsPage.tsx` -- new file
-- `src/App.tsx` -- add routes
-- `src/components/layout/Footer.tsx` -- update links
-- `src/components/home/HeroSection.tsx` -- video aria-label
-- `src/components/home/WhyHoxVideoSection.tsx` -- video aria-label
-- `src/components/divisions/DivisionHero.tsx` -- video aria-label, image alt
-- `src/components/divisions/CapabilitiesGrid.tsx` -- video aria-label
-- `src/components/about/LeadershipSection.tsx` -- enhanced alt text
-- `src/components/about/ResourcesSection.tsx` -- enhanced alt text
+- **src/components/layout/Header.tsx** -- all styling class changes (no logic changes)
+- **src/index.css** -- add `.header-accent-line` utility
+
+## What Does NOT Change
+- All routing and Link destinations
+- Scroll detection logic
+- Dropdown open/close state management
+- Mobile menu open/close and body scroll lock
+- Location-based active state detection
+- All division data arrays
+
