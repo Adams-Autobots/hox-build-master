@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import imageCompression from 'browser-image-compression';
 import { useAuth } from '@/hooks/useAuth';
+import { PageMeta } from '@/components/seo/PageMeta';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -712,7 +713,7 @@ export default function GalleryAdminPage() {
 
   return (
     <div className="min-h-screen bg-background cursor-visible">
-      {/* Header */}
+      <PageMeta title="Gallery Admin | HOX" description="Admin panel" noIndex={true} />
       <header className="border-b border-border bg-card sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">

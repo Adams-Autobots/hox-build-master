@@ -283,22 +283,6 @@
   }
 }
 
-/* Scroll Snap Styles — desktop only, mobile browsers fight snap with URL bar */
-@media (min-width: 768px) {
-  .scroll-snap-container {
-    scroll-snap-type: y proximity;
-    scroll-behavior: smooth;
-  }
-
-  .scroll-snap-section {
-    scroll-snap-align: start;
-  }
-
-  .scroll-snap-section-auto {
-    scroll-snap-align: start;
-  }
-}
-
 /* Smooth scroll for all anchor links */
 @media (prefers-reduced-motion: no-preference) {
   html {

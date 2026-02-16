@@ -112,7 +112,9 @@ export default function AboutPage() {
                 <img
                   src={founderPhoto}
                   alt="Adam Nicholson — Founder, HOX Creative"
-                  className="w-full h-full object-cover object-top grayscale brightness-75 contrast-110"
+                loading="lazy"
+                  loading="lazy"
+                    className="w-full h-full object-cover object-top grayscale brightness-75 contrast-110"
                 />
                 {/* Subtle dark overlay — keeps it understated */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-background/10 to-background/20" />

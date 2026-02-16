@@ -286,6 +286,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                     src={images[selectedIndex].src}
                     alt={images[selectedIndex].alt}
                     title={('title' in images[selectedIndex] && (images[selectedIndex] as GalleryImage).title) || images[selectedIndex].alt}
+                    loading="lazy"
                     className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl"
                   />
                   
@@ -311,6 +312,7 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
                   <img
                     src={image.src}
                     alt=""
+                    loading="lazy"
                     className="w-full h-full object-cover"
                     aria-hidden="true"
                   />
