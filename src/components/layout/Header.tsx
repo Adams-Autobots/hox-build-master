@@ -68,7 +68,7 @@ export function Header() {
                 >
                   <button
                     className={cn(
-                      'flex items-center gap-1.5 text-[13px] uppercase tracking-[0.2em] font-medium transition-colors hox-brand relative group',
+                      'flex items-center gap-1.5 text-sm font-medium tracking-wide transition-colors hox-brand relative group',
                       location.pathname.includes('/divisions')
                         ? 'text-foreground'
                         : 'text-muted-foreground hover:text-foreground'
@@ -103,7 +103,7 @@ export function Header() {
                           key={division.name}
                           to={division.path}
                           className={cn(
-                            'flex items-center gap-3 px-4 py-3 text-[13px] uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-all duration-300 border-l-2 border-transparent hox-brand group',
+                            'flex items-center gap-3 px-4 py-3 text-sm font-medium tracking-wide text-muted-foreground hover:text-foreground transition-all duration-300 border-l-2 border-transparent hox-brand group',
                             division.color === 'hox-red' && 'hover:border-l-hox-red',
                             division.color === 'hox-blue' && 'hover:border-l-hox-blue',
                             division.color === 'hox-orange' && 'hover:border-l-hox-orange',
@@ -135,7 +135,7 @@ export function Header() {
                   key={item.name}
                   to={item.path}
                   className={cn(
-                    'text-[13px] uppercase tracking-[0.2em] font-medium transition-colors hox-brand relative group',
+                    'text-sm font-medium tracking-wide transition-colors hox-brand relative group',
                     location.pathname === item.path
                       ? 'text-foreground'
                       : 'text-muted-foreground hover:text-foreground'
