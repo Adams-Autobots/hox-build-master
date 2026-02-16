@@ -1,28 +1,15 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { HoverText } from '@/components/ui/HoverText';
-
-const headingAnimation = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
-};
 
 export function ContactCTA() {
   return (
-    <section className="py-16 lg:py-20 bg-background relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[200px]" />
-      </div>
-
+    <section className="py-28 lg:py-40 bg-background relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12 relative">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-3xl">
           <motion.span
-            className="inline-flex items-center justify-center gap-2 text-sm font-medium tracking-wider text-primary mb-6"
+            className="inline-flex items-center gap-3 text-sm font-medium tracking-wider text-primary mb-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -30,47 +17,51 @@ export function ContactCTA() {
           >
             <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
             Start your project
-            <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
           </motion.span>
 
           <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8"
-            {...headingAnimation}
+            className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.1] mb-10"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
           >
-            <span className="hox-brand"><HoverText>Ready to build</HoverText> </span>
-            <span className="text-primary"><HoverText>Something</HoverText></span>
-            <br />
-            <span className="text-muted-foreground/60"><HoverText>exceptional?</HoverText></span>
+            <HoverText>Ready to build something</HoverText>{' '}
+            <span className="text-primary"><HoverText>exceptional?</HoverText></span>
           </motion.h2>
 
           <motion.p
-            className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-12"
+            className="text-lg text-muted-foreground max-w-xl mb-12 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.7, delay: 0.15 }}
           >
-            Let's discuss your next project. Our team is ready to listen and bring your vision to life.
+            Tell us what you need. We'll respond within 24 hours with a proposal, 3D concepts, and transparent pricing.
           </motion.p>
 
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-wrap items-center gap-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.7, delay: 0.25 }}
           >
-            <Button 
-              variant="outline" 
-              size="xl" 
-              asChild
-              className="bg-transparent border-2 text-primary border-primary/50 hover:border-primary hover:bg-transparent hover:shadow-[0_0_30px_hsl(357_85%_52%/0.4)] hover:scale-[1.02] active:scale-[0.98]"
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wide text-white bg-primary rounded-sm hover:opacity-90 transition-opacity"
             >
-              <Link to="/contact" className="group">
-                Talk to our team
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
+              Talk to our team
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <a
+              href="https://wa.me/971588950056?text=Hi%2C%20I%27d%20like%20to%20discuss%20a%20project%20with%20HOX"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              or WhatsApp us →
+            </a>
           </motion.div>
         </div>
       </div>

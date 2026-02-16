@@ -75,7 +75,7 @@ export function DivisionFAQ({ division }: DivisionFAQProps) {
   const faqs = divisionFAQs[division];
 
   return (
-    <section className="py-16 lg:py-20 bg-background">
+    <section className="py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-4xl mx-auto">
           {/* Section Header */}

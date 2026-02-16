@@ -27,7 +27,7 @@ const divisionConfig = {
     textColor: 'text-hox-red',
     borderColor: 'border-hox-red/50',
     hoverBorder: 'hover:border-hox-red',
-    hoverGlow: 'hover:shadow-[0_0_30px_hsl(355_100%_50%/0.4)]',
+    hoverGlow: '',
   },
   events: {
     color: 'hox-blue',
@@ -38,7 +38,7 @@ const divisionConfig = {
     textColor: 'text-hox-blue',
     borderColor: 'border-hox-blue/50',
     hoverBorder: 'hover:border-hox-blue',
-    hoverGlow: 'hover:shadow-[0_0_30px_hsl(196_100%_47%/0.4)]',
+    hoverGlow: '',
   },
   retail: {
     color: 'hox-orange',
@@ -49,7 +49,7 @@ const divisionConfig = {
     textColor: 'text-hox-orange',
     borderColor: 'border-hox-orange/50',
     hoverBorder: 'hover:border-hox-orange',
-    hoverGlow: 'hover:shadow-[0_0_30px_hsl(36_89%_61%/0.4)]',
+    hoverGlow: '',
   },
   interiors: {
     color: 'hox-green',
@@ -60,7 +60,7 @@ const divisionConfig = {
     textColor: 'text-hox-green',
     borderColor: 'border-hox-green/50',
     hoverBorder: 'hover:border-hox-green',
-    hoverGlow: 'hover:shadow-[0_0_30px_hsl(87_57%_51%/0.4)]',
+    hoverGlow: '',
   },
 };
 
