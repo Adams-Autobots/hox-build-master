@@ -19,13 +19,36 @@ const headingAnimation = {
 export default function ContactPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lastSubmitTime, setLastSubmitTime] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
+
+    // Honeypot check — if this hidden field is filled, it's a bot
+    if (formData.get('website_url')) {
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+      form.reset();
+      return;
+    }
+
+    // Basic client-side rate limiting (30 second cooldown)
+    const now = Date.now();
+    if (now - lastSubmitTime < 30000) {
+      toast({
+        title: "Please wait",
+        description: "You can submit another request in a few seconds.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
       const response = await fetch(
@@ -53,6 +76,7 @@ export default function ContactPage() {
         title: "Message sent!",
         description: "We'll get back to you within 24 hours.",
       });
+      setLastSubmitTime(Date.now());
       form.reset();
     } catch (error: any) {
       toast({
@@ -191,6 +215,12 @@ export default function ContactPage() {
               <h2 className="text-2xl font-bold mb-6 hox-brand">Request a proposal</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot field — hidden from humans, catches bots */}
+                <div className="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden" aria-hidden="true" tabIndex={-1}>
+                  <label htmlFor="website_url">Do not fill this</label>
+                  <input type="text" id="website_url" name="website_url" tabIndex={-1} autoComplete="off" />
+                </div>
+
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="text-sm font-medium text-foreground mb-2 block">Name</label>

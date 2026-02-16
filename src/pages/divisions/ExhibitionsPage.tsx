@@ -19,16 +19,8 @@ const capabilityTitles = [
   { icon: Truck, title: 'Full Show Contracting' },
 ];
 
-const galleryImages = [
-  { src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop', alt: 'Exhibition hall', caption: 'Grand pavilion entrance', project: 'Expo 2020' },
-  { src: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1200&auto=format&fit=crop', alt: 'Tech exhibition', caption: 'Interactive display zone', project: 'GITEX' },
-  { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&auto=format&fit=crop', alt: 'Automotive display', caption: 'Premium vehicle showcase', project: 'Auto Launch' },
-  { src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&auto=format&fit=crop', alt: 'Modern booth', caption: 'Corporate exhibition stand', project: 'Corporate' },
-  { src: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&auto=format&fit=crop', alt: 'Trade show', caption: 'Multi-level structure', project: 'Trade Fair' },
-  { src: 'https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=1200&auto=format&fit=crop', alt: 'Exhibition lighting', caption: 'Dynamic LED installation', project: 'Tech Summit' },
-  { src: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200&auto=format&fit=crop', alt: 'Conference setup', caption: 'Main stage construction', project: 'Conference' },
-  { src: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1200&auto=format&fit=crop', alt: 'Event space', caption: 'Immersive brand experience', project: 'Brand Activation' },
-];
+// Removed: hardcoded stock images. Gallery pulls from Supabase only.
+const galleryImages: { src: string; alt: string; caption: string; project: string }[] = [];
 
 export default function ExhibitionsPage() {
   const { data: galleryImagesData } = useGalleryImages('exhibitions');
