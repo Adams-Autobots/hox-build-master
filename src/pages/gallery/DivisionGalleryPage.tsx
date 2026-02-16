@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import { Layout } from '@/components/layout/Layout';
 import { PageMeta } from '@/components/seo/PageMeta';
-import { DivisionNav } from '@/components/divisions/DivisionNav';
+
 import { useGalleryImages, type Division } from '@/hooks/useGalleryImages';
 import { supabase } from '@/integrations/supabase/client';
 import { LazyImage } from '@/components/ui/LazyImage';
@@ -78,8 +78,6 @@ export function DivisionGalleryPage({ division }: DivisionGalleryPageProps) {
       />
       {/* Division wrapper for cursor color */}
       <div data-division={division} className="min-h-screen">
-      {/* Division Navigation */}
-      <DivisionNav currentDivision={division} />
 
       <section className="pt-28 pb-8">
         <div className="container mx-auto px-6 lg:px-12">

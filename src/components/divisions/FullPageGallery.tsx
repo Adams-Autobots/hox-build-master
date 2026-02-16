@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { X, ChevronLeft, ChevronRight, Loader2, ArrowRight } from 'lucide-react';
 import { useGalleryImages, type Division, type GalleryImage } from '@/hooks/useGalleryImages';
 import { GalleryStructuredData } from '@/components/seo/GalleryStructuredData';
-import { DivisionNav } from './DivisionNav';
+
 import { LazyImage } from '@/components/ui/LazyImage';
 import { HoverText } from '@/components/ui/HoverText';
 
@@ -118,8 +118,6 @@ export function FullPageGallery({ division, images: fallbackImages, maxImages, s
 
   return (
     <>
-      {/* Division Navigation */}
-      <DivisionNav currentDivision={division} />
 
       {/* Schema.org Structured Data */}
       <GalleryStructuredData 
