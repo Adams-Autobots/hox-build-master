@@ -133,7 +133,7 @@ export function DivisionHero({
             transition={{ duration: 0.6 }}
           >
             <span className={cn('w-3 h-3 rounded-full', config.bg)} />
-            <span className={cn('text-sm font-medium tracking-widest uppercase hox-brand', `text-${config.color}`)}>
+            <span className={cn('text-sm font-medium tracking-wide hox-brand', `text-${config.color}`)}>
               hox{division}.
             </span>
           </motion.div>
