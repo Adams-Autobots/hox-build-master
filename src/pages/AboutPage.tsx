@@ -95,6 +95,84 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Founder Section */}
+      <section className="py-16 lg:py-24 bg-background">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="grid md:grid-cols-[320px_1fr] lg:grid-cols-[400px_1fr] gap-12 lg:gap-16 items-start">
+            {/* Photo */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <div className="aspect-[3/4] rounded-lg overflow-hidden bg-muted border border-border/30">
+                {/* Placeholder until real photo is provided */}
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-card via-muted to-card">
+                  <div className="text-center">
+                    <span className="text-6xl font-bold text-primary/20">AN</span>
+                  </div>
+                </div>
+              </div>
+              {/* Accent line */}
+              <div className="absolute -bottom-3 -right-3 w-24 h-24 border-r-2 border-b-2 border-primary/30 rounded-br-lg" />
+            </motion.div>
+
+            {/* Bio */}
+            <motion.div
+              className="flex flex-col justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <span className="inline-flex items-center gap-2 text-sm font-medium tracking-widest text-primary mb-6">
+                <span className="w-8 h-px bg-primary" />
+                Founder
+              </span>
+
+              <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-2">
+                <HoverText>Adam Nicholson</HoverText>
+              </h2>
+              <p className="text-muted-foreground text-lg mb-8">
+                Owner &amp; Managing Director
+              </p>
+
+              <div className="space-y-5 text-muted-foreground leading-relaxed">
+                <p>
+                  Born and raised in the UAE, Adam founded HOX in 2008 to bring the reliability and 
+                  quality of international production standards to a market that rewards ambition. 
+                  What started as a small exhibition workshop in Al Quoz has grown into a multi-division 
+                  production company with 50+ staff across four specialised divisions.
+                </p>
+                <p>
+                  With an MBA in marketing and a background in property design and development, Adam 
+                  leads from the front — on the workshop floor, on client sites, and at the sharp end 
+                  of every deadline. 17 years, 3,000+ projects, and a commitment to doing it better 
+                  every time.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-8 mt-10 pt-8 border-t border-border/30">
+                <div>
+                  <span className="text-3xl font-bold text-primary">17+</span>
+                  <p className="text-sm text-muted-foreground mt-1">Years in UAE</p>
+                </div>
+                <div>
+                  <span className="text-3xl font-bold text-primary">3,000+</span>
+                  <p className="text-sm text-muted-foreground mt-1">Projects Delivered</p>
+                </div>
+                <div>
+                  <span className="text-3xl font-bold text-primary">50+</span>
+                  <p className="text-sm text-muted-foreground mt-1">Team Members</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       <ResourcesSection />
       
       <TestimonialsSection />

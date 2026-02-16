@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { FloatingCTABar } from '@/components/divisions/FloatingCTABar';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
 
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
@@ -51,7 +52,7 @@ export default function RetailPage() {
           headline="Retail spaces"
           highlightText="That convert."
           description="We build retail environments that drive foot traffic and conversions. From flagship stores to pop-up activations, every detail is designed to sell."
-          ctaText="Get in touch"
+          ctaText="Get a Quote"
           heroImage={heroRetail}
           heroVideo={VIDEO_URLS.heroRetail}
         />
@@ -67,6 +68,7 @@ export default function RetailPage() {
 
         <DivisionFAQ division="retail" />
       </div>
-    </Layout>
+            <FloatingCTABar division="retail" divisionColor="hox-orange" />
+      </Layout>
   );
 }

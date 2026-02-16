@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { FloatingCTABar } from '@/components/divisions/FloatingCTABar';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
 
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
@@ -50,7 +51,7 @@ export default function ExhibitionsPage() {
           headline="Exhibition builds"
           highlightText="Engineered to perform."
           description="We design and fabricate exhibition stands that capture attention and deliver measurable impact. Structural engineering meets brand storytelling."
-          ctaText="Get in touch"
+          ctaText="Get a Quote"
           heroImage={heroExhibitions}
           heroVideo={VIDEO_URLS.heroExhibitions}
         />
@@ -66,6 +67,7 @@ export default function ExhibitionsPage() {
 
         <DivisionFAQ division="exhibitions" />
       </div>
-    </Layout>
+            <FloatingCTABar division="exhibitions" divisionColor="hox-red" />
+      </Layout>
   );
 }

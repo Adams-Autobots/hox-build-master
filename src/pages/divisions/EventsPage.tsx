@@ -1,4 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
+import { FloatingCTABar } from '@/components/divisions/FloatingCTABar';
 import { DivisionHero } from '@/components/divisions/DivisionHero';
 
 import { CapabilitiesGrid } from '@/components/divisions/CapabilitiesGrid';
@@ -50,7 +51,7 @@ export default function EventsPage() {
           headline="Events built"
           highlightText="To be remembered."
           description="From corporate galas to product launches, we create immersive event experiences that leave lasting impressions. Precision production meets creative excellence."
-          ctaText="Get in touch"
+          ctaText="Get a Quote"
           heroImage={heroEvents}
           heroVideo={VIDEO_URLS.heroEvents}
         />
@@ -66,6 +67,7 @@ export default function EventsPage() {
 
         <DivisionFAQ division="events" />
       </div>
-    </Layout>
+            <FloatingCTABar division="events" divisionColor="hox-blue" />
+      </Layout>
   );
 }

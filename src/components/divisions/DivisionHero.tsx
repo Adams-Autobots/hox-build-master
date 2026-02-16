@@ -21,13 +21,13 @@ const divisionConfig = {
   exhibitions: {
     color: 'hox-red',
     gradient: 'from-hox-red/20',
-    glow: 'shadow-[0_0_40px_hsl(357_85%_52%/0.6)]',
+    glow: 'shadow-[0_0_40px_hsl(355_100%_50%/0.6)]',
     bg: 'bg-hox-red',
     hover: 'hover:bg-hox-red/90',
     textColor: 'text-hox-red',
     borderColor: 'border-hox-red/50',
     hoverBorder: 'hover:border-hox-red',
-    hoverGlow: 'hover:shadow-[0_0_30px_hsl(357_85%_52%/0.4)]',
+    hoverGlow: 'hover:shadow-[0_0_30px_hsl(355_100%_50%/0.4)]',
   },
   events: {
     color: 'hox-blue',
@@ -54,13 +54,13 @@ const divisionConfig = {
   interiors: {
     color: 'hox-green',
     gradient: 'from-hox-green/20',
-    glow: 'shadow-[0_0_40px_hsl(87_53%_51%/0.6)]',
+    glow: 'shadow-[0_0_40px_hsl(87_57%_51%/0.6)]',
     bg: 'bg-hox-green',
     hover: 'hover:bg-hox-green/90',
     textColor: 'text-hox-green',
     borderColor: 'border-hox-green/50',
     hoverBorder: 'hover:border-hox-green',
-    hoverGlow: 'hover:shadow-[0_0_30px_hsl(87_53%_51%/0.4)]',
+    hoverGlow: 'hover:shadow-[0_0_30px_hsl(87_57%_51%/0.4)]',
   },
 };
 
