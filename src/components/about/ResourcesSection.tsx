@@ -14,7 +14,7 @@ const skills = [
   {
     title: 'Project Management',
     description: 'Decades of experience in planning, scheduling, and supplier coordination. We make complex simple.',
-    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=600&fit=crop'
+    image: skillDesignConcept // TODO: replace with real HOX project management photo
   },
   {
     title: 'Technical Planning & Drawing',
@@ -24,7 +24,7 @@ const skills = [
   {
     title: 'Value Engineering',
     description: 'Maximizing impact while optimizing costs. Smart solutions without compromise.',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop'
+    image: skillProjectExecution // TODO: replace with real HOX value engineering photo
   },
   {
     title: 'Project Execution',
