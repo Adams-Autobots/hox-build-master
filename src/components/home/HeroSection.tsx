@@ -45,7 +45,6 @@ export function HeroSection() {
     return !(c?.saveData || c?.effectiveType === '2g' || c?.effectiveType === 'slow-2g');
   }, []);
 
-  // Pause/resume on scroll
   useEffect(() => {
     if (!videoRef.current || !videoReady) return;
     return scrollY.on('change', (y) => {
@@ -55,7 +54,7 @@ export function HeroSection() {
     });
   }, [scrollY, wh, videoReady]);
 
-  // Capture frames
+  // Capture video frames → dataURL
   useEffect(() => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -63,20 +62,19 @@ export function HeroSection() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     canvas.width = 640; canvas.height = 360;
-
     let last = 0;
     const paint = (ts: number) => {
       rafRef.current = requestAnimationFrame(paint);
       if (ts - last < 83) return;
       last = ts;
       ctx.drawImage(video, 0, 0, 640, 360);
-      try { setFrameUrl(canvas.toDataURL('image/jpeg', 0.6)); } catch {}
+      try { setFrameUrl(canvas.toDataURL('image/jpeg', 0.65)); } catch {}
     };
     rafRef.current = requestAnimationFrame(paint);
     return () => cancelAnimationFrame(rafRef.current);
   }, [videoReady]);
 
-  // Load poster as initial frame
+  // Poster as initial frame
   useEffect(() => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -94,6 +92,25 @@ export function HeroSection() {
 
   const bg = frameUrl || HERO_POSTER;
 
+  /*
+    LAYOUT STRATEGY:
+    - 4 words must ALL be visible (no cropping)
+    - Pack tight as a centred block (no black bands between words)
+    - Each word as wide as possible
+    
+    Solution: Use a SINGLE font size for all words based on the longest
+    word (EXHIBITIONS = 11 chars). This means shorter words (EVENTS = 6)
+    don't fill the full width — BUT the text block is uniform and neat,
+    and the shorter words create visual interest with the black space
+    appearing on the RIGHT side only (like a ragged-left typographic block).
+    
+    Font size: limited by whichever is tighter:
+    - Width: 92vw / 11 chars / 0.62 avg-char-width ≈ 13.5vw
+    - Height: (100svh - 80px header - 60px bottom) / 4 lines / 0.85 leading ≈ 19vh
+    
+    Use min() to pick the tighter constraint per viewport.
+  */
+
   return (
     <section className="relative h-[100svh] flex flex-col overflow-hidden">
       {/* Hidden video + canvas */}
@@ -110,28 +127,22 @@ export function HeroSection() {
         <canvas ref={canvasRef} />
       </div>
 
-      {/* Dark bg — fades on scroll */}
+      {/* Dark bg */}
       <motion.div
         className="fixed inset-0 bg-background pointer-events-none"
         style={{ opacity, zIndex: 0 }}
       />
 
-      {/*
-        TEXT VITRINE
-        - pt-[72px] clears the header (~56px + breathing room)
-        - h1 uses flex-1 to fill remaining space
-        - justify-between spreads 4 words evenly across full height
-        - Each word sized to fill viewport WIDTH
-        - leading-none + negative margin to pack lines tight
-        - Result: text fills the entire viewport, minimal dead space
-      */}
+      {/* Text vitrine */}
       <motion.div
-        className="relative z-10 flex-1 flex flex-col pt-[72px] md:pt-[80px] pb-6 md:pb-10 lg:pb-12 px-2 md:px-4 lg:px-8"
+        className="relative z-10 flex-1 flex flex-col justify-center pt-[76px] md:pt-[84px] px-3 md:px-5 lg:px-8"
         style={{ opacity }}
       >
         <h1
-          className="flex-1 flex flex-col justify-between font-extrabold uppercase tracking-[-0.04em] leading-none select-none overflow-hidden"
+          className="font-extrabold uppercase leading-[0.92] select-none"
           style={{
+            fontSize: 'clamp(48px, min(13.5vw, 19vh), 260px)',
+            letterSpacing: '-0.04em',
             backgroundImage: `url(${bg})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center 40%',
@@ -150,7 +161,7 @@ export function HeroSection() {
             >
               <Link
                 to={div.path}
-                className="block whitespace-nowrap"
+                className="block"
                 onMouseEnter={() => setHoveredIdx(i)}
                 onMouseLeave={() => setHoveredIdx(null)}
                 onTouchStart={() => setHoveredIdx(i)}
@@ -158,13 +169,6 @@ export function HeroSection() {
                 style={{
                   WebkitTextFillColor: hoveredIdx === i ? div.color : 'transparent',
                   transition: 'all 0.25s ease',
-                  /*
-                    Each word fills ~90% of viewport width.
-                    vh cap prevents vertical overflow.
-                    On landscape (desktop), vh is the tighter constraint.
-                    On portrait (mobile), vw is the tighter constraint.
-                  */
-                  fontSize: `clamp(40px, min(${Math.round(140 / div.name.length)}vw, ${Math.round(190 / div.name.length)}vh), 340px)`,
                 }}
               >
                 {div.name}
@@ -172,22 +176,22 @@ export function HeroSection() {
             </motion.span>
           ))}
         </h1>
+      </motion.div>
 
-        {/* Scroll indicator — inline at bottom right */}
+      {/* Scroll indicator */}
+      <motion.div
+        className="relative z-10 flex justify-end px-6 lg:px-12 pb-5 lg:pb-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 0.5 }}
+      >
         <motion.div
-          className="flex justify-end mt-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5 }}
+          className="flex flex-col items-center gap-1"
+          animate={{ y: [0, 4, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <motion.div
-            className="flex flex-col items-center gap-1"
-            animate={{ y: [0, 4, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <span className="text-[8px] text-muted-foreground/20 tracking-[0.3em] uppercase">Scroll</span>
-            <div className="w-px h-4 bg-foreground/10" />
-          </motion.div>
+          <span className="text-[8px] text-muted-foreground/20 tracking-[0.3em] uppercase">Scroll</span>
+          <div className="w-px h-4 bg-foreground/10" />
         </motion.div>
       </motion.div>
     </section>
