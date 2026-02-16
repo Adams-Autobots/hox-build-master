@@ -1,9 +1,9 @@
 import { Layout } from '@/components/layout/Layout';
 import { PageMeta } from '@/components/seo/PageMeta';
 import { HeroSection } from '@/components/home/HeroSection';
+import { FeaturedProjects } from '@/components/home/FeaturedProjects';
 import { DivisionsSection } from '@/components/home/DivisionsSection';
-import { ProjectsSection } from '@/components/home/ProjectsSection';
-import { ClientMarquee } from '@/components/home/ClientMarquee';
+import { CredibilitySection } from '@/components/home/CredibilitySection';
 import { WhyHoxSection } from '@/components/home/WhyHoxSection';
 import { ContactCTA } from '@/components/home/ContactCTA';
 
@@ -18,10 +18,10 @@ const Index = () => {
         canonicalPath="/"
       />
       <HeroSection />
-      <div className="relative z-10">
+      <div className="relative z-10 bg-background">
+        <FeaturedProjects />
         <DivisionsSection />
-        <ProjectsSection />
-        <ClientMarquee />
+        <CredibilitySection />
         <WhyHoxSection />
         <ContactCTA />
       </div>
