@@ -1,80 +1,82 @@
-import { Quote } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { HoverText } from '@/components/ui/HoverText';
-
-const headingAnimation = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
-};
 
 const testimonials = [
   {
-    quote: "Working with House of Exhibitions really does relieve the stress of exhibition planning and preparation.\n\nFrom designing, fabricating and installing shopping mall promotional kiosks to creating impactful but practical state-of-the-art exhibition stands, House of Exhibitions go the extra mile to provide hands-on professional services which meet our individual requirements.",
+    quote: "Working with House of Exhibitions really does relieve the stress of exhibition planning and preparation. From designing, fabricating and installing shopping mall promotional kiosks to creating impactful but practical state-of-the-art exhibition stands, they go the extra mile to provide hands-on professional services which meet our individual requirements.",
     author: "C.F Group Marketing and PR Manager",
-    company: "Kleindienst Group"
+    company: "Kleindienst Group",
   },
   {
-    quote: "We came to HOX seeking total refurbishment of the interiors of our centre (particularly the reception area) and they certainly delivered.\n\nDespite the structure limitations of the leaded walls, the numerous requirements of DHA and the budget constraints, they managed to transform this dark worn-down space into a bright, modern diagnostic centre.\n\nThey are a great team to work with who responded immediately to all requests and continuously kept updated us with progress. We would not hesitate to recommend them to anyone seeking contemporary interior solutions.",
+    quote: "We came to HOX seeking total refurbishment of the interiors of our centre and they certainly delivered. Despite the structure limitations, the numerous requirements of DHA and the budget constraints, they managed to transform this dark worn-down space into a bright, modern diagnostic centre. We would not hesitate to recommend them to anyone seeking contemporary interior solutions.",
     author: "Dr. H.A",
-    company: "Megascan Clinic"
+    company: "Megascan Clinic",
   },
   {
-    quote: "We have been working with HOX for 7 years as our build partner of choice in Dubai. They have provided us with an excellent build service for a multiple of projects of all scales.\n\nHOX are fully supportive on site and their 'nothing is too much trouble' attitude ensures that we constantly return to work with them. Our exacting standards and specifications are always delivered on time and on budget for even our most complex designs.\n\nOur excellent business relationship has grown over the years and is based on trust, integrity and honesty. Values that align perfectly with Design Original. We look forward to our next project together.",
-    author: "W.D – Managing Director",
-    company: "Design Original"
+    quote: "We have been working with HOX for 7 years as our build partner of choice in Dubai. They have provided us with an excellent build service for multiple projects of all scales. Our exacting standards and specifications are always delivered on time and on budget for even our most complex designs. Our excellent business relationship is based on trust, integrity and honesty.",
+    author: "W.D — Managing Director",
+    company: "Design Original",
   },
   {
-    quote: "\"Relax… go home and enjoy your weekend… we still have a lot of time\" — that was what HOX told me when we finished our first meeting.\n\nThat morning we had just signed a contract for a gigantic stand at Gulfood 2016, with less than 15 days left to the opening of the show.\n\nWe actually ended up to be the first company in the concourse to have its stand ready! And boy was it a wicked stand! We at Bin Ablan will never forget the favor HOX did for us.",
-    author: "A.C.O – Marketing & Sales Manager",
-    company: "Bin Ablan Foods Industry"
-  }
+    quote: "\"Relax… go home and enjoy your weekend… we still have a lot of time\" — that was what HOX told me when we had just signed a contract for a gigantic stand at Gulfood 2016, with less than 15 days left. We ended up to be the first company in the concourse to have its stand ready. We at Bin Ablan will never forget the favor HOX did for us.",
+    author: "A.C.O — Marketing & Sales Manager",
+    company: "Bin Ablan Foods Industry",
+  },
 ];
 
 export function TestimonialsSection() {
-  const [isPaused, setIsPaused] = useState(false);
-  const rowRef = useRef<HTMLDivElement>(null);
-  const [contentWidth, setContentWidth] = useState(0);
+  const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const touchStartX = useRef(0);
 
+  const count = testimonials.length;
+
+  const go = useCallback((dir: number) => {
+    setDirection(dir);
+    setActive((prev) => (prev + dir + count) % count);
+  }, [count]);
+
+  // Auto-advance every 8s — pauses if user interacted recently
+  const [userInteracted, setUserInteracted] = useState(false);
   useEffect(() => {
-    if (!rowRef.current) return;
-    const oneSetCount = testimonials.length;
-    const children = rowRef.current.children;
-    let width = 0;
-    const style = getComputedStyle(rowRef.current);
-    const gap = parseFloat(style.columnGap) || 24;
-    for (let i = 0; i < oneSetCount && i < children.length; i++) {
-      width += (children[i] as HTMLElement).offsetWidth;
-      if (i < oneSetCount - 1) width += gap;
+    if (userInteracted) {
+      const timeout = setTimeout(() => setUserInteracted(false), 12000);
+      return () => clearTimeout(timeout);
     }
-    setContentWidth(width);
+    timerRef.current = setInterval(() => go(1), 8000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [userInteracted, go]);
+
+  const handleNav = useCallback((dir: number) => {
+    setUserInteracted(true);
+    go(dir);
+  }, [go]);
+
+  // Swipe support
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
   }, []);
 
-  const animationStyle = contentWidth > 0 ? {
-    animationName: 'testimonial-scroll',
-    animationDuration: '40s',
-    animationTimingFunction: 'linear',
-    animationIterationCount: 'infinite',
-    animationPlayState: isPaused ? 'paused' : 'running',
-    '--scroll-distance': `${contentWidth}px`,
-  } as React.CSSProperties : {};
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 50) {
+      handleNav(dx < 0 ? 1 : -1);
+    }
+  }, [handleNav]);
+
+  const t = testimonials[active];
 
   return (
-    <section className="py-12 lg:py-16 bg-background">
-      <style>{`
-        @keyframes testimonial-scroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(calc(-1 * var(--scroll-distance))); }
-        }
-      `}</style>
-
+    <section className="py-16 lg:py-24 bg-background overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="flex items-end justify-between mb-12">
+        {/* Header */}
+        <div className="flex items-end justify-between mb-12 lg:mb-16">
           <div>
-            <motion.span 
-              className="inline-flex items-center gap-2 text-sm font-medium tracking-wider text-primary mb-6"
+            <motion.span
+              className="inline-flex items-center gap-3 text-sm font-medium tracking-wider text-primary mb-6"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -83,32 +85,109 @@ export function TestimonialsSection() {
               <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
               Client Voices
             </motion.span>
-            
-            <motion.h2 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
-              {...headingAnimation}
+            <motion.h2
+              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
-              <span className="hox-brand"><HoverText>What our clients</HoverText> </span>
-              <span className="text-primary"><HoverText>Say.</HoverText></span>
+              <HoverText>What our clients</HoverText>{' '}
+              <span className="text-primary"><HoverText>say.</HoverText></span>
             </motion.h2>
+          </div>
+
+          {/* Desktop nav arrows */}
+          <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => handleNav(-1)}
+              className="w-10 h-10 rounded-full border border-border/30 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleNav(1)}
+              className="w-10 h-10 rounded-full border border-border/30 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
-        <div onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)} className="overflow-hidden">
-          <div ref={rowRef} className="flex gap-6 w-max will-change-transform" style={animationStyle}>
-            {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
-              <div key={index} className="relative flex-shrink-0 w-[340px] md:w-[450px] p-8 rounded-xl bg-card border border-border transition-all duration-500 group hover:border-primary/30">
-                <Quote className="w-10 h-10 text-primary/20 mb-6 transition-colors duration-300 group-hover:text-primary/40" />
-                <blockquote className="text-muted-foreground italic leading-loose mb-6 text-xs md:text-sm whitespace-pre-line">
-                  "{testimonial.quote}"
+        {/* Testimonial card */}
+        <div
+          className="relative min-h-[280px] md:min-h-[240px]"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={active}
+              custom={direction}
+              initial={{ opacity: 0, x: direction >= 0 ? 60 : -60 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction >= 0 ? -60 : 60 }}
+              transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="grid lg:grid-cols-[1fr_auto] gap-8 lg:gap-16 items-start"
+            >
+              {/* Quote */}
+              <div>
+                <Quote className="w-8 h-8 text-primary/25 mb-5" />
+                <blockquote className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 font-light">
+                  {t.quote}
                 </blockquote>
-                <div className="border-t border-border pt-6">
-                  <p className="font-bold text-foreground">{testimonial.author}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.company}</p>
-                </div>
               </div>
+
+              {/* Attribution — right side on desktop, below on mobile */}
+              <div className="lg:w-48 lg:pt-14">
+                <div className="w-10 h-px bg-primary/30 mb-4" />
+                <p className="font-semibold text-foreground text-sm">{t.author}</p>
+                <p className="text-sm text-muted-foreground mt-1">{t.company}</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Progress dots + mobile nav */}
+        <div className="flex items-center justify-between mt-10 pt-8 border-t border-border/10">
+          {/* Dots */}
+          <div className="flex items-center gap-2">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setUserInteracted(true); setDirection(i > active ? 1 : -1); setActive(i); }}
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  i === active ? 'w-8 bg-primary' : 'w-1.5 bg-muted-foreground/20 hover:bg-muted-foreground/40'
+                }`}
+                aria-label={`Testimonial ${i + 1}`}
+              />
             ))}
           </div>
+
+          {/* Mobile nav arrows */}
+          <div className="flex md:hidden items-center gap-3">
+            <button
+              onClick={() => handleNav(-1)}
+              className="w-9 h-9 rounded-full border border-border/30 flex items-center justify-center text-muted-foreground"
+              aria-label="Previous"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleNav(1)}
+              className="w-9 h-9 rounded-full border border-border/30 flex items-center justify-center text-muted-foreground"
+              aria-label="Next"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Counter */}
+          <span className="text-xs text-muted-foreground/40 tabular-nums">
+            {String(active + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
+          </span>
         </div>
       </div>
     </section>
