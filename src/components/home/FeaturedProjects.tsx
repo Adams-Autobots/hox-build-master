@@ -69,7 +69,7 @@ export function FeaturedProjects() {
   });
 
   return (
-    <section className="py-16 lg:py-24 bg-background">
+    <section className="py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-6 lg:px-12">
         {/* No big heading — let the work speak */}
         <div className="space-y-4 lg:space-y-6">

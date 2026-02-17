@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { HoverText } from '@/components/ui/HoverText';
+import { SectionLabel } from '@/components/ui/SectionLabel';
 
 export function WhyHoxSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -12,39 +13,30 @@ export function WhyHoxSection() {
   const backgroundOpacity = useSpring(rawOpacity, { stiffness: 100, damping: 30 });
 
   return (
-    <section ref={sectionRef} className="py-28 lg:py-40 relative overflow-hidden">
+    <section ref={sectionRef} className="py-20 lg:py-28 relative overflow-hidden">
       <motion.div className="absolute inset-0 bg-card" style={{ opacity: backgroundOpacity }} />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="max-w-4xl">
-          <motion.span
-            className="inline-flex items-center gap-3 text-sm font-medium tracking-wider text-primary mb-8"
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
-            Why hox
-          </motion.span>
+          <SectionLabel>Why hox</SectionLabel>
 
           <motion.h2
-            className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.1] mb-12"
-            initial={{ opacity: 0, y: 30 }}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] mb-8"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
           >
             <HoverText>We own the process.</HoverText>{' '}
             <span className="text-muted-foreground/50"><HoverText>Design. Fabrication. Logistics. Installation. When everything is under one roof, nothing falls through the cracks.</HoverText></span>
           </motion.h2>
 
           <motion.div
-            className="grid md:grid-cols-3 gap-12 mt-16 pt-12 border-t border-border/20"
-            initial={{ opacity: 0, y: 20 }}
+            className="grid md:grid-cols-3 gap-10 mt-12 pt-10 border-t border-border/20"
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
           >
             <div>
               <h3 className="text-sm font-semibold tracking-wider uppercase text-foreground mb-3">In-house</h3>

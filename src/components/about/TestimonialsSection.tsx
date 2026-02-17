@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { HoverText } from '@/components/ui/HoverText';
+import { SectionLabel } from '@/components/ui/SectionLabel';
 
 const testimonials = [
   {
@@ -70,24 +71,15 @@ export function TestimonialsSection() {
   const t = testimonials[active];
 
   return (
-    <section className="py-16 lg:py-24 bg-background overflow-hidden">
+    <section className="py-20 lg:py-28 bg-background overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="flex items-end justify-between mb-12 lg:mb-16">
           <div>
-            <motion.span
-              className="inline-flex items-center gap-3 text-sm font-medium tracking-wider text-primary mb-6"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
-              Client Voices
-            </motion.span>
+            <SectionLabel>Client voices</SectionLabel>
             <motion.h2
-              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
-              initial={{ opacity: 0, y: 20 }}
+              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1]"
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
