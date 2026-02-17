@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
 import { useState, useRef, useEffect } from "react";
 
+import { SectionLabel } from '@/components/ui/SectionLabel';
+
 const clients = [
   "National Geographic", "TP-Link", "Clinell", "Citizen", "Rolls-Royce",
   "Mubadala", "RTA Dubai", "DWTC", "The Industrial Group", "Dahua Technology",
@@ -73,10 +75,7 @@ export function ClientMarquee() {
         }
       `}</style>
       <div className="container mx-auto px-6 lg:px-12 mb-8">
-        <span className="inline-flex items-center gap-3 text-sm font-medium tracking-wider text-primary">
-          <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
-          Trusted by
-        </span>
+        <SectionLabel>Trusted by</SectionLabel>
       </div>
       <div className="relative flex flex-col gap-5">
         <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />

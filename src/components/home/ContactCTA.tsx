@@ -2,50 +2,42 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { HoverText } from '@/components/ui/HoverText';
+import { SectionLabel } from '@/components/ui/SectionLabel';
 
 export function ContactCTA() {
   return (
-    <section className="py-28 lg:py-40 bg-background relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-background relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12 relative">
         <div className="max-w-3xl">
-          <motion.span
-            className="inline-flex items-center gap-3 text-sm font-medium tracking-wider text-primary mb-8"
-            initial={{ opacity: 0, y: 20 }}
+          <SectionLabel>Start your project</SectionLabel>
+
+          <motion.h2
+            className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] mb-8"
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-          >
-            <span className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
-            Start your project
-          </motion.span>
-
-          <motion.h2
-            className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.1] mb-10"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
           >
             <HoverText>Ready to build something</HoverText>{' '}
             <span className="text-primary"><HoverText>exceptional?</HoverText></span>
           </motion.h2>
 
           <motion.p
-            className="text-lg text-muted-foreground max-w-xl mb-12 leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-lg text-muted-foreground max-w-xl mb-10 leading-relaxed"
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.15 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
             Tell us what you need. We'll respond within 24 hours with a proposal, 3D concepts, and transparent pricing.
           </motion.p>
 
           <motion.div
             className="flex flex-wrap items-center gap-6"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.25 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             <Link
               to="/contact"
