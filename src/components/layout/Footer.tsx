@@ -90,13 +90,13 @@ export function Footer() {
               <li>
                 <a href="tel:+97143477519" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                   <Phone className="w-3.5 h-3.5 text-primary shrink-0" />
-                  +971 4 347 7519
+                  +971 4 3477519
                 </a>
               </li>
               <li>
                 <a href="tel:+971588950056" className="flex items-center gap-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                   <Phone className="w-3.5 h-3.5 text-primary shrink-0" />
-                  +971 58 895 0056
+                  +971 58 8950056
                 </a>
               </li>
               <li>

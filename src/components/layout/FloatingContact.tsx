@@ -69,9 +69,9 @@ export function FloatingContact() {
       )}>
         <div className="flex flex-col items-center gap-0.5 bg-background/80 backdrop-blur-xl border border-border/30 rounded-full p-1.5 shadow-2xl">
           <a
-            href="tel:+971588950056"
+            href="tel:+97143477519"
             className="w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all duration-200"
-            title="Call +971 58 895 0056"
+            title="Call +971 4 3477519"
           >
             <Phone className="w-[18px] h-[18px]" />
           </a>
@@ -104,7 +104,7 @@ export function FloatingContact() {
         <div className="bg-background/95 backdrop-blur-xl border-t border-border/20 safe-area-pb">
           <div className="flex items-center h-14 px-4 gap-2">
             <a
-              href="tel:+971588950056"
+              href="tel:+97143477519"
               className="flex items-center justify-center w-11 h-10 rounded-lg border border-border/30 text-muted-foreground"
             >
               <Phone className="w-4 h-4" />
@@ -162,7 +162,7 @@ export function FloatingContact() {
                   {isSubmitting ? 'Sending...' : 'Send Enquiry'}
                 </button>
                 <p className="text-xs text-muted-foreground/50 text-center pt-1">
-                  Or call <a href="tel:+971588950056" className="text-muted-foreground hover:text-foreground">+971 58 895 0056</a>
+                  Or call <a href="tel:+97143477519" className="text-muted-foreground hover:text-foreground">+971 4 3477519</a>
                 </p>
               </form>
             )}

@@ -385,9 +385,9 @@ export function Header() {
               )}
               style={{ transitionDelay: isOverlayOpen ? '500ms' : '0ms' }}
             >
-              <a href="tel:+971588950056" className="inline-flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors text-sm">
+              <a href="tel:+97143477519" className="inline-flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors text-sm">
                 <Phone className="w-4 h-4 text-primary/70" />
-                +971 58 895 0056
+                +971 4 3477519
               </a>
               <a href="mailto:info@hox.ae" className="inline-flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors text-sm">
                 <Mail className="w-4 h-4 text-primary/70" />

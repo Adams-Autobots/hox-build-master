@@ -152,7 +152,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Mobile / WhatsApp</p>
-                    <p className="font-medium">+971 58 895 0056</p>
+                    <p className="font-medium">+971 58 8950056</p>
                   </div>
                 </a>
 
