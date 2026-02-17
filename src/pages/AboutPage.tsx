@@ -16,6 +16,7 @@ export default function AboutPage() {
         keywords="about hox, dubai production company, exhibition company uae, event production team"
         image="/favicon.png"
         canonicalPath="/about"
+        image="/og-about.png"
       />
 
       {/* ─── Page Hero ─── */}
