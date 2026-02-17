@@ -113,14 +113,14 @@ export function HeroSection() {
         style={{
           opacity,
           zIndex: 1,
-          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 86%, transparent 100%)',
-          maskImage: 'linear-gradient(to bottom, black 0%, black 86%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 92%, transparent 98%)',
+          maskImage: 'linear-gradient(to bottom, black 0%, black 92%, transparent 98%)',
         }}
       >
         <h1
           className="w-full h-full font-extrabold uppercase select-none"
           style={{
-            fontSize: 'clamp(48px, 11.5vw, 200px)',
+            fontSize: 'clamp(52px, 11.5vw, 200px)',
             lineHeight: 0.92,
             letterSpacing: '-0.02em',
             wordBreak: 'break-all',
@@ -136,7 +136,7 @@ export function HeroSection() {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          {Array.from({ length: 5 }).flatMap((_, repeat) =>
+          {Array.from({ length: 7 }).flatMap((_, repeat) =>
             divisions.map((div, di) => {
               const key = `${div.name}-${repeat}`;
               const isFirst = repeat === 0 && di === 0;

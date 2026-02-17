@@ -127,14 +127,19 @@ export function Header() {
                 {renderWordmark()}
               </span>
               {/* Mobile: always compact */}
-              <span className="md:hidden text-2xl font-bold tracking-tight">
+              <span className="md:hidden text-lg font-bold tracking-tight">
                 {activeDivision ? (
                   <>
-                    <span className="text-foreground">h</span>
+                    <span className="text-foreground">hox</span>
+                    <span style={{ color: `hsl(var(--${activeDivision.cssVar}))` }}>{activeDivision.slug}</span>
                     <span style={{ color: `hsl(var(--${activeDivision.cssVar}))` }}>.</span>
                   </>
                 ) : (
-                  <span className="text-primary">h.</span>
+                  <>
+                    <span className="text-primary">hox</span>
+                    <span className="text-foreground">creative</span>
+                    <span className="text-primary">.</span>
+                  </>
                 )}
               </span>
             </Link>
