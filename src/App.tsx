@@ -10,26 +10,41 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 // Eager: homepage (critical path)
 import Index from "./pages/Index";
 
+// Retry wrapper for lazy imports — handles chunk load failures on flaky mobile connections
+function lazyRetry(factory: () => Promise<any>, retries = 2): ReturnType<typeof lazy> {
+  return lazy(() =>
+    factory().catch((err) => {
+      if (retries > 0) {
+        // Force reload from server, not cache
+        return new Promise<any>((resolve) => {
+          setTimeout(() => resolve(lazyRetry(factory, retries - 1)), 500);
+        }).then((mod) => ({ default: mod })).catch(() => factory());
+      }
+      throw err;
+    })
+  );
+}
+
 // Lazy: everything else (loaded on navigation)
-const WorkPage = lazy(() => import("./pages/WorkPage"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
-const ContactPage = lazy(() => import("./pages/ContactPage"));
-const ExhibitionsPage = lazy(() => import("./pages/divisions/ExhibitionsPage"));
-const EventsPage = lazy(() => import("./pages/divisions/EventsPage"));
-const RetailPage = lazy(() => import("./pages/divisions/RetailPage"));
-const InteriorsPage = lazy(() => import("./pages/divisions/InteriorsPage"));
-const ExhibitionsGalleryPage = lazy(() => import("./pages/gallery/ExhibitionsGalleryPage"));
-const EventsGalleryPage = lazy(() => import("./pages/gallery/EventsGalleryPage"));
-const RetailGalleryPage = lazy(() => import("./pages/gallery/RetailGalleryPage"));
-const InteriorsGalleryPage = lazy(() => import("./pages/gallery/InteriorsGalleryPage"));
-const AuthPage = lazy(() => import("./pages/AuthPage"));
-const GalleryAdminPage = lazy(() => import("./pages/admin/GalleryAdminPage"));
-const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
-const TermsPage = lazy(() => import("./pages/TermsPage"));
-const BlogIndexPage = lazy(() => import("./pages/blog/BlogIndexPage"));
-const BlogPostPage = lazy(() => import("./pages/blog/BlogPostPage"));
-const LandingPage = lazy(() => import("./pages/landing/LandingPage"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const WorkPage = lazyRetry(() => import("./pages/WorkPage"));
+const AboutPage = lazyRetry(() => import("./pages/AboutPage"));
+const ContactPage = lazyRetry(() => import("./pages/ContactPage"));
+const ExhibitionsPage = lazyRetry(() => import("./pages/divisions/ExhibitionsPage"));
+const EventsPage = lazyRetry(() => import("./pages/divisions/EventsPage"));
+const RetailPage = lazyRetry(() => import("./pages/divisions/RetailPage"));
+const InteriorsPage = lazyRetry(() => import("./pages/divisions/InteriorsPage"));
+const ExhibitionsGalleryPage = lazyRetry(() => import("./pages/gallery/ExhibitionsGalleryPage"));
+const EventsGalleryPage = lazyRetry(() => import("./pages/gallery/EventsGalleryPage"));
+const RetailGalleryPage = lazyRetry(() => import("./pages/gallery/RetailGalleryPage"));
+const InteriorsGalleryPage = lazyRetry(() => import("./pages/gallery/InteriorsGalleryPage"));
+const AuthPage = lazyRetry(() => import("./pages/AuthPage"));
+const GalleryAdminPage = lazyRetry(() => import("./pages/admin/GalleryAdminPage"));
+const PrivacyPolicyPage = lazyRetry(() => import("./pages/PrivacyPolicyPage"));
+const TermsPage = lazyRetry(() => import("./pages/TermsPage"));
+const BlogIndexPage = lazyRetry(() => import("./pages/blog/BlogIndexPage"));
+const BlogPostPage = lazyRetry(() => import("./pages/blog/BlogPostPage"));
+const LandingPage = lazyRetry(() => import("./pages/landing/LandingPage"));
+const NotFound = lazyRetry(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 

@@ -22,6 +22,16 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('[HOX ErrorBoundary]', error, errorInfo);
+    
+    // Auto-reload on chunk load failures (common on mobile after deployments)
+    const isChunkError = error.message?.includes('Loading chunk') || 
+                         error.message?.includes('Failed to fetch') ||
+                         error.message?.includes('dynamically imported module') ||
+                         error.name === 'ChunkLoadError';
+    if (isChunkError && !sessionStorage.getItem('hox-reload-attempted')) {
+      sessionStorage.setItem('hox-reload-attempted', '1');
+      window.location.reload();
+    }
   }
 
   render() {

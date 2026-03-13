@@ -8,6 +8,14 @@ const divisions = [
   { name: 'Interiors', path: '/divisions/interiors' },
 ];
 
+const services = [
+  { name: 'Exhibition Stands', path: '/exhibition-stands-dubai' },
+  { name: 'Event Production', path: '/event-production-dubai' },
+  { name: 'Interior Fit-Out', path: '/interior-fit-out-dubai' },
+  { name: 'Retail Displays', path: '/retail-display-dubai' },
+  { name: 'Get a Quote', path: '/get-a-quote' },
+];
+
 const links = [
   { name: 'About', path: '/about' },
   { name: 'Projects', path: '/projects' },
@@ -20,7 +28,7 @@ export function Footer() {
     <footer className="bg-card border-t border-border/10">
       <div className="container mx-auto px-6 lg:px-12 py-12 lg:py-16">
         {/* Mobile: stacked layout. Desktop: row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
 
           {/* Brand */}
           <div className="lg:col-span-1">
@@ -61,6 +69,20 @@ export function Footer() {
             <h4 className="text-xs font-semibold tracking-wider uppercase text-muted-foreground/50 mb-4">Divisions</h4>
             <ul className="space-y-2.5">
               {divisions.map((item) => (
+                <li key={item.name}>
+                  <Link to={item.path} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div>
+            <h4 className="text-xs font-semibold tracking-wider uppercase text-muted-foreground/50 mb-4">Services</h4>
+            <ul className="space-y-2.5">
+              {services.map((item) => (
                 <li key={item.name}>
                   <Link to={item.path} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {item.name}
