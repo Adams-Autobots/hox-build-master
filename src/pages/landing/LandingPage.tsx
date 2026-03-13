@@ -72,7 +72,7 @@ export default function LandingPage() {
       />
 
       {/* Hero */}
-      <section className="pt-32 pb-16 lg:pt-40 lg:pb-24 bg-background">
+      <section className="pt-32 pb-8 lg:pt-40 lg:pb-12 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -106,6 +106,51 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Hero image */}
+      <section className="pb-8 lg:pb-12 bg-background">
+        <div className="container mx-auto px-6 lg:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="rounded-lg overflow-hidden aspect-[21/9]"
+          >
+            <img
+              src={page.heroImage}
+              alt={`${page.headline} ${page.highlightText} — HOX Creative Productions`}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Gallery strip */}
+      {page.galleryImages.length > 0 && (
+        <section className="pb-8 lg:pb-12 bg-background">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {page.galleryImages.map((src, i) => (
+                <motion.div
+                  key={src}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className="rounded-md overflow-hidden aspect-[4/3]"
+                >
+                  <img
+                    src={src}
+                    alt={`${page.headline} project by HOX`}
+                    loading="lazy"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Stats bar */}
       <section className="py-12 border-y border-border/10">

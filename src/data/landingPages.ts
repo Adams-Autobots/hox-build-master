@@ -7,11 +7,15 @@ export interface LandingPage {
   headline: string;
   highlightText: string;
   intro: string;
+  heroImage: string;
+  galleryImages: string[];
   services: { title: string; description: string }[];
   stats: { value: string; label: string }[];
   ctaHeadline: string;
   ctaDescription: string;
 }
+
+const G = 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos';
 
 export const landingPages: LandingPage[] = [
   {
@@ -22,6 +26,13 @@ export const landingPages: LandingPage[] = [
     keywords: 'exhibition stands dubai, custom exhibition stand, trade show booth dubai, exhibition stand builder uae, DWTC stand contractor',
     headline: 'Exhibition Stands',
     highlightText: 'Dubai',
+    heroImage: `${G}/exhibitions/1766404973821-1.webp`,
+    galleryImages: [
+      `${G}/exhibitions/1766404975454-2.webp`,
+      `${G}/exhibitions/1766404977088-3.webp`,
+      `${G}/exhibitions/1766404981014-6.webp`,
+      `${G}/exhibitions/1766405000655-18.webp`,
+    ],
     intro: 'We design, fabricate, and install exhibition stands across the UAE. From compact kiosks to multi-storey pavilions, every build is engineered in our Al Quoz workshop and delivered by our own crew. No subcontracting. No surprises.',
     services: [
       { title: 'Custom Stand Design & Build', description: 'Purpose-built exhibition environments from concept through 3D visualisation to on-site installation.' },
@@ -46,6 +57,13 @@ export const landingPages: LandingPage[] = [
     keywords: 'event production dubai, event stage design, corporate event production uae, gala production dubai, event fabrication',
     headline: 'Event Production',
     highlightText: 'Dubai',
+    heroImage: `${G}/events/1766407761536-1.webp`,
+    galleryImages: [
+      `${G}/events/1766407759541-0.webp`,
+      `${G}/events/1766407765429-2.webp`,
+      `${G}/events/1766407767438-3.webp`,
+      `${G}/events/1766407782637-11.webp`,
+    ],
     intro: 'We build the physical environments that make events memorable. Stage structures, scenic fabrication, branded set pieces, and immersive installations — all fabricated in-house and installed by our crew.',
     services: [
       { title: 'Stage Design & Construction', description: 'Custom stages engineered for your venue, audience size, and technical requirements.' },
@@ -70,6 +88,13 @@ export const landingPages: LandingPage[] = [
     keywords: 'interior fit out dubai, office fit out dubai, commercial interior dubai, restaurant fit out uae, joinery dubai',
     headline: 'Interior Fit-Out',
     highlightText: 'Dubai',
+    heroImage: `${G}/interiors/1766407431653-18.webp`,
+    galleryImages: [
+      `${G}/interiors/1766407392543-0.webp`,
+      `${G}/interiors/1766407411099-8.webp`,
+      `${G}/interiors/1766407404512-5.webp`,
+      `${G}/interiors/1766407396577-2.webp`,
+    ],
     intro: 'We design and build commercial interiors across Dubai — offices, restaurants, retail spaces, and hospitality environments. Our joinery-first approach means precision fabrication from our own workshop, not generic contractor work.',
     services: [
       { title: 'Office Fit-Out', description: 'From open plan to executive suites. Space planning, joinery, MEP coordination, and full project management.' },
@@ -94,6 +119,13 @@ export const landingPages: LandingPage[] = [
     keywords: 'retail display dubai, pop up store dubai, mall kiosk design, shop fit out dubai, retail fabrication uae',
     headline: 'Retail Display',
     highlightText: 'Dubai',
+    heroImage: `${G}/retail/1766408061889-0.webp`,
+    galleryImages: [
+      `${G}/retail/1766408065206-2.webp`,
+      `${G}/retail/1766408090979-16.webp`,
+      `${G}/retail/1766408087711-14.webp`,
+      `${G}/retail/1766408355559-2.webp`,
+    ],
     intro: 'We design and fabricate retail environments for Dubai\'s most demanding spaces — from seasonal mall activations to permanent shopfitting. Every piece is built in our workshop with CNC precision and spray-booth finishing.',
     services: [
       { title: 'Mall Kiosks & Pop-Ups', description: 'Freestanding retail units designed to meet mall regulations and maximise footfall conversion.' },
@@ -118,6 +150,13 @@ export const landingPages: LandingPage[] = [
     keywords: 'exhibition stand quote dubai, event production quote, interior fit out quote dubai, free quote exhibition',
     headline: 'Get a',
     highlightText: 'Quote',
+    heroImage: `${G}/exhibitions/1766404973821-1.webp`,
+    galleryImages: [
+      `${G}/events/1766407761536-1.webp`,
+      `${G}/interiors/1766407431653-18.webp`,
+      `${G}/retail/1766408061889-0.webp`,
+      `${G}/exhibitions/1766405000655-18.webp`,
+    ],
     intro: 'Tell us what you need. We\'ll come back with a detailed, transparent proposal — broken down by category so you can see exactly where your budget goes. No hidden costs. No surprises.',
     services: [
       { title: 'Exhibitions', description: 'Custom stands, shell scheme upgrades, international show support. Any size, any venue.' },
