@@ -55,9 +55,16 @@ export function HeroSection() {
     });
   }, [scrollY, wh, videoReady]);
 
+  // Detect mobile/touch device
+  const isMobile = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return 'ontouchstart' in window || window.innerWidth < 768;
+  }, []);
+
   // Capture frames from the SAME video that plays in the background
-  // This keeps text and background wash perfectly synced
+  // SKIP on mobile — canvas.toDataURL is too expensive and causes flicker
   useEffect(() => {
+    if (isMobile) return;
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas || !videoReady) return;
@@ -74,7 +81,7 @@ export function HeroSection() {
     };
     rafRef.current = requestAnimationFrame(paint);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [videoReady]);
+  }, [videoReady, isMobile]);
 
   return (
     <section className="relative h-[100svh] overflow-hidden">
@@ -94,7 +101,8 @@ export function HeroSection() {
         {shouldLoad && !reducedMotion && (
           <video
             ref={videoRef}
-            autoPlay muted loop playsInline preload="auto"
+            autoPlay muted loop playsInline
+            preload={isMobile ? 'metadata' : 'auto'}
             onCanPlay={useCallback(() => setVideoReady(true), [])}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${
               videoReady ? 'opacity-[0.25]' : 'opacity-0'
