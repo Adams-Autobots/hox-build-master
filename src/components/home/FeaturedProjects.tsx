@@ -1,18 +1,14 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { HoverText } from '@/components/ui/HoverText';
 import heroExhibitions from '@/assets/hero-exhibitions.jpg';
 import heroEvents from '@/assets/hero-events.jpg';
-import heroRetail from '@/assets/hero-retail.jpg';
 import heroInteriors from '@/assets/hero-interiors.jpg';
 
-const FALLBACK_IMAGES: Record<string, string> = {
+const FEATURED_IMAGES: Record<string, string> = {
   exhibitions: heroExhibitions,
   events: heroEvents,
-  retail: heroRetail,
   interiors: heroInteriors,
 };
 
@@ -49,24 +45,6 @@ const divisionColors: Record<string, string> = {
 };
 
 export function FeaturedProjects() {
-  // Fetch hero images from database for each featured division
-  const { data: heroImages } = useQuery({
-    queryKey: ['featured-project-images'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('gallery_images')
-        .select('src, division')
-        .eq('is_division_hero', true)
-        .order('display_order', { ascending: true });
-      if (error) throw error;
-      const imageMap: Record<string, string> = {};
-      data?.forEach((img) => {
-        if (!imageMap[img.division]) imageMap[img.division] = img.src;
-      });
-      return imageMap;
-    },
-  });
-
   return (
     <section className="py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-6 lg:px-12">
@@ -87,7 +65,7 @@ export function FeaturedProjects() {
                 {/* Image — full width, aspect ratio varies by breakpoint */}
                 <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden">
                   <img
-                    src={heroImages?.[project.division] || FALLBACK_IMAGES[project.division] || ''}
+                    src={FEATURED_IMAGES[project.division] || ''}
                     alt={`${project.title} — ${project.subtitle}`}
                     loading={index === 0 ? 'eager' : 'lazy'}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
