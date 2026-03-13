@@ -21,6 +21,33 @@ const divisionBg: Record<string, string> = {
   interiors: 'bg-green-500/10',
 };
 
+const divisionMeta: Record<string, { label: string; tagline: string; path: string; heroImage: string }> = {
+  exhibitions: {
+    label: 'hoxexhibitions.',
+    tagline: 'Custom stands & pavilions engineered for impact',
+    path: '/divisions/exhibitions',
+    heroImage: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/exhibitions/1766404975454-2.webp',
+  },
+  events: {
+    label: 'hoxevents.',
+    tagline: 'End-to-end production for unforgettable experiences',
+    path: '/divisions/events',
+    heroImage: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/events/1766407765429-2.webp',
+  },
+  retail: {
+    label: 'hoxretail.',
+    tagline: 'Displays and environments that drive conversion',
+    path: '/divisions/retail',
+    heroImage: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/retail/1766408090979-16.webp',
+  },
+  interiors: {
+    label: 'hoxinteriors.',
+    tagline: 'Design and build with a joinery-first approach',
+    path: '/divisions/interiors',
+    heroImage: 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/interiors/1766407392543-0.webp',
+  },
+};
+
 export default function LandingPage() {
   const location = useLocation();
   const slug = location.pathname.replace(/^\//, '');
@@ -198,6 +225,93 @@ export default function LandingPage() {
                 <p className="text-sm text-muted-foreground leading-relaxed">{service.description}</p>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Discover More — cross-links to division page and homepage */}
+      <section className="py-16 lg:py-24 bg-background">
+        <div className="container mx-auto px-6 lg:px-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-2xl md:text-3xl font-bold mb-8"
+          >
+            Discover more
+          </motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Division card */}
+            {page.slug !== 'get-a-quote' && divisionMeta[page.division] && (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <Link
+                  to={divisionMeta[page.division].path}
+                  className="group block relative overflow-hidden rounded-lg aspect-[16/9]"
+                >
+                  <img
+                    src={divisionMeta[page.division].heroImage}
+                    alt={divisionMeta[page.division].label}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
+                    <span className={`text-xs font-medium tracking-widest uppercase mb-2 ${divisionColors[page.division]}`}>
+                      {divisionMeta[page.division].label}
+                    </span>
+                    <p className="text-white text-lg font-bold leading-snug mb-1">
+                      {divisionMeta[page.division].tagline}
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-white/60 group-hover:text-white transition-colors mt-2">
+                      Explore {page.division}
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            )}
+
+            {/* HOX Creative card — links to homepage */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className={page.slug === 'get-a-quote' ? 'md:col-span-2' : ''}
+            >
+              <Link
+                to="/"
+                className="group block relative overflow-hidden rounded-lg aspect-[16/9]"
+              >
+                <img
+                  src="https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos/exhibitions/1766404973821-1.webp"
+                  alt="HOX Creative Productions"
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
+                  <span className="text-xs font-medium tracking-widest uppercase mb-2 text-red-500">
+                    hoxcreative.
+                  </span>
+                  <p className="text-white text-lg font-bold leading-snug mb-1">
+                    Production excellence since 2008
+                  </p>
+                  <p className="text-white/60 text-sm leading-relaxed max-w-md">
+                    Exhibitions, events, interiors, and retail — all built in-house at our Dubai workshop.
+                  </p>
+                  <div className="flex items-center gap-2 text-sm text-white/60 group-hover:text-white transition-colors mt-3">
+                    Learn more about HOX
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>
