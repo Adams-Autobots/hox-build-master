@@ -8,17 +8,17 @@ import { useEffect } from 'react';
 import { CANONICAL_DOMAIN } from '@/lib/constants';
 
 const divisionColors: Record<string, string> = {
-  exhibitions: 'text-red-500',
-  events: 'text-sky-500',
-  retail: 'text-orange-400',
-  interiors: 'text-green-500',
+  exhibitions: 'text-hox-red',
+  events: 'text-hox-blue',
+  retail: 'text-hox-orange',
+  interiors: 'text-hox-green',
 };
 
 const divisionBg: Record<string, string> = {
-  exhibitions: 'bg-red-500/10',
-  events: 'bg-sky-500/10',
-  retail: 'bg-orange-400/10',
-  interiors: 'bg-green-500/10',
+  exhibitions: 'bg-hox-red/10',
+  events: 'bg-hox-blue/10',
+  retail: 'bg-hox-orange/10',
+  interiors: 'bg-hox-green/10',
 };
 
 const divisionMeta: Record<string, { label: string; tagline: string; path: string; heroImage: string }> = {
@@ -261,7 +261,7 @@ export default function LandingPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                   <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
-                    <span className={`text-xs font-medium tracking-widest uppercase mb-2 ${divisionColors[page.division]}`}>
+                    <span className={`text-sm font-bold tracking-tight mb-2 ${divisionColors[page.division]}`}>
                       {divisionMeta[page.division].label}
                     </span>
                     <p className="text-white text-lg font-bold leading-snug mb-1">
@@ -296,7 +296,7 @@ export default function LandingPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                 <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-8">
-                  <span className="text-xs font-medium tracking-widest uppercase mb-2 text-red-500">
+                  <span className="text-sm font-bold tracking-tight mb-2 text-hox-red">
                     hoxcreative.
                   </span>
                   <p className="text-white text-lg font-bold leading-snug mb-1">

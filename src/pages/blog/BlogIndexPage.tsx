@@ -5,10 +5,10 @@ import { PageMeta } from '@/components/seo/PageMeta';
 import { blogPosts } from '@/data/blogPosts';
 
 const categoryColors: Record<string, string> = {
-  Exhibitions: 'text-red-500',
-  Events: 'text-sky-500',
-  Retail: 'text-orange-400',
-  Interiors: 'text-green-500',
+  Exhibitions: 'text-hox-red',
+  Events: 'text-hox-blue',
+  Retail: 'text-hox-orange',
+  Interiors: 'text-hox-green',
 };
 
 export default function BlogIndexPage() {
