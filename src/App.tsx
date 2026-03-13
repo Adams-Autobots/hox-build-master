@@ -26,6 +26,9 @@ const AuthPage = lazy(() => import("./pages/AuthPage"));
 const GalleryAdminPage = lazy(() => import("./pages/admin/GalleryAdminPage"));
 const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
+const BlogIndexPage = lazy(() => import("./pages/blog/BlogIndexPage"));
+const BlogPostPage = lazy(() => import("./pages/blog/BlogPostPage"));
+const LandingPage = lazy(() => import("./pages/landing/LandingPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -61,6 +64,13 @@ const App = () => (
             <Route path="/admin/gallery" element={<GalleryAdminPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsPage />} />
+            <Route path="/blog" element={<BlogIndexPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
+            <Route path="/exhibition-stands-dubai" element={<LandingPage />} />
+            <Route path="/event-production-dubai" element={<LandingPage />} />
+            <Route path="/interior-fit-out-dubai" element={<LandingPage />} />
+            <Route path="/retail-display-dubai" element={<LandingPage />} />
+            <Route path="/get-a-quote" element={<LandingPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

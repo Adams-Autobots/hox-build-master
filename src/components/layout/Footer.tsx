@@ -12,6 +12,7 @@ const links = [
   { name: 'About', path: '/about' },
   { name: 'Projects', path: '/projects' },
   { name: 'Contact', path: '/contact' },
+  { name: 'Insights', path: '/blog' },
 ];
 
 export function Footer() {
