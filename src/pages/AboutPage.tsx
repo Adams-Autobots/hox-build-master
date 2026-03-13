@@ -14,9 +14,8 @@ export default function AboutPage() {
         title="About HOX | Our Story & Team | Dubai Production Company"
         description="Learn about HOX - Dubai's production powerhouse since 2008. Discover our story, capabilities, and commitment to design & build excellence."
         keywords="about hox, dubai production company, exhibition company uae, event production team"
-        image="/favicon.png"
-        canonicalPath="/about"
         image="/og-about.png"
+        canonicalPath="/about"
       />
 
       {/* ─── Page Hero ─── */}
