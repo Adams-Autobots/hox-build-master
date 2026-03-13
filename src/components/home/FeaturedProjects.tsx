@@ -16,29 +16,28 @@ const FALLBACK_IMAGES: Record<string, string> = {
   interiors: heroInteriors,
 };
 
-// Featured projects — these are the hero projects that define HOX
-// Update with real project names and replace images when available
+// Featured projects — hero showcase cards on homepage
 const featuredProjects = [
   {
-    title: 'National Geographic',
-    subtitle: 'Exhibition Stand — Abu Dhabi International Petroleum Exhibition',
+    title: 'RTA',
+    subtitle: 'A show-stopping stand highlighting the latest technologies at GITEX Dubai',
     division: 'exhibitions' as const,
     divisionLabel: 'Exhibitions',
     path: '/gallery/exhibitions',
   },
   {
-    title: 'Rolls-Royce',
-    subtitle: 'Immersive Brand Experience — Dubai Airshow',
+    title: 'Royal Wedding',
+    subtitle: 'A magical experience on an epic scale',
     division: 'events' as const,
     divisionLabel: 'Events',
     path: '/gallery/events',
   },
   {
-    title: 'Aqua Water Bar',
-    subtitle: 'Full Retail Fit-Out — Dubai',
-    division: 'retail' as const,
-    divisionLabel: 'Retail',
-    path: '/gallery/retail',
+    title: 'Turnkey Office',
+    subtitle: 'Complete workplace experience — ROLEX Tower, Dubai',
+    division: 'interiors' as const,
+    divisionLabel: 'Interiors',
+    path: '/gallery/interiors',
   },
 ];
 
