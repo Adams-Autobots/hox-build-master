@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
 import { HoverText } from '@/components/ui/HoverText';
 import { SectionLabel } from '@/components/ui/SectionLabel';
+import skillManagement from '@/assets/skill-management.jpg';
+import skillPlanning from '@/assets/skill-planning.jpg';
+import skillExecution from '@/assets/skill-execution.jpg';
 
 const GALLERY_BASE = 'https://ptsofbnopjrbgtlmvrbk.supabase.co/storage/v1/object/public/gallery-photos';
 
@@ -8,12 +11,12 @@ const skills = [
   {
     title: 'Project Management',
     description: 'Decades of experience in planning, scheduling, and supplier coordination. We make complex simple.',
-    image: `${GALLERY_BASE}/exhibitions/1766404989002-10.webp`
+    image: skillManagement
   },
   {
     title: 'Technical Planning & Drawing',
     description: 'Helping turn great ideas into budget workable deliveries.',
-    image: `${GALLERY_BASE}/events/1766407779008-9.webp`
+    image: skillPlanning
   },
   {
     title: 'Value Engineering',
@@ -23,7 +26,7 @@ const skills = [
   {
     title: 'Project Execution',
     description: 'What matters most is getting it done, right on time and to the standard you expect.',
-    image: `${GALLERY_BASE}/events/1766407759541-0.webp`
+    image: skillExecution
   }
 ];
 
