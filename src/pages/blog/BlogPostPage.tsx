@@ -7,8 +7,26 @@ import { getBlogPost, blogPosts } from '@/data/blogPosts';
 import { useEffect } from 'react';
 import { CANONICAL_DOMAIN } from '@/lib/constants';
 
+function renderInline(text: string) {
+  // Handle bold and links: **bold** and [text](url)
+  const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g);
+  return parts.map((part, j) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={j}>{part.slice(2, -2)}</strong>;
+    }
+    const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (linkMatch) {
+      const [, linkText, href] = linkMatch;
+      if (href.startsWith('/')) {
+        return <Link key={j} to={href} className="text-primary hover:underline">{linkText}</Link>;
+      }
+      return <a key={j} href={href} className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">{linkText}</a>;
+    }
+    return part;
+  });
+}
+
 function renderMarkdown(content: string) {
-  // Simple markdown-to-HTML: headings, paragraphs, bold, lists
   return content.split('\n\n').map((block, i) => {
     const trimmed = block.trim();
     if (!trimmed) return null;
@@ -20,16 +38,7 @@ function renderMarkdown(content: string) {
       return <h3 key={i} className="text-xl font-bold mt-8 mb-3">{trimmed.slice(4)}</h3>;
     }
     
-    // Handle bold text within paragraphs
-    const parts = trimmed.split(/(\*\*[^*]+\*\*)/g);
-    const rendered = parts.map((part, j) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return <strong key={j}>{part.slice(2, -2)}</strong>;
-      }
-      return part;
-    });
-    
-    return <p key={i} className="text-base text-muted-foreground leading-relaxed mb-4">{rendered}</p>;
+    return <p key={i} className="text-base text-muted-foreground leading-relaxed mb-4">{renderInline(trimmed)}</p>;
   });
 }
 

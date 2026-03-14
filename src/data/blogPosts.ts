@@ -58,7 +58,9 @@ If you exhibit at the same show annually, a rebuild model can cut costs signific
 ## Getting a realistic quote
 
 Request quotes from at least two specialist stand builders, not general contractors. Provide a clear brief with stand size, wall heights, number of meeting areas, AV requirements, and branding specifications. The more detail you provide upfront, the more accurate and competitive your quotes will be.
-    `.trim(),
+
+
+HOX Creative has been building exhibition stands in Dubai since 2008. [Get a quote for your next exhibition stand](/exhibition-stands-dubai) or [learn more about our exhibition capabilities](/divisions/exhibitions).    `.trim(),
   },
   {
     slug: 'gulfood-exhibitor-guide-2026',
@@ -97,7 +99,9 @@ The biggest mistake first-time Gulfood exhibitors make is underestimating logist
 Second: don't skimp on lighting. Gulfood halls have standard overhead fluorescents. Without dedicated stand lighting, your products look flat and your branding disappears.
 
 Third: plan for sampling. If you're offering food samples, you need a food-grade preparation area, refrigeration, and waste management. These need to be designed into the stand from the start.
-    `.trim(),
+
+
+HOX delivers 15–20 Gulfood stands every year. [Talk to us about your Gulfood stand](/exhibition-stands-dubai) — we know the venue inside out.    `.trim(),
   },
   {
     slug: 'custom-vs-modular-exhibition-stands',
@@ -138,7 +142,9 @@ Many of our clients use a hybrid model: a custom-built core structure (backwall,
 ## Cost comparison
 
 For a 36-sqm stand at DWTC, expect approximately AED 55,000–75,000 for a mid-range custom build, AED 30,000–45,000 for a quality modular system (first purchase), and AED 15,000–25,000 for modular reuse at subsequent shows. The break-even point is typically 3–4 uses.
-    `.trim(),
+
+
+Whether you choose custom, modular, or hybrid, HOX fabricates everything in-house at our Al Quoz workshop. [Get a quote for your next stand](/exhibition-stands-dubai).    `.trim(),
   },
   {
     slug: 'interior-fitout-process-dubai',
@@ -183,7 +189,9 @@ After construction, there's a snagging period where you walk the space and ident
 ## Budgeting guidance
 
 Office fit-outs in Dubai typically range from AED 150–350 per sqft for mid-range specifications. Restaurant fit-outs run AED 250–600 per sqft depending on kitchen complexity. Retail spaces vary enormously based on brand standards, but AED 200–450 per sqft covers most scenarios.
-    `.trim(),
+
+
+HOX Interiors handles the entire fit-out process — from design development through approvals, construction, and handover. [Learn more about our interior fit-out services](/interior-fit-out-dubai) or [get in touch](/contact).    `.trim(),
   },
   {
     slug: 'event-production-dubai-guide',
@@ -228,7 +236,9 @@ Large-scale galas and launches (500+ guests, full scenic build, complex lighting
 A corporate event with custom production needs a minimum of 4–6 weeks from brief to delivery. Large-scale events need 8–12 weeks. Weddings with significant custom fabrication should allow 10–16 weeks.
 
 The build-up period at venue is typically 2–5 days depending on complexity. De-rig is usually 1–2 days.
-    `.trim(),
+
+
+HOX has been producing events across the UAE since 2008. From corporate conferences to large-scale galas, we handle the full production scope. [Learn more about our event production services](/event-production-dubai).    `.trim(),
   },
   {
     slug: 'choosing-exhibition-stand-builder-dubai',
@@ -265,7 +275,9 @@ Be cautious of significantly lower quotes than competitors. In exhibition produc
 ## Getting the best from your builder
 
 Provide a detailed brief with dimensions, wall heights, number of meeting areas, AV requirements, branding guidelines, and a realistic budget range. The more information your builder has upfront, the more accurate their proposal will be — and the fewer surprises you'll face on site.
-    `.trim(),
+
+
+HOX Creative operates from a fully equipped workshop in Al Quoz with CNC routing, spray booths, and dedicated joinery facilities. [See our exhibition work](/divisions/exhibitions) or [request a quote](/get-a-quote).    `.trim(),
   },
   {
     slug: 'retail-display-design-dubai',
@@ -306,7 +318,9 @@ For temporary or seasonal displays, the priority shifts to lightweight, reusable
 Every Dubai mall has its own design guidelines, material restrictions, and approval processes. Most require fire-retardant materials, prohibit certain adhesives, and have strict rules about signage illumination and placement. Your display fabricator needs to know these rules before design begins — not discover them during installation.
 
 Night access is standard for mall installations. Plan for 10pm–6am work windows, and budget accordingly for overnight crew rates.
-    `.trim(),
+
+
+HOX fabricates retail displays, kiosks, and seasonal activations from our in-house workshop. [Learn more about our retail display services](/retail-display-dubai) or [view our retail portfolio](/gallery/retail).    `.trim(),
   },
   {
     slug: 'exhibition-stand-design-trends-2026',
@@ -349,7 +363,9 @@ The practical challenge is maintenance during multi-day shows. We use a combinat
 The enclosed-box stand with walls on all sides is declining. Exhibitors want open, welcoming layouts that draw visitors in rather than creating barriers. Semi-open meeting areas, curved entry points, and reduced wall-to-open-space ratios are all trending.
 
 This aligns with a broader shift from "display" to "experience" — stands designed around visitor flow rather than product placement.
-    `.trim(),
+
+
+HOX Creative delivers 50+ exhibition projects a year across DWTC, ADNEC, and international venues. [Get a quote for your next exhibition](/exhibition-stands-dubai).    `.trim(),
   },
   {
     slug: 'adipec-exhibitor-preparation-guide',
@@ -392,7 +408,9 @@ Build-up at ADIPEC typically begins 5–7 days before the show. Large stands (20
 ADIPEC stands typically fall in the premium tier. For a 100-sqm stand with meeting rooms, mezzanine structure, and full AV, expect AED 250,000–400,000. Larger national pavilions can exceed AED 1,000,000.
 
 Annual exhibitors benefit from the rebuild model — storing structural elements and rebuilding at 50–65% of year-one cost.
-    `.trim(),
+
+
+HOX has been building stands at ADIPEC for over a decade, including multi-year programmes for major energy companies. [Talk to us about your ADIPEC stand](/exhibition-stands-dubai).    `.trim(),
   },
   {
     slug: 'warehouse-to-workspace-conversion-dubai',
@@ -433,7 +451,9 @@ Most warehouses have basic electrical provision for industrial use — single-ph
 ## Realistic costs
 
 A basic warehouse-to-office conversion in Dubai (open plan, minimal partitions, polished concrete, exposed services) runs AED 80–150 per sqft. A mid-range conversion (partitioned offices, meeting rooms, false ceiling in key areas, proper flooring) runs AED 150–280 per sqft. High-spec conversions with full services concealment, premium finishes, and architectural features can exceed AED 300 per sqft.
-    `.trim(),
+
+
+HOX Interiors specialises in commercial fit-outs across Dubai, including warehouse conversions, office builds, and restaurant projects. [Learn more about our fit-out services](/interior-fit-out-dubai).    `.trim(),
   },
 ];
 
